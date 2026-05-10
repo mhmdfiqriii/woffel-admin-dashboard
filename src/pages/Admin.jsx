@@ -1,41 +1,35 @@
 import { useEffect, useState, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import { supabase } from "../lib/supabase"
 
-function Admin({ setPage, showToast }) {
+function Admin() {
   const [orders, setOrders] = useState([])
   const [filter, setFilter] = useState("pending")
   const [typeFilter, setTypeFilter] = useState("all")
   const [search, setSearch] = useState("")
   const [highlightId, setHighlightId] = useState(null)
-  const [soundOn, setSoundOn] = useState(true)
+  const [soundOn, setSoundOn] = useState(() => {
+  const saved =
+    localStorage.getItem("sound")
+
+  return saved !== null
+    ? saved === "true"
+    : true
+  })
 
   const topRef = useRef(null)
+  const navigate = useNavigate()
   const totalPending = orders.filter(o => o.status === "pending").length
   const totalProses = orders.filter(o => o.status === "proses").length
   const totalSelesai = orders.filter(o => o.status === "selesai").length
-
   const adminUser = localStorage.getItem("admin_user")
-
   const displayName = adminUser?.split("@")[0]
-
-  useEffect(() => {
-  const checkUser = async () => {
-    const { data } = await supabase.auth.getUser()
-
-    if (!data.user) {
-      setPage("admin-login")
-    }
-  }
-
-  checkUser()
-}, [])
-
   const role = localStorage.getItem("role")
 
   // Export to csv/excel
   const exportCSV = () => {
   if (orders.length === 0) {
-    showToast("Tidak ada data", "error")
+    alert("Tidak ada data")
     return
   }
 
@@ -77,7 +71,13 @@ const rows = filteredOrders.map(o => [
 
   const link = document.createElement("a")
   link.href = url
-  link.setAttribute("download", `orders-${Date.now()}.csv`)
+  const timestamp = new Date()
+  .getTime()
+
+  const fileName =
+  `orders-${timestamp}.csv`
+
+  link.setAttribute("download", fileName)
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
@@ -116,19 +116,23 @@ const rows = filteredOrders.map(o => [
 
   const [, setTick] = useState(0)
 
-useEffect(() => {
+  useEffect(() => {
   const checkUser = async () => {
     const { data } = await supabase.auth.getSession()
 
     if (!data.session) {
-      setPage("admin-login")
+      navigate("/login")
     } else {
-      localStorage.setItem("admin_user", data.session.user.email)
+      localStorage.setItem(
+        "admin_user",
+        data.session.user.email
+      )
     }
   }
 
   checkUser()
-}, [])
+
+  }, [navigate])
 
   useEffect(() => {
   const interval = setInterval(() => {
@@ -174,16 +178,19 @@ useEffect(() => {
   const doneAudioRef = useRef(null)
 
   useEffect(() => {
-  audioRef.current = new Audio("/notif.mp3")
-  prosesAudioRef.current = new Audio("/pending.mp3")
-  doneAudioRef.current = new Audio("/done.mp3")
-  }, [])
 
-  useEffect(() => {
-  const saved = localStorage.getItem("sound")
-  if (saved !== null) {
-    setSoundOn(saved === "true")
-  }
+  audioRef.current = new Audio(
+    "https://hreulbsrxakoxwshzmgj.supabase.co/storage/v1/object/public/assets/sounds/adm-notif.mp3"
+  )
+
+  prosesAudioRef.current = new Audio(
+    "https://hreulbsrxakoxwshzmgj.supabase.co/storage/v1/object/public/assets/sounds/adm-pending.mp3"
+  )
+
+  doneAudioRef.current = new Audio(
+    "https://hreulbsrxakoxwshzmgj.supabase.co/storage/v1/object/public/assets/sounds/adm-done.mp3"
+  )
+
   }, [])
 
   useEffect(() => {
@@ -209,7 +216,7 @@ const notify = (id) => {
     }
 
     setTimeout(() => {
-      showToast("Order baru masuk 🚨")
+      alert("Order baru masuk 🚨")
     }, 200)
 
     lastOrderId.current = id
@@ -318,7 +325,7 @@ const updateStatus = async (id, status) => {
       })
         .subscribe((status) => {
           if (status === "TIMED_OUT") {
-            showToast("Trying Reconnect To Database...", "error")
+            alert("Trying Reconnect To Database...")
             setTimeout(createChannel, 3000)
           }
         })
@@ -397,7 +404,7 @@ const updateStatus = async (id, status) => {
     onClick={async () => {
       await supabase.auth.signOut()
       localStorage.removeItem("admin_user")
-      setPage("home")
+      navigate("/login")
     }}
     style={{
       padding: "6px 12px",
