@@ -33,7 +33,67 @@ body{
 
   padding:28px;
 
-  background:#020202;
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(255,255,255,.04),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(255,255,255,.03),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #050505 0%,
+      #080808 100%
+    );
+}
+
+.auth-page::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size:42px 42px;
+
+  mask-image:
+    radial-gradient(
+      circle at center,
+      black 35%,
+      transparent 90%
+    );
+
+  pointer-events:none;
+}
+
+.auth-page::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 45%,
+      rgba(0,0,0,.45) 100%
+    );
+
+  pointer-events:none;
 }
 
 /* AMBIENT */
@@ -41,17 +101,17 @@ body{
   position:absolute;
   border-radius:999px;
   filter:blur(120px);
-  opacity:.32;
-  animation:float 10s ease-in-out infinite;
+  opacity:.18;
+  animation:float 12s ease-in-out infinite;
 }
 
 .ambient-1{
-  width:320px;
-  height:320px;
+  width:340px;
+  height:340px;
 
-  background:#1a1a1a;
+  background:#ffffff10;
 
-  top:-120px;
+  top:-140px;
   left:-120px;
 }
 
@@ -59,7 +119,7 @@ body{
   width:280px;
   height:280px;
 
-  background:#0f172a;
+  background:#ffffff08;
 
   bottom:-120px;
   right:-120px;
@@ -68,44 +128,15 @@ body{
 }
 
 .ambient-3{
-  width:220px;
-  height:220px;
+  width:240px;
+  height:240px;
 
-  background:#2a2a2a;
+  background:#ffffff06;
 
-  top:40%;
+  top:42%;
   left:50%;
 
   transform:translateX(-50%);
-}
-
-.rainbow-flare{
-  position:absolute;
-
-  width:520px;
-  height:220px;
-
-  right:-180px;
-  bottom:-80px;
-
-  background:
-    conic-gradient(
-      from 180deg,
-      #ff0000,
-      #ff7a00,
-      #ffe600,
-      #00ff66,
-      #00ccff,
-      #004cff,
-      #7a00ff,
-      #ff006e
-    );
-
-  filter:blur(110px);
-
-  opacity:.22;
-
-  transform:rotate(-12deg);
 }
 
 /* WRAPPER */

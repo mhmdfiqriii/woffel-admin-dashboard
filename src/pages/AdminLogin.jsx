@@ -64,9 +64,6 @@ function AdminLogin() {
       <div className="ambient ambient-2"></div>
       <div className="ambient ambient-3"></div>
 
-      {/* RAINBOW */}
-      <div className="rainbow-flare"></div>
-
       {/* LOGIN */}
       <motion.div
         initial={{
