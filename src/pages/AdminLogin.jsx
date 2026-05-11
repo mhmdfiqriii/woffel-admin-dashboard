@@ -202,13 +202,17 @@ function AdminLogin() {
                 Akses Terbatas
               </h2>
 
-              <p>
-                ⚠️ Peringatan: Halaman ini hanya
-                untuk akses Administrator.
-                <br /><br />
-                Jika kamu bukan admin Woffel Store,
-                silahkan gunakan web app customer.
-              </p>
+             <p>
+  <span className="warning-text">
+    ⚠️ Peringatan: Halaman ini hanya
+    untuk akses Administrator.
+  </span>
+
+  <br /><br />
+
+  Jika kamu bukan admin Woffel Store,
+  silahkan gunakan web app customer.
+</p>
 
               <button
                 className="continue-btn"

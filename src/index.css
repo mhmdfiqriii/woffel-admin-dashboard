@@ -600,3 +600,8 @@ body{
   }
 
 }
+
+.warning-text{
+  color:#ffcc4d;
+  font-weight:600;
+}
