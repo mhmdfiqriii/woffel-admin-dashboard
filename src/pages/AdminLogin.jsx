@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import { useNavigate } from "react-router-dom"
-
+import { ShieldCheck } from "lucide-react"
 import { supabase } from "../lib/supabase"
 
 function AdminLogin() {
@@ -52,6 +52,9 @@ function AdminLogin() {
     <div className="login-page">
 
       <div className="login-box">
+        <div className="gate-icon">
+          <ShieldCheck size={34} />
+        </div>
 
         <h1 className="login-title">
           WOFFEL Dashboard
