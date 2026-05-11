@@ -88,7 +88,7 @@ function AdminLogin() {
       </div>
 
         <h1 className="hero-title">
-          WOFFEL Hub
+          Woffel Hub
         </h1>
 
         <p className="hero-subtitle">
@@ -108,7 +108,7 @@ function AdminLogin() {
 
             <input
               type="email"
-              placeholder="admin@woffelstore.com"
+              placeholder="user@email.com"
               value={username}
               onChange={(e) =>
                 setUsername(e.target.value)
@@ -151,7 +151,7 @@ function AdminLogin() {
         </div>
 
         <p className="footer-note">
-          Private admin access only · WOFFEL
+          Private admin access only · Woffel Store
         </p>
 
       </motion.div>
@@ -206,8 +206,11 @@ function AdminLogin() {
               </h2>
 
               <p>
-                Halaman ini hanya
-                untuk akses administrator.
+                ⚠️ Peringatan: Halaman ini hanya
+                untuk akses Administrator.
+                <br /><br />
+                Jika kamu bukan admin Woffel Store,
+                silahkan gunakan web app customer.
               </p>
 
               <button
@@ -228,7 +231,7 @@ function AdminLogin() {
                   )
                 }
               >
-                🛒 Buka Web App Customer
+                🛒 Buka Woffel Store
               </button>
 
             </motion.div>
