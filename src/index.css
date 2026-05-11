@@ -113,7 +113,7 @@ body{
   position:relative;
   z-index:2;
   width:100%;
-  max-width:390px;
+  max-width:410px;
   margin:auto;
   padding-top:32px;
   padding-bottom:42px;
@@ -149,17 +149,24 @@ body{
 
 /* HERO */
 .hero-title{
-  font-size:76px;
-  line-height:.9;
+  font-size:62px;
+  line-height:1;
   font-weight:800;
-  letter-spacing:-4px;
+
+  letter-spacing:-3.2px;
+
   text-align:center;
-  margin-bottom:14px;
+
+  white-space:nowrap;
+
+  margin-bottom:12px;
+
   background-image:linear-gradient(
     to bottom,
     #ffffff 20%,
     rgba(255,255,255,.55) 100%
   );
+
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
@@ -435,8 +442,11 @@ body{
 @media (max-width:480px){
 
   .hero-title{
-    font-size:68px;
-    letter-spacing:-3px;
+    font-size:50px;
+    line-height:1;
+    letter-spacing:-2.8px;
+
+    white-space:nowrap;
   }
 
   .glass-card{
