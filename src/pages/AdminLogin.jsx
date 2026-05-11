@@ -1,7 +1,6 @@
 import { useState } from "react"
-
+import { ShieldCheck, ShieldAlert } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-import { ShieldCheck } from "lucide-react"
 import { supabase } from "../lib/supabase"
 
 function AdminLogin() {
@@ -19,6 +18,9 @@ function AdminLogin() {
 
   const [error, setError] =
     useState("")
+
+  const [showGate, setShowGate] =
+    useState(true)
 
   const handleLogin = async () => {
 
@@ -51,7 +53,14 @@ function AdminLogin() {
   return (
     <div className="login-page">
 
+      {/* BACKGROUND */}
+      <div className="gate-ambient gate-ambient-1"></div>
+      <div className="gate-ambient gate-ambient-2"></div>
+      <div className="gate-grid"></div>
+
+      {/* LOGIN */}
       <div className="login-box">
+
         <div className="gate-icon">
           <ShieldCheck size={34} />
         </div>
@@ -61,7 +70,7 @@ function AdminLogin() {
         </h1>
 
         <p className="login-subtitle">
-          Admin access only
+          Private admin access only
         </p>
 
         <input
@@ -100,6 +109,48 @@ function AdminLogin() {
         </button>
 
       </div>
+
+      {/* WARNING OVERLAY */}
+      {showGate && (
+        <div className="gate-overlay">
+
+          <div className="gate-warning-box">
+
+            <div className="gate-warning-icon">
+              <ShieldAlert size={34} />
+            </div>
+
+            <h2 className="gate-warning-title">
+              Akses Terbatas
+            </h2>
+
+            <p className="gate-warning-text">
+              Halaman ini hanya untuk administrator WOFFEL Dashboard.
+            </p>
+
+            <button
+              className="gate-warning-btn"
+              onClick={() => setShowGate(false)}
+            >
+              🔑 Lanjutkan sebagai Admin
+            </button>
+
+            <button
+              className="gate-customer-btn"
+              onClick={() =>
+                window.open(
+                  "https://woffelstore.netlify.app/",
+                  "_blank"
+                )
+              }
+            >
+              Buka Web App Customer
+            </button>
+
+          </div>
+
+        </div>
+      )}
 
     </div>
   )

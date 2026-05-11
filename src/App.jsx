@@ -11,7 +11,6 @@ import { supabase } from "./lib/supabase"
 
 import Admin from "./pages/Admin"
 import AdminLogin from "./pages/AdminLogin"
-import AdminGate from "./pages/AdminGate"
 
 import ProtectedRoute from "./components/ProtectedRoute"
 
@@ -57,11 +56,6 @@ function App() {
      <Routes>
 
   <Route
-    path="/admin"
-    element={<AdminGate />}
-  />
-
-  <Route
     path="/login"
     element={
       session
@@ -81,7 +75,7 @@ function App() {
 
   <Route
     path="*"
-    element={<Navigate to="/admin" replace />}
+    element={<Navigate to="/login" replace />}
   />
 
 </Routes>
