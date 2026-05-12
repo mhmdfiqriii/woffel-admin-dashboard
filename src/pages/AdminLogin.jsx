@@ -105,7 +105,7 @@ function AdminLogin() {
 
             <input
               type="email"
-              placeholder="user@email.com"
+              placeholder="admin@email.com"
               value={username}
               onChange={(e) =>
                 setUsername(e.target.value)
@@ -203,16 +203,16 @@ function AdminLogin() {
               </h2>
 
              <p>
-  <span className="warning-text">
-    ⚠️ Peringatan: Halaman ini hanya
-    untuk akses Administrator.
-  </span>
+               <span className="warning-text">
+                 ⚠️ Peringatan: Halaman ini hanya
+                 untuk akses Administrator.
+               </span>
 
-  <br /><br />
+               <br /><br />
 
-  Jika kamu bukan admin Woffel Store,
-  silahkan gunakan web app customer.
-</p>
+               Jika kamu bukan admin Woffel,
+               silahkan beralih ke web store.
+            </p>
 
               <button
                 className="continue-btn"

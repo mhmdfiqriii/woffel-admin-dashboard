@@ -1,0 +1,443 @@
+.admin-page{
+  min-height:100vh;
+  background:#050505;
+  color:white;
+  padding:20px;
+}
+
+.admin-container{
+  width:100%;
+  max-width:620px;
+  margin:auto;
+}
+
+/* HEADER */
+
+.admin-header{
+  margin-bottom:18px;
+}
+
+.admin-header-title{
+  font-size:38px;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:8px;
+}
+
+.admin-header-subtitle{
+  text-align:center;
+  color:rgba(255,255,255,.55);
+  margin-bottom:22px;
+}
+
+.admin-header-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.admin-btn{
+  border:none;
+  height:44px;
+  padding:0 18px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  color:white;
+  font-size:13px;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.admin-btn-active{
+  background:white;
+  color:black;
+}
+
+.admin-btn-export{
+  width:100%;
+  height:52px;
+  border-radius:18px;
+  margin-top:18px;
+  margin-bottom:18px;
+  background:white;
+  color:black;
+  font-weight:700;
+}
+
+/* FILTER */
+
+.admin-filter{
+  margin-bottom:18px;
+}
+
+.admin-filter-search{
+  width:100%;
+  height:54px;
+  border:none;
+  outline:none;
+  border-radius:18px;
+  padding:0 16px;
+  margin-bottom:14px;
+  background:rgba(255,255,255,.06);
+  color:white;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.admin-filter-search::placeholder{
+  color:rgba(255,255,255,.25);
+}
+
+.admin-filter-row{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.admin-filter-btn{
+  flex:1;
+  height:48px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,.06);
+  color:white;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.admin-filter-btn-active{
+  background:white;
+  color:black;
+}
+
+/* STATS */
+
+.admin-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:18px;
+  margin-bottom:18px;
+}
+
+.admin-card{
+  padding:18px;
+  border-radius:20px;
+  background:rgba(255,255,255,.06);
+}
+
+.admin-card-label{
+  font-size:13px;
+  color:rgba(255,255,255,.5);
+  margin-bottom:8px;
+}
+
+.admin-card-value{
+  font-size:24px;
+  font-weight:700;
+}
+
+/* ORDER */
+
+.admin-order{
+  padding:18px;
+  border-radius:22px;
+  margin-bottom:16px;
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.admin-order-highlight{
+  box-shadow:0 0 0 2px #1677ff;
+}
+
+.admin-order-done{
+  opacity:.55;
+}
+
+.admin-order-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.admin-order-type{
+  font-size:12px;
+  color:rgba(255,255,255,.5);
+}
+
+.admin-order-badge{
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12px;
+  color:white;
+}
+
+.admin-order-id{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.admin-order-time{
+  font-size:13px;
+  margin-bottom:16px;
+}
+
+.admin-order-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.admin-order-price{
+  font-size:16px;
+  font-weight:700;
+}
+
+.admin-order-actions{
+  display:flex;
+  gap:8px;
+}
+
+/* QUICK BUTTON */
+
+.admin-btn-quick{
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:10px;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.admin-btn-proses{
+  background:#faad14;
+}
+
+.admin-btn-selesai{
+  background:#52c41a;
+}
+
+.admin-btn-disabled{
+  background:#444;
+  cursor:not-allowed;
+}
+
+/* MODAL */
+
+.admin-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:999;
+}
+
+.admin-modal{
+  width:100%;
+  max-width:520px;
+  border-radius:24px;
+  background:#111;
+  padding:22px;
+}
+
+.admin-modal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+}
+
+.admin-modal-id{
+  font-size:22px;
+  font-weight:700;
+}
+
+.admin-modal-status{
+  padding:8px 14px;
+  border-radius:999px;
+  color:white;
+  font-size:12px;
+}
+
+.admin-modal-subtitle{
+  color:rgba(255,255,255,.5);
+  margin-bottom:18px;
+}
+
+.admin-modal-section{
+  margin-bottom:18px;
+}
+
+.admin-modal-label{
+  font-size:13px;
+  color:rgba(255,255,255,.5);
+  margin-bottom:10px;
+}
+
+.admin-modal-item{
+  padding:14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+  margin-bottom:10px;
+}
+
+.admin-modal-item-sub{
+  font-size:13px;
+  color:rgba(255,255,255,.5);
+  margin-top:6px;
+}
+
+.admin-modal-total{
+  margin-bottom:20px;
+}
+
+.admin-modal-total-price{
+  font-size:24px;
+  font-weight:700;
+}
+
+.admin-modal-actions{
+  display:flex;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.admin-btn-modal{
+  flex:1;
+  height:48px;
+  border:none;
+  border-radius:14px;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.admin-btn-close{
+  width:100%;
+  height:48px;
+  border:none;
+  border-radius:14px;
+  background:#222;
+  color:white;
+  cursor:pointer;
+}
+
+/* MOBILE */
+
+@media (max-width:480px){
+
+  .admin-page{
+    padding:16px;
+  }
+
+  .admin-header-title{
+    font-size:32px;
+  }
+
+  .admin-filter-row{
+    overflow:auto;
+  }
+
+  .admin-filter-btn{
+    min-width:max-content;
+    padding:0 14px;
+  }
+
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body,
+#root{
+  overflow-x:hidden;
+}
+
+.admin-page{
+  overflow-x:hidden;
+}
+
+.admin-container{
+  overflow-x:hidden;
+}
+
+.admin-header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  padding-bottom:14px;
+  background:#050505;
+}
+
+.admin-filter{
+  position:sticky;
+  top:170px;
+  z-index:40;
+  background:#050505;
+  padding-bottom:12px;
+}
+
+.admin-modal-overlay{
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.admin-modal{
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+.admin-btn,
+.admin-btn-modal,
+.admin-btn-quick,
+.admin-filter-btn{
+  min-height:44px;
+  touch-action:manipulation;
+}
+
+.admin-order{
+  overflow:hidden;
+}
+
+.admin-order-id{
+  word-break:break-word;
+}
+
+.admin-modal-item{
+  word-break:break-word;
+}
+
+@media (max-width:480px){
+
+  .admin-header{
+    top:0;
+  }
+
+  .admin-filter{
+    top:190px;
+  }
+
+  .admin-modal{
+    padding:18px;
+    border-radius:22px;
+  }
+
+  .admin-modal-actions{
+    flex-direction:column;
+  }
+
+  .admin-btn-modal{
+    width:100%;
+  }
+
+}
