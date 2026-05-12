@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { supabase } from "../../lib/supabase"
 
 function DashboardHeader({
@@ -8,6 +9,41 @@ function DashboardHeader({
   navigate,
   role
 }) {
+
+  const [time, setTime] =
+    useState("")
+
+  useEffect(() => {
+
+    const updateClock = () => {
+
+      const now =
+        new Date()
+
+      setTime(
+        now.toLocaleTimeString(
+          "id-ID",
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        )
+      )
+
+    }
+
+    updateClock()
+
+    const interval =
+      setInterval(
+        updateClock,
+        1000
+      )
+
+    return () =>
+      clearInterval(interval)
+
+  }, [])
 
   const handleLogout = async () => {
 
@@ -25,15 +61,49 @@ function DashboardHeader({
 
     <div className="admin-header">
 
-      <h1 className="admin-header-title">
-        Woffel Dashboard
-      </h1>
+      <div className="admin-header-top">
 
-      <p className="admin-header-subtitle">
-        Selamat datang👋
-        {" "}
-        <b>{displayName}</b>
-      </p>
+        <div className="admin-header-brand">
+
+          <div className="admin-header-dot"></div>
+
+          <div>
+
+            <div className="admin-header-label">
+              WOFFEL ADMIN
+            </div>
+
+            <h1 className="admin-header-title">
+              Dashboard
+            </h1>
+
+          </div>
+
+        </div>
+
+        <div className="admin-header-clock">
+          {time}
+        </div>
+
+      </div>
+
+      <div className="admin-header-divider"></div>
+
+      <div className="admin-header-info">
+
+        <div>
+
+          <div className="admin-header-subtitle">
+            Selamat datang kembali
+          </div>
+
+          <div className="admin-header-user">
+            {displayName}
+          </div>
+
+        </div>
+
+      </div>
 
       <div className="admin-header-actions">
 
@@ -47,16 +117,23 @@ function DashboardHeader({
               : ""
           }`}
         >
-          {soundOn
-            ? "🔊 ON"
-            : "🔇 OFF"}
+          <span>
+            {soundOn ? "🔊" : "🔇"}
+          </span>
+
+          <span>
+            {soundOn
+              ? "Sound On"
+              : "Muted"}
+          </span>
         </button>
 
         <button
           onClick={handleLogout}
           className="admin-btn"
         >
-          Logout
+          <span>↗</span>
+          <span>Logout</span>
         </button>
 
       </div>
@@ -65,9 +142,12 @@ function DashboardHeader({
 
         <button
           onClick={exportCSV}
-          className="admin-btn admin-btn-export"
+          className="
+            admin-btn
+            admin-btn-export
+          "
         >
-          Export CSV
+          ⭳ Export CSV
         </button>
 
       )}

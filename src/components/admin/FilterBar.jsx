@@ -7,57 +7,87 @@ function FilterBar({
   formatStatus
 }) {
 
+  const filters = [
+    "all",
+    "pending",
+    "proses",
+    "selesai"
+  ]
+
   return (
 
     <div className="admin-filter">
 
-      <input
-        placeholder="Cari ID/Kode Order."
-        value={search}
-        onChange={e =>
-          setSearch(e.target.value)
-        }
-        className="admin-filter-search"
-      />
+      <div className="admin-filter-search-wrap">
 
-      <div className="admin-filter-row">
+        <div className="admin-filter-search-icon">
+          ⌕
+        </div>
 
-        {[
-          "all",
-          "pending",
-          "proses",
-          "selesai"
-        ].map(f => {
+        <input
+          placeholder="
+            Cari ID / customer...
+          "
+          value={search}
+          onChange={e =>
+            setSearch(
+              e.target.value
+            )
+          }
+          className="
+            admin-filter-search
+          "
+        />
 
-          const count =
-            f === "all"
-              ? orders.length
-              : orders.filter(
-                  o =>
-                    o.status === f
-                ).length
+      </div>
 
-          return (
+      <div className="admin-filter-scroll">
 
-            <button
-              key={f}
-              onClick={() =>
-                setFilter(f)
-              }
-              className={`admin-filter-btn ${
-                filter === f
-                  ? "admin-filter-btn-active"
-                  : ""
-              }`}
-            >
-              {formatStatus(f)}
-              {" "}
-              ({count})
-            </button>
+        <div className="admin-filter-row">
 
-          )
+          {filters.map(f => {
 
-        })}
+            const count =
+              f === "all"
+                ? orders.length
+                : orders.filter(
+                    o =>
+                      o.status === f
+                  ).length
+
+            return (
+
+              <button
+                key={f}
+                onClick={() =>
+                  setFilter(f)
+                }
+                className={`admin-filter-btn ${
+                  filter === f
+                    ? `
+                      admin-filter-btn-active
+                    `
+                    : ""
+                }`}
+              >
+
+                <span>
+                  {formatStatus(f)}
+                </span>
+
+                <span className="
+                  admin-filter-count
+                ">
+                  {count}
+                </span>
+
+              </button>
+
+            )
+
+          })}
+
+        </div>
 
       </div>
 

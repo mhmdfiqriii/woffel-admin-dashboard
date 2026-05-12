@@ -2,7 +2,6 @@ function OrderModal({
   selectedOrder,
   setSelectedOrder,
   updateStatus,
-  getStatusColor,
   formatStatus,
   formatRupiah
 }) {
@@ -50,54 +49,69 @@ function OrderModal({
     >
 
       <div
-        className="admin-modal"
+        className={`
+          admin-modal
+          status-${selectedOrder.status}
+        `}
         onClick={e =>
           e.stopPropagation()
         }
       >
 
+        <div className="admin-modal-handle"></div>
+
         <div className="admin-modal-header">
 
-          <div className="admin-modal-id">
-            {selectedOrder.order_id}
+          <div>
+
+            <div className="admin-modal-label">
+              ORDER ID
+            </div>
+
+            <div className="admin-modal-id">
+              {selectedOrder.order_id}
+            </div>
+
           </div>
 
           <div
-            className="admin-modal-status"
-            style={{
-              background:
-                getStatusColor(selectedOrder.status)
-            }}
+            className={`
+              admin-order-badge
+              admin-order-badge-${selectedOrder.status}
+            `}
           >
-            {formatStatus(selectedOrder.status)}
+            {formatStatus(
+              selectedOrder.status
+            )}
           </div>
 
         </div>
 
-        <div className="admin-modal-subtitle">
+        <div className="admin-modal-meta">
 
-          {selectedOrder.type.toUpperCase()}
+          <div className="admin-modal-meta-card">
 
-        </div>
+            <div className="admin-modal-meta-label">
+              Tipe
+            </div>
 
-        {selectedOrder.updated_by && (
-
-          <div className="admin-modal-item-sub">
-
-            Diupdate oleh:
-            {" "}
-            {selectedOrder.updated_by}
+            <div className="admin-modal-meta-value">
+              {selectedOrder.type.toUpperCase()}
+            </div>
 
           </div>
 
-        )}
+          <div className="admin-modal-meta-card">
 
-        {selectedOrder.updated_at && (
+            <div className="admin-modal-meta-label">
+              Waktu
+            </div>
 
-          <div className="admin-modal-item-sub">
+            <div className="admin-modal-meta-value">
 
-            {new Date(selectedOrder.updated_at)
-              .toLocaleString(
+              {new Date(
+                selectedOrder.created_at
+              ).toLocaleString(
                 "id-ID",
                 {
                   timeZone:
@@ -105,78 +119,136 @@ function OrderModal({
                 }
               )}
 
+            </div>
+
           </div>
 
-        )}
+        </div>
 
         <div className="admin-modal-section">
 
-          <div className="admin-modal-label">
+          <div className="admin-modal-section-title">
+            Customer
+          </div>
+
+          <div className="admin-modal-card">
+
+            <div className="admin-modal-customer">
+              {selectedOrder.customer_name ||
+                "Customer Tidak Ada"}
+            </div>
+
+            {selectedOrder.updated_by && (
+
+              <div className="admin-modal-sub">
+
+                Update oleh:
+                {" "}
+                {selectedOrder.updated_by}
+
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+        <div className="admin-modal-section">
+
+          <div className="admin-modal-section-title">
             Pesanan
           </div>
 
-          {selectedOrder.type === "fnb" && (
+          <div className="admin-modal-items">
 
-            items.map((item, i) => (
+            {selectedOrder.type === "fnb" ? (
 
-              <div
-                key={i}
-                className="admin-modal-item"
-              >
+              items.map((item, i) => (
 
-                <div>
-                  {i + 1}. {item.name}
-                </div>
+                <div
+                  key={i}
+                  className="admin-modal-item"
+                >
 
-                <div className="admin-modal-item-sub">
+                  <div className="admin-modal-item-top">
 
-                  Qty:
-                  {" "}
-                  {item.qty || "-"}
+                    <div className="admin-modal-item-name">
 
-                </div>
+                      {i + 1}.
+                      {" "}
+                      {item.name}
 
-                {item.options && (
+                    </div>
 
-                  <div className="admin-modal-item-sub">
-                    {item.options}
+                    <div className="admin-modal-item-qty">
+
+                      x
+                      {item.qty || 1}
+
+                    </div>
+
                   </div>
 
+                  {item.options && (
+
+                    <div className="admin-modal-item-option">
+                      {item.options}
+                    </div>
+
+                  )}
+
+                </div>
+
+              ))
+
+            ) : (
+
+              <div className="admin-modal-item">
+
+                <div className="admin-modal-item-name">
+                  {selectedOrder.variant}
+                </div>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+        <div className="admin-modal-section">
+
+          <div className="admin-modal-section-title">
+            Pembayaran
+          </div>
+
+          <div className="admin-modal-total-card">
+
+            <div>
+
+              <div className="admin-modal-total-label">
+                Total Bayar
+              </div>
+
+              <div className="admin-modal-total-price">
+
+                Rp
+                {" "}
+                {formatRupiah(
+                  selectedOrder.price
                 )}
 
               </div>
 
-            ))
-
-          )}
-
-          {selectedOrder.type !== "fnb" && (
-
-            <div className="admin-modal-item">
-              {selectedOrder.variant}
             </div>
 
-          )}
-
-        </div>
-
-        <div className="admin-modal-total">
-
-          <div className="admin-modal-label">
-            Total
-          </div>
-
-          <div className="admin-modal-total-price">
-
-            Rp
-            {" "}
-            {formatRupiah(selectedOrder.price)}
-
           </div>
 
         </div>
 
-        <div className="admin-modal-actions">
+        <div className="admin-modal-footer">
 
           <button
             className={`admin-btn-modal ${
@@ -216,16 +288,16 @@ function OrderModal({
             Selesai
           </button>
 
-        </div>
+          <button
+            className="admin-btn-close"
+            onClick={() =>
+              setSelectedOrder(null)
+            }
+          >
+            Tutup
+          </button>
 
-        <button
-          className="admin-btn-close"
-          onClick={() =>
-            setSelectedOrder(null)
-          }
-        >
-          Tutup
-        </button>
+        </div>
 
       </div>
 
