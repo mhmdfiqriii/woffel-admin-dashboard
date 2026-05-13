@@ -2,7 +2,8 @@ import {
   useEffect,
   useState,
   useRef,
-  useCallback
+  useCallback,
+  useMemo
 } from "react"
 
 import { useNavigate } from "react-router-dom"
@@ -30,38 +31,86 @@ import {
 function Admin() {
 
   const [orders, setOrders] = useState([])
-  const [filter, setFilter] = useState("pending")
-  const [search, setSearch] = useState("")
-  const [highlightId, setHighlightId] = useState(null)
-  const [selectedOrder, setSelectedOrder] = useState(null)
 
-  const [soundOn, setSoundOn] = useState(() => {
+  const [filter, setFilter] =
+    useState("pending")
 
-    const saved =
-      localStorage.getItem("sound")
+  const [search, setSearch] =
+    useState("")
 
-    return saved !== null
-      ? saved === "true"
-      : true
+  const [debouncedSearch,
+    setDebouncedSearch] =
+    useState("")
 
-  })
+  const [highlightId,
+    setHighlightId] =
+    useState(null)
 
-  const [, setTick] = useState(0)
+  const [selectedOrder,
+    setSelectedOrder] =
+    useState(null)
+
+  const [loading,
+    setLoading] =
+    useState(true)
+
+  const [realtimeStatus,
+    setRealtimeStatus] =
+    useState("connecting")
+
+  const [toast,
+    setToast] =
+    useState(null)
+
+  const [unreadCount,
+    setUnreadCount] =
+    useState(0)
+
+  const [soundOn,
+    setSoundOn] = useState(() => {
+
+      const saved =
+        localStorage.getItem("sound")
+
+      return saved !== null
+        ? saved === "true"
+        : true
+
+    })
+
+  const [currentTime, setCurrentTime] =
+  useState(0)
 
   const topRef = useRef(null)
 
-  const navigate = useNavigate()
+  const navigate =
+    useNavigate()
 
-  const lastNotifyTime = useRef(0)
-  const lastOrderId = useRef(null)
-  const channelRef = useRef(null)
+  const lastNotifyTime =
+    useRef(0)
 
-  const audioRef = useRef(null)
-  const prosesAudioRef = useRef(null)
-  const doneAudioRef = useRef(null)
+  const lastOrderId =
+    useRef(null)
+
+  const channelRef =
+    useRef(null)
+
+  const reconnectTimeoutRef =
+    useRef(null)
+
+  const audioRef =
+    useRef(null)
+
+  const prosesAudioRef =
+    useRef(null)
+
+  const doneAudioRef =
+    useRef(null)
 
   const adminUser =
-    localStorage.getItem("admin_user")
+    localStorage.getItem(
+      "admin_user"
+    )
 
   const displayName =
     adminUser?.split("@")[0]
@@ -84,115 +133,209 @@ function Admin() {
       o.status === "selesai"
     ).length
 
-  const notify = useCallback((id) => {
+  const showToast =
+    useCallback((message, type) => {
 
-    const now = Date.now()
-
-    if (
-      now - lastNotifyTime.current < 1000
-    ) return
-
-    if (id !== lastOrderId.current) {
-
-      if (
-        soundOn &&
-        audioRef.current
-      ) {
-
-        audioRef.current.currentTime = 0
-
-        audioRef.current.play()
-          .catch(() => {})
-
-      }
+      setToast({
+        id: Date.now(),
+        message,
+        type
+      })
 
       setTimeout(() => {
-        alert("Order baru masuk 🚨")
-      }, 200)
 
-      lastOrderId.current = id
-      lastNotifyTime.current = now
+        setToast(null)
 
-    }
+      }, 2800)
 
-  }, [soundOn])
+    }, [])
 
-  const updateStatus = async (
-    id,
-    status
-  ) => {
+  const notify =
+    useCallback((id) => {
 
-    const { error } =
-      await supabase
-        .from("orders")
-        .update({
-          status,
-          updated_by: adminUser,
-          updated_at:
-            new Date().toISOString()
-        })
-        .eq("id", id)
+      const now = Date.now()
 
-    if (error)
-      console.log(error)
+      if (
+        now - lastNotifyTime.current < 1000
+      ) return
 
-    if (soundOn) {
+      if (id !== lastOrderId.current) {
 
-      if (status === "proses") {
+        if (
+          soundOn &&
+          audioRef.current
+        ) {
 
-        prosesAudioRef.current
-          ?.play()
-          .catch(() => {})
+          audioRef.current.currentTime = 0
+
+          audioRef.current
+            .play()
+            .catch(() => {})
+
+        }
+
+        showToast(
+          "Order baru masuk 🚨",
+          "new-order"
+        )
+
+        setUnreadCount(prev =>
+          prev + 1
+        )
+
+        lastOrderId.current = id
+
+        lastNotifyTime.current = now
 
       }
 
-      if (status === "selesai") {
+    }, [
+      soundOn,
+      showToast
+    ])
 
-        doneAudioRef.current
-          ?.play()
-          .catch(() => {})
+  const updateStatus =
+    async (
+      id,
+      status
+    ) => {
+
+      const { error } =
+        await supabase
+          .from("orders")
+          .update({
+            status,
+            updated_by: adminUser,
+            updated_at:
+              new Date().toISOString()
+          })
+          .eq("id", id)
+
+      if (error) {
+
+        console.log(error)
+
+        showToast(
+          "Gagal update status",
+          "error"
+        )
+
+        return
 
       }
 
-    }
+      if (soundOn) {
 
-    setSelectedOrder(prev =>
-      prev
-        ? { ...prev, status }
-        : null
-    )
+        if (
+          status === "proses"
+        ) {
 
-  }
+          prosesAudioRef.current
+            ?.play()
+            .catch(() => {})
 
-  const filteredOrders =
-    orders.filter(order => {
+        }
 
-      const matchFilter =
-        filter === "all" ||
-        order.status === filter
+        if (
+          status === "selesai"
+        ) {
 
-      const matchSearch =
+          doneAudioRef.current
+            ?.play()
+            .catch(() => {})
 
-        order.order_id
-          ?.toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
+        }
 
-        ||
+      }
 
-        order.customer_name
-          ?.toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
-
-      return (
-        matchFilter &&
-        matchSearch
+      showToast(
+        `Order ${formatStatus(status)}`,
+        status
       )
 
-    })
+      setOrders(prev =>
+
+        prev.map(order =>
+
+          order.id === id
+            ? {
+                ...order,
+                status
+              }
+            : order
+
+        )
+
+      )
+
+      setSelectedOrder(prev =>
+
+        prev
+          ? {
+              ...prev,
+              status
+            }
+          : null
+
+      )
+
+    }
+
+  useEffect(() => {
+
+    const debounce =
+      setTimeout(() => {
+
+        setDebouncedSearch(
+          search
+        )
+
+      }, 350)
+
+    return () =>
+      clearTimeout(debounce)
+
+  }, [search])
+
+  const filteredOrders =
+    useMemo(() => {
+
+      return orders.filter(order => {
+
+        const matchFilter =
+
+          filter === "all" ||
+
+          order.status === filter
+
+        const keyword =
+          debouncedSearch
+            .toLowerCase()
+
+        const matchSearch =
+
+          order.order_id
+            ?.toLowerCase()
+            .includes(keyword)
+
+          ||
+
+          order.customer_name
+            ?.toLowerCase()
+            .includes(keyword)
+
+        return (
+          matchFilter &&
+          matchSearch
+        )
+
+      })
+
+    }, [
+      orders,
+      filter,
+      debouncedSearch
+    ])
 
   const totalOmzet =
     filteredOrders.reduce(
@@ -212,25 +355,28 @@ function Admin() {
 
   useEffect(() => {
 
-    const checkUser = async () => {
+    const checkUser =
+      async () => {
 
-      const { data } =
-        await supabase.auth.getSession()
+        const { data } =
 
-      if (!data.session) {
+          await supabase.auth
+            .getSession()
 
-        navigate("/login")
+        if (!data.session) {
 
-      } else {
+          navigate("/login")
 
-        localStorage.setItem(
-          "admin_user",
-          data.session.user.email
-        )
+        } else {
+
+          localStorage.setItem(
+            "admin_user",
+            data.session.user.email
+          )
+
+        }
 
       }
-
-    }
 
     checkUser()
 
@@ -264,64 +410,104 @@ function Admin() {
 
   }, [soundOn])
 
+useEffect(() => {
+
+  const interval =
+    setInterval(() => {
+
+      setCurrentTime(
+        Date.now()
+      )
+
+    }, 60000)
+
+  return () =>
+    clearInterval(interval)
+
+}, [])
+
   useEffect(() => {
 
-    const interval =
-      setInterval(() => {
+    const clearHighlight =
+      setTimeout(() => {
 
-        setTick(t => t + 1)
+        setHighlightId(null)
 
-      }, 60000)
+      }, 4500)
 
     return () =>
-      clearInterval(interval)
+      clearTimeout(clearHighlight)
 
-  }, [])
+  }, [highlightId])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
 
-    const fetchOrders = async () => {
+    const sortOrders =
+      (data) => {
 
-      const { data } =
-        await supabase
-          .from("orders")
-          .select("*")
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          )
-
-      if (data) {
-
-        setOrders(
-          data
-            .map(o => ({
-              ...o,
-              status:
-                cleanStatus(o.status)
-            }))
-            .sort((a, b) => {
-
-              const priority = {
-                pending: 0,
-                proses: 1,
-                selesai: 2
-              }
-
-              return (
-                priority[a.status] -
-                priority[b.status]
+        return data
+          .map(o => ({
+            ...o,
+            status:
+              cleanStatus(
+                o.status
               )
+          }))
+          .sort((a, b) => {
 
-            })
-        )
+            const priority = {
+              pending: 0,
+              proses: 1,
+              selesai: 2
+            }
+
+            return (
+              priority[a.status] -
+              priority[b.status]
+            )
+
+          })
 
       }
 
-    }
+    const fetchOrders =
+      async () => {
+
+        const { data, error } =
+
+          await supabase
+            .from("orders")
+            .select("*")
+            .order(
+              "created_at",
+              {
+                ascending: false
+              }
+            )
+
+        if (error) {
+
+          console.log(error)
+
+          setRealtimeStatus(
+            "offline"
+          )
+
+          return
+
+        }
+
+        if (data) {
+
+          setOrders(
+            sortOrders(data)
+          )
+
+          setLoading(false)
+
+        }
+
+      }
 
     fetchOrders()
 
@@ -331,92 +517,149 @@ function Admin() {
         5000
       )
 
-    const createChannel = () => {
+    const createChannel =
+      () => {
 
-      const channel =
-        supabase
-          .channel("orders-realtime")
+        setRealtimeStatus(
+          "connecting"
+        )
 
-          .on(
-            "postgres_changes",
+        const channel =
 
-            {
-              event: "INSERT",
-              schema: "public",
-              table: "orders"
-            },
+          supabase
+            .channel(
+              "orders-realtime"
+            )
 
-            (payload) => {
+            .on(
+              "postgres_changes",
 
-              const data =
-                payload.new
+              {
+                event: "INSERT",
+                schema: "public",
+                table: "orders"
+              },
 
-              if (!data) return
+              (payload) => {
 
-              data.status =
-                cleanStatus(data.status)
+                const data =
+                  payload.new
 
-              notify(data.id)
+                if (!data)
+                  return
 
-              setHighlightId(data.id)
-
-              setTimeout(() => {
-
-                topRef.current
-                  ?.scrollIntoView({
-                    behavior: "smooth"
-                  })
-
-              }, 100)
-
-              setOrders(prev => {
-
-                const exists =
-                  prev.find(
-                    o =>
-                      o.id === data.id
+                data.status =
+                  cleanStatus(
+                    data.status
                   )
 
-                if (exists) {
+                notify(data.id)
 
-                  return prev.map(o =>
-                    o.id === data.id
-                      ? data
-                      : o
+                setHighlightId(
+                  data.id
+                )
+
+                setTimeout(() => {
+
+                  topRef.current
+                    ?.scrollIntoView({
+                      behavior:
+                        "smooth"
+                    })
+
+                }, 100)
+
+                setOrders(prev => {
+
+                  const exists =
+                    prev.find(
+                      o =>
+                        o.id ===
+                        data.id
+                    )
+
+                  if (exists) {
+
+                    return prev.map(o =>
+
+                      o.id === data.id
+                        ? data
+                        : o
+
+                    )
+
+                  }
+
+                  return [
+                    data,
+                    ...prev
+                  ]
+
+                })
+
+              }
+            )
+
+            .subscribe(
+              (status) => {
+
+                if (
+                  status ===
+                  "SUBSCRIBED"
+                ) {
+
+                  setRealtimeStatus(
+                    "online"
                   )
 
                 }
 
-                return [data, ...prev]
+                if (
+                  status ===
+                  "CHANNEL_ERROR"
+                ) {
 
-              })
+                  setRealtimeStatus(
+                    "offline"
+                  )
 
-            }
-          )
+                  showToast(
+                    "Realtime error",
+                    "error"
+                  )
 
-          .subscribe((status) => {
+                }
 
-            if (
-              status === "TIMED_OUT"
-            ) {
+                if (
+                  status ===
+                  "TIMED_OUT"
+                ) {
 
-              alert(
-                "Trying Reconnect To Database..."
-              )
+                  setRealtimeStatus(
+                    "reconnecting"
+                  )
 
-              setTimeout(
-                createChannel,
-                3000
-              )
+                  showToast(
+                    "Reconnect database...",
+                    "warning"
+                  )
 
-            }
+                  reconnectTimeoutRef.current =
+                    setTimeout(() => {
 
-          })
+                      createChannel()
 
-      channelRef.current =
-        channel
+                    }, 3000)
 
-    }
+                }
+
+              }
+            )
+
+        channelRef.current =
+          channel
+
+      }
 
     createChannel()
 
@@ -424,7 +667,13 @@ function Admin() {
 
       clearInterval(interval)
 
-      if (channelRef.current) {
+      clearTimeout(
+        reconnectTimeoutRef.current
+      )
+
+      if (
+        channelRef.current
+      ) {
 
         supabase.removeChannel(
           channelRef.current
@@ -434,13 +683,58 @@ function Admin() {
 
     }
 
+  }, [
+    notify,
+    showToast
+  ])
+
+  useEffect(() => {
+
+    const resetUnread =
+      () => {
+
+        setUnreadCount(0)
+
+      }
+
+    window.addEventListener(
+      "focus",
+      resetUnread
+    )
+
+    return () => {
+
+      window.removeEventListener(
+        "focus",
+        resetUnread
+      )
+
+    }
+
   }, [])
 
   return (
 
     <div className="admin-page">
 
-      <div className="admin-container">
+      {toast && (
+
+        <div
+          className={`
+            admin-toast
+            admin-toast-${toast.type}
+          `}
+        >
+
+          {toast.message}
+
+        </div>
+
+      )}
+
+      <div
+        className="admin-container"
+      >
 
         <div ref={topRef}></div>
 
@@ -451,6 +745,12 @@ function Admin() {
           exportCSV={exportCSV}
           navigate={navigate}
           role={role}
+          realtimeStatus={
+            realtimeStatus
+          }
+          unreadCount={
+            unreadCount
+          }
         />
 
         <FilterBar
@@ -459,41 +759,115 @@ function Admin() {
           filter={filter}
           setFilter={setFilter}
           orders={orders}
-          formatStatus={formatStatus}
+          formatStatus={
+            formatStatus
+          }
+          debouncedSearch={
+            debouncedSearch
+          }
         />
 
         <DashboardStats
-          totalPending={totalPending}
-          totalProses={totalProses}
-          totalSelesai={totalSelesai}
-          totalOmzet={totalOmzet}
-          formatRupiah={formatRupiah}
+          totalPending={
+            totalPending
+          }
+          totalProses={
+            totalProses
+          }
+          totalSelesai={
+            totalSelesai
+          }
+          totalOmzet={
+            totalOmzet
+          }
+          formatRupiah={
+            formatRupiah
+          }
         />
 
-        {filteredOrders.map(order => (
+        {!loading &&
+          filteredOrders.length === 0 && (
 
-          <OrderCard
-            key={order.id}
-            order={order}
-            highlightId={highlightId}
-            setSelectedOrder={setSelectedOrder}
-            updateStatus={updateStatus}
-            getStatusColor={getStatusColor}
-            formatStatus={formatStatus}
-            formatRupiah={formatRupiah}
-            getTimeAgo={getTimeAgo}
-            getTimeColor={getTimeColor}
-          />
+          <div
+            className="admin-empty-state"
+          >
 
-        ))}
+            Tidak ada order.
+            Manusia lagi hemat
+            atau bangkrut.
+            Sulit dibedakan.
+
+          </div>
+
+        )}
+
+        {loading && (
+
+          <div
+            className="admin-loading"
+          >
+
+            Loading order...
+
+          </div>
+
+        )}
+
+        {!loading &&
+
+          filteredOrders.map(order => (
+
+            <OrderCard
+              key={order.id}
+              order={order}
+              currentTime={currentTime}
+              highlightId={
+                highlightId
+              }
+              setSelectedOrder={
+                setSelectedOrder
+              }
+              updateStatus={
+                updateStatus
+              }
+              getStatusColor={
+                getStatusColor
+              }
+              formatStatus={
+                formatStatus
+              }
+              formatRupiah={
+                formatRupiah
+              }
+              getTimeAgo={
+                getTimeAgo
+              }
+              getTimeColor={
+                getTimeColor
+              }
+            />
+
+          ))}
 
         <OrderModal
-          selectedOrder={selectedOrder}
-          setSelectedOrder={setSelectedOrder}
-          updateStatus={updateStatus}
-          getStatusColor={getStatusColor}
-          formatStatus={formatStatus}
-          formatRupiah={formatRupiah}
+          selectedOrder={
+            selectedOrder
+          }
+          setSelectedOrder={
+            setSelectedOrder
+          }
+          updateStatus={
+            updateStatus
+          }
+          getStatusColor={
+            getStatusColor
+          }
+          formatStatus={
+            formatStatus
+          }
+          formatRupiah={
+            formatRupiah
+          }
         />
 
       </div>

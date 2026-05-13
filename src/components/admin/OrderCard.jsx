@@ -6,8 +6,27 @@ function OrderCard({
   formatStatus,
   formatRupiah,
   getTimeAgo,
+  currentTime,
   getTimeColor
 }) {
+
+  const isHighlighted =
+    highlightId === order.id
+
+  const isPending =
+    order.status === "pending"
+
+  const isDone =
+    order.status === "selesai"
+
+  const createdTime =
+  new Date(
+    order.created_at
+  ).getTime()
+
+  const isNewOrder =
+  currentTime - createdTime
+  < 120000
 
   return (
 
@@ -17,27 +36,76 @@ function OrderCard({
         setSelectedOrder(order)
       }
 
-      className={`admin-order status-${order.status} ${
-        highlightId === order.id
-          ? "admin-order-highlight"
-          : ""
-      } ${
-        order.status === "selesai"
-          ? "admin-order-done"
-          : ""
-      }`}
+      className={`
+        admin-order
+        status-${order.status}
+
+        ${
+          isHighlighted
+            ? `
+              admin-order-highlight
+            `
+            : ""
+        }
+
+        ${
+          isDone
+            ? `
+              admin-order-done
+            `
+            : ""
+        }
+
+        ${
+          isPending
+            ? `
+              admin-order-priority
+            `
+            : ""
+        }
+
+        ${
+          isNewOrder
+            ? `
+              admin-order-unread
+            `
+            : ""
+        }
+      `}
 
     >
 
-      <div className="admin-order-glow"></div>
+      <div className="
+        admin-order-glow
+      "></div>
 
-      <div className="admin-order-top">
+      <div className="
+        admin-order-realtime
+      "></div>
 
-        <div className="admin-order-type-wrap">
+      <div className="
+        admin-order-top
+      ">
 
-          <span className="admin-order-type">
+        <div className="
+          admin-order-type-wrap
+        ">
+
+          <span className="
+            admin-order-type
+          ">
             {order.type?.toUpperCase()}
           </span>
+
+          {isNewOrder && (
+
+            <div className="
+              admin-order-new-badge
+            ">
+              NEW
+            </div>
+
+          )}
 
         </div>
 
@@ -47,53 +115,86 @@ function OrderCard({
             admin-order-badge-${order.status}
           `}
         >
-          {formatStatus(order.status)}
+
+          {formatStatus(
+            order.status
+          )}
+
         </div>
 
       </div>
 
-      <div className="admin-order-main">
+      <div className="
+        admin-order-main
+      ">
 
-        <div className="admin-order-id">
+        <div className="
+          admin-order-id
+        ">
           {order.order_id}
         </div>
 
-        <div className="admin-order-customer">
+        <div className="
+          admin-order-customer
+        ">
+
           {order.customer_name ||
             "Customer Tidak Ada"}
+
         </div>
 
       </div>
 
-      <div className="admin-order-bottom">
+      <div className="
+        admin-order-bottom
+      ">
 
-        <div className="admin-order-info">
+        <div className="
+          admin-order-info
+        ">
 
           <div
-            className="admin-order-time"
+
+            className="
+              admin-order-time
+            "
+
             style={{
               color:
                 getTimeColor(
                   order.created_at
                 )
             }}
+
           >
+
             ⏱
             {" "}
+
             {getTimeAgo(
               order.created_at
             )}
+
           </div>
 
-          <div className="admin-order-price">
+          <div className="
+            admin-order-price
+          ">
+
             Rp
             {" "}
-            {formatRupiah(order.price)}
+
+            {formatRupiah(
+              order.price
+            )}
+
           </div>
 
         </div>
 
-        <div className="admin-order-actions">
+        <div className="
+          admin-order-actions
+        ">
 
           <button
 
@@ -109,17 +210,31 @@ function OrderCard({
             }}
 
             disabled={
-              order.status !== "pending"
+              order.status !==
+              "pending"
             }
 
-            className={`admin-btn-quick ${
-              order.status === "pending"
-                ? "admin-btn-proses"
-                : "admin-btn-disabled"
-            }`}
+            className={`
+              admin-btn-quick
+
+              ${
+                order.status ===
+                "pending"
+
+                  ? `
+                    admin-btn-proses
+                  `
+
+                  : `
+                    admin-btn-disabled
+                  `
+              }
+            `}
 
           >
+
             P
+
           </button>
 
           <button
@@ -136,17 +251,31 @@ function OrderCard({
             }}
 
             disabled={
-              order.status === "selesai"
+              order.status ===
+              "selesai"
             }
 
-            className={`admin-btn-quick ${
-              order.status !== "selesai"
-                ? "admin-btn-selesai"
-                : "admin-btn-disabled"
-            }`}
+            className={`
+              admin-btn-quick
+
+              ${
+                order.status !==
+                "selesai"
+
+                  ? `
+                    admin-btn-selesai
+                  `
+
+                  : `
+                    admin-btn-disabled
+                  `
+              }
+            `}
 
           >
+
             D
+
           </button>
 
         </div>
