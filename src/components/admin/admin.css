@@ -793,41 +793,62 @@
   align-items:flex-end;
   justify-content:center;
 
-  padding:14px;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    12px
+    0;
 
   background:
     rgba(0,0,0,.72);
 
+  overflow:hidden;
+
   animation:
-    adminFade .18s ease;
+    adminBlurFade .18s ease;
 }
 
 .admin-modal{
-  position:relative;
-
   width:100%;
   max-width:560px;
 
-  max-height:92dvh;
+  max-height:
+    calc(
+      100dvh -
+      env(safe-area-inset-top)
+    );
 
   overflow-y:auto;
 
-  border-radius:28px 28px 0 0;
-
-  padding:
-    18px 18px 140px;
-
-  background:
-    #101010;
+  background:#101010;
 
   border:
     1px solid rgba(255,255,255,.06);
 
+  border-radius:
+    28px 28px 0 0;
+
+  padding:
+    18px
+    18px
+    calc(
+      160px +
+      env(safe-area-inset-bottom)
+    );
+
   box-shadow:
     0 -10px 40px rgba(0,0,0,.42);
 
+  -webkit-overflow-scrolling:touch;
+
+  scrollbar-width:none;
+
+  overscroll-behavior:contain;
+
   animation:
     adminModalUp .28s ease;
+
+  position:relative;
+  isolation:isolate;
 }
 
 .admin-modal-handle{
@@ -1446,7 +1467,7 @@
 
 html,
 body{
-  overscroll-behavior-y:none;
+  overscroll-behavior-y:auto;
   -webkit-tap-highlight-color:transparent;
 }
 
@@ -1545,12 +1566,6 @@ body{
       env(safe-area-inset-bottom)
     );
 
-  margin-bottom:
-    calc(
-      -100px -
-      env(safe-area-inset-bottom)
-    );
-
   z-index:20;
 }
 
@@ -1617,28 +1632,27 @@ body{
       28px 28px 0 0;
   }
 
-  .admin-modal-header{
-    position:sticky;
-
-    top:0;
-
-    z-index:12;
-
-    padding-bottom:14px;
-
-    background:
-      linear-gradient(
-        180deg,
-        rgba(6,6,6,.92),
-        rgba(6,6,6,.72)
-      )
-  }
-
   .admin-modal-footer{
-    flex-direction:column;
+  position:sticky;
+  bottom:0;
 
-    gap:12px;
-  }
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+
+  margin-top:28px;
+
+  padding-top:16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16,16,16,0),
+      #101010 34%
+    );
+
+  z-index:10;
+}
 
   .admin-btn-modal,
   .admin-btn-close{
