@@ -84,9 +84,6 @@
   border:
     1px solid rgba(255,255,255,.06);
 
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-
   box-shadow:
     0 10px 30px rgba(0,0,0,.28);
 }
@@ -281,9 +278,6 @@
 
   border:
     1px solid rgba(255,255,255,.06);
-
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
 
   box-shadow:
     0 8px 24px rgba(0,0,0,.24);
@@ -499,9 +493,6 @@
   border:
     1px solid rgba(255,255,255,.06);
 
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-
   box-shadow:
     0 10px 26px rgba(0,0,0,.22);
 
@@ -561,51 +552,6 @@
 }
 
 /* STATUS VISUAL */
-
-.admin-order.status-pending{
-  border-color:
-    var(--status-pending-border);
-}
-
-.admin-order.status-pending
-.admin-order-glow{
-  background:
-    radial-gradient(
-      circle,
-      var(--status-pending-glow),
-      transparent 72%
-    );
-}
-
-.admin-order.status-proses{
-  border-color:
-    var(--status-proses-border);
-}
-
-.admin-order.status-proses
-.admin-order-glow{
-  background:
-    radial-gradient(
-      circle,
-      var(--status-proses-glow),
-      transparent 72%
-    );
-}
-
-.admin-order.status-selesai{
-  border-color:
-    var(--status-selesai-border);
-}
-
-.admin-order.status-selesai
-.admin-order-glow{
-  background:
-    radial-gradient(
-      circle,
-      var(--status-selesai-glow),
-      transparent 72%
-    );
-}
 
 .admin-order-badge-proses{
   background:
@@ -703,8 +649,6 @@
 
   border:
   1px solid transparent;
-
-  backdrop-filter:blur(12px);
 }
 
 .admin-order-main{
@@ -777,8 +721,6 @@
 
   font-size:14px;
   font-weight:800;
-
-  backdrop-filter:blur(14px);
 
   transition:
     transform .16s ease,
@@ -855,9 +797,6 @@
 
   background:
     rgba(0,0,0,.72);
-
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
 
   animation:
     adminFade .18s ease;
@@ -1110,8 +1049,6 @@
       rgba(16,16,16,.96) 32%
     );
 
-  backdrop-filter:blur(10px);
-
   z-index:20;
 }
 
@@ -1295,8 +1232,7 @@
 .admin-modal-total-card{
   will-change:
     transform,
-    opacity,
-    backdrop-filter;
+    opacity;
 }
 
 /* GLOBAL SMOOTH */
@@ -1344,32 +1280,9 @@
   backface-visibility:hidden;
 }
 
-.admin-order:hover{
-  transform:
-    translateY(-4px)
-    scale(1.008);
-}
-
 .admin-order:active{
   transform:
     scale(.985);
-}
-
-/* STATUS GLOW */
-
-.admin-order.status-pending:hover{
-  box-shadow:
-    0 18px 44px rgba(255,80,80,.10);
-}
-
-.admin-order.status-proses:hover{
-  box-shadow:
-    0 18px 44px rgba(255,190,60,.10);
-}
-
-.admin-order.status-selesai:hover{
-  box-shadow:
-    0 18px 44px rgba(80,200,120,.10);
 }
 
 /* BUTTON PRESS */
@@ -1481,25 +1394,16 @@
     rgba(255,255,255,.1);
 }
 
-/* GLOW PULSE */
-
-.admin-order-glow{
-  animation:
-    adminGlow 4s ease-in-out infinite;
-}
-
 /* KEYFRAMES */
 
 @keyframes adminBlurFade{
 
   from{
     opacity:0;
-    backdrop-filter:blur(0px);
   }
 
   to{
     opacity:1;
-    backdrop-filter:blur(20px);
   }
 
 }
@@ -1727,9 +1631,7 @@ body{
         180deg,
         rgba(6,6,6,.92),
         rgba(6,6,6,.72)
-      );
-
-    backdrop-filter:blur(24px);
+      )
   }
 
   .admin-modal-footer{
