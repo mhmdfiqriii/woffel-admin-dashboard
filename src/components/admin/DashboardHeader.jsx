@@ -6,6 +6,9 @@ import {
 import { supabase }
 from "../../lib/supabase"
 
+import StoreStatusBadge
+from "./StoreStatusBadge"
+
 function DashboardHeader({
   displayName,
   soundOn,
@@ -67,22 +70,6 @@ function DashboardHeader({
       navigate("/login")
 
     }
-
-  const realtimeLabel = {
-
-    online:
-      "Realtime Online",
-
-    connecting:
-      "Connecting...",
-
-    reconnecting:
-      "Reconnecting...",
-
-    offline:
-      "Realtime Offline"
-
-  }
 
   return (
 
@@ -159,7 +146,13 @@ function DashboardHeader({
                 admin-header-unread-pulse
               "></span>
 
-              {unreadCount}
+              <span className="
+                admin-header-unread-count
+              ">
+
+                {unreadCount}
+
+              </span>
 
             </div>
 
@@ -181,7 +174,9 @@ function DashboardHeader({
           admin-header-user-wrap
         ">
 
-          <div>
+          <div className="
+            admin-header-user-section
+          ">
 
             <div className="
               admin-header-subtitle
@@ -201,26 +196,11 @@ function DashboardHeader({
 
           </div>
 
-          <div className={`
-            admin-realtime-status
-            admin-realtime-${realtimeStatus}
-          `}>
-
-            <div className="
-              admin-realtime-dot
-            "></div>
-
-            <span>
-
-              {
-                realtimeLabel[
-                  realtimeStatus
-                ]
-              }
-
-            </span>
-
-          </div>
+          <StoreStatusBadge
+            realtimeStatus={
+              realtimeStatus
+            }
+          />
 
         </div>
 
@@ -231,6 +211,8 @@ function DashboardHeader({
       ">
 
         <button
+
+          type="button"
 
           onClick={() =>
             setSoundOn(
@@ -243,9 +225,11 @@ function DashboardHeader({
 
             ${
               soundOn
+
                 ? `
                   admin-btn-active
                 `
+
                 : ""
             }
           `}
@@ -276,6 +260,8 @@ function DashboardHeader({
 
         <button
 
+          type="button"
+
           onClick={handleLogout}
 
           className="
@@ -299,6 +285,8 @@ function DashboardHeader({
       {role === "admin" && (
 
         <button
+
+          type="button"
 
           onClick={exportCSV}
 

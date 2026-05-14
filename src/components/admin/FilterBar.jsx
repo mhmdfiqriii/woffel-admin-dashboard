@@ -16,50 +16,64 @@ function FilterBar({
     "selesai"
   ]
 
+  const isSearching =
+    search.trim() !==
+    debouncedSearch.trim()
+
   return (
 
     <div className="admin-filter">
 
-      <div className="admin-filter-top">
+      <div className="
+        admin-filter-top
+      ">
 
-        <div className="admin-filter-search-wrap">
+        <div className="
+          admin-filter-search-wrap
+        ">
 
-          <div className="admin-filter-search-icon">
+          <div className="
+            admin-filter-search-icon
+          ">
             ⌕
           </div>
 
           <input
+
+            type="text"
+
+            autoComplete="off"
+
+            spellCheck={false}
+
+            inputMode="search"
+
             placeholder="
               Cari ID / customer...
             "
+
             value={search}
-            onChange={e =>
+
+            onChange={(e) =>
               setSearch(
                 e.target.value
               )
             }
-            className={`
+
+            className="
               admin-filter-search
-              ${
-                search !==
-                debouncedSearch
-                  ? `
-                    admin-filter-search-loading
-                  `
-                  : ""
-              }
-            `}
+            "
+
           />
 
-          {search !==
-            debouncedSearch && (
+          {isSearching && (
 
             <div className="
               admin-filter-search-spinner
             ">
 
               <div className="
-                admin-filter-search-dot
+                admin-filter-search-spinner-ring
               "></div>
 
             </div>
@@ -78,9 +92,13 @@ function FilterBar({
               admin-filter-unread-dot
             "></span>
 
-            {unreadCount}
-            {" "}
-            baru
+            <span className="
+              admin-filter-unread-text
+            ">
+              {unreadCount}
+              {" "}
+              baru
+            </span>
 
           </div>
 
@@ -101,6 +119,7 @@ function FilterBar({
             const count =
 
               f === "all"
+
                 ? orders.length
 
                 : orders.filter(
@@ -116,6 +135,8 @@ function FilterBar({
               <button
 
                 key={f}
+
+                type="button"
 
                 onClick={() =>
                   setFilter(f)
@@ -134,11 +155,17 @@ function FilterBar({
 
               >
 
-                <div className="
-                  admin-filter-btn-glow
-                "></div>
+                {isActive && (
 
-                <span>
+                  <div className="
+                    admin-filter-btn-glow
+                  "></div>
+
+                )}
+
+                <span className="
+                  admin-filter-btn-text
+                ">
                   {formatStatus(f)}
                 </span>
 

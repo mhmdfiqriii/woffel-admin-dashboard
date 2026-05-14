@@ -20,13 +20,13 @@ function OrderCard({
     order.status === "selesai"
 
   const createdTime =
-  new Date(
-    order.created_at
-  ).getTime()
+    new Date(
+      order.created_at
+    ).getTime()
 
   const isNewOrder =
-  currentTime - createdTime
-  < 120000
+    currentTime - createdTime
+    < 120000
 
   return (
 
@@ -79,45 +79,41 @@ function OrderCard({
         admin-order-glow
       "></div>
 
-      <div className="
-        admin-order-realtime
-      "></div>
+      {isNewOrder && (
+
+        <div className="
+          admin-order-realtime
+        "></div>
+
+      )}
 
       <div className="
         admin-order-top
       ">
 
         <div className="
-          admin-order-type-wrap
+          admin-order-status-wrap
         ">
 
-          <span className="
-            admin-order-type
-          ">
-            {order.type?.toUpperCase()}
-          </span>
+          <div
+            className={`
+              admin-order-badge
+              admin-order-badge-${order.status}
+            `}
+          >
+
+            {formatStatus(
+              order.status
+            )}
+
+          </div>
 
           {isNewOrder && (
 
             <div className="
-              admin-order-new-badge
-            ">
-              NEW
-            </div>
+              admin-order-pulse
+            "></div>
 
-          )}
-
-        </div>
-
-        <div
-          className={`
-            admin-order-badge
-            admin-order-badge-${order.status}
-          `}
-        >
-
-          {formatStatus(
-            order.status
           )}
 
         </div>
@@ -198,6 +194,8 @@ function OrderCard({
 
           <button
 
+            type="button"
+
             onClick={(e) => {
 
               e.stopPropagation()
@@ -238,6 +236,8 @@ function OrderCard({
           </button>
 
           <button
+
+            type="button"
 
             onClick={(e) => {
 

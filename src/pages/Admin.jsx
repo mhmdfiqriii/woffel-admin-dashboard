@@ -6,17 +6,39 @@ import {
   useMemo
 } from "react"
 
-import { useNavigate } from "react-router-dom"
+import {
+  useNavigate
+} from "react-router-dom"
 
-import { supabase } from "../lib/supabase"
+import {
+  supabase
+} from "../lib/supabase"
 
 import "../components/admin/admin.css"
 
-import DashboardHeader from "../components/admin/DashboardHeader"
-import FilterBar from "../components/admin/FilterBar"
-import DashboardStats from "../components/admin/DashboardStats"
-import OrderCard from "../components/admin/OrderCard"
-import OrderModal from "../components/admin/OrderModal"
+import DashboardHeader
+from "../components/admin/DashboardHeader"
+
+import FilterBar
+from "../components/admin/FilterBar"
+
+import DashboardStats
+from "../components/admin/DashboardStats"
+
+import OrderCard
+from "../components/admin/OrderCard"
+
+import OrderModal
+from "../components/admin/OrderModal"
+
+import AdminToast
+from "../components/admin/AdminToast"
+
+import SkeletonOrder
+from "../components/admin/SkeletonOrder"
+
+import StoreToggleCard
+from "../components/admin/StoreToggleCard"
 
 import {
   formatRupiah,
@@ -30,7 +52,8 @@ import {
 
 function Admin() {
 
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] =
+    useState([])
 
   const [filter, setFilter] =
     useState("pending")
@@ -38,48 +61,64 @@ function Admin() {
   const [search, setSearch] =
     useState("")
 
-  const [debouncedSearch,
-    setDebouncedSearch] =
-    useState("")
+  const [
+    debouncedSearch,
+    setDebouncedSearch
+  ] = useState("")
 
-  const [highlightId,
-    setHighlightId] =
-    useState(null)
+  const [
+    highlightId,
+    setHighlightId
+  ] = useState(null)
 
-  const [selectedOrder,
-    setSelectedOrder] =
-    useState(null)
+  const [
+    selectedOrder,
+    setSelectedOrder
+  ] = useState(null)
 
-  const [loading,
-    setLoading] =
+  const [loading, setLoading] =
     useState(true)
 
-  const [realtimeStatus,
-    setRealtimeStatus] =
-    useState("connecting")
+  const [
+    realtimeStatus,
+    setRealtimeStatus
+  ] = useState("connecting")
 
-  const [toast,
-    setToast] =
+  const [toast, setToast] =
     useState(null)
 
-  const [unreadCount,
-    setUnreadCount] =
-    useState(0)
+  const [
+    unreadCount,
+    setUnreadCount
+  ] = useState(0)
 
-  const [soundOn,
-    setSoundOn] = useState(() => {
+  const [
+  currentTime,
+  setCurrentTime
+  ] = useState(() => Date.now())
+
+  const [
+    storeStatus,
+    setStoreStatus
+  ] = useState({
+    kopken: true,
+    fore: true,
+    tomoro: true
+  })
+
+  const [soundOn, setSoundOn] =
+    useState(() => {
 
       const saved =
-        localStorage.getItem("sound")
+        localStorage.getItem(
+          "sound"
+        )
 
       return saved !== null
         ? saved === "true"
         : true
 
     })
-
-  const [currentTime, setCurrentTime] =
-  useState(0)
 
   const topRef = useRef(null)
 
@@ -96,6 +135,9 @@ function Admin() {
     useRef(null)
 
   const reconnectTimeoutRef =
+    useRef(null)
+
+  const toastTimeoutRef =
     useRef(null)
 
   const audioRef =
@@ -116,25 +158,40 @@ function Admin() {
     adminUser?.split("@")[0]
 
   const role =
-    localStorage.getItem("role")
+    localStorage.getItem(
+      "role"
+    )
 
   const totalPending =
-    orders.filter(o =>
-      o.status === "pending"
+    orders.filter(
+      o =>
+        o.status ===
+        "pending"
     ).length
 
   const totalProses =
-    orders.filter(o =>
-      o.status === "proses"
+    orders.filter(
+      o =>
+        o.status ===
+        "proses"
     ).length
 
   const totalSelesai =
-    orders.filter(o =>
-      o.status === "selesai"
+    orders.filter(
+      o =>
+        o.status ===
+        "selesai"
     ).length
 
   const showToast =
-    useCallback((message, type) => {
+    useCallback((
+      message,
+      type = "info"
+    ) => {
+
+      clearTimeout(
+        toastTimeoutRef.current
+      )
 
       setToast({
         id: Date.now(),
@@ -142,31 +199,39 @@ function Admin() {
         type
       })
 
-      setTimeout(() => {
+      toastTimeoutRef.current =
+        setTimeout(() => {
 
-        setToast(null)
+          setToast(null)
 
-      }, 2800)
+        }, 3200)
 
     }, [])
 
   const notify =
     useCallback((id) => {
 
-      const now = Date.now()
+      const now =
+        Date.now()
 
       if (
-        now - lastNotifyTime.current < 1000
+        now -
+        lastNotifyTime.current <
+        1000
       ) return
 
-      if (id !== lastOrderId.current) {
+      if (
+        id !==
+        lastOrderId.current
+      ) {
 
         if (
           soundOn &&
           audioRef.current
         ) {
 
-          audioRef.current.currentTime = 0
+          audioRef.current.currentTime =
+            0
 
           audioRef.current
             .play()
@@ -179,13 +244,15 @@ function Admin() {
           "new-order"
         )
 
-        setUnreadCount(prev =>
-          prev + 1
+        setUnreadCount(
+          prev => prev + 1
         )
 
-        lastOrderId.current = id
+        lastOrderId.current =
+          id
 
-        lastNotifyTime.current = now
+        lastNotifyTime.current =
+          now
 
       }
 
@@ -205,9 +272,11 @@ function Admin() {
           .from("orders")
           .update({
             status,
-            updated_by: adminUser,
+            updated_by:
+              adminUser,
             updated_at:
-              new Date().toISOString()
+              new Date()
+                .toISOString()
           })
           .eq("id", id)
 
@@ -227,7 +296,8 @@ function Admin() {
       if (soundOn) {
 
         if (
-          status === "proses"
+          status ===
+          "proses"
         ) {
 
           prosesAudioRef.current
@@ -237,7 +307,8 @@ function Admin() {
         }
 
         if (
-          status === "selesai"
+          status ===
+          "selesai"
         ) {
 
           doneAudioRef.current
@@ -258,10 +329,12 @@ function Admin() {
         prev.map(order =>
 
           order.id === id
+
             ? {
                 ...order,
                 status
               }
+
             : order
 
         )
@@ -271,11 +344,65 @@ function Admin() {
       setSelectedOrder(prev =>
 
         prev
+
           ? {
               ...prev,
               status
             }
+
           : null
+
+      )
+
+    }
+
+  const updateStoreStatus =
+    async (
+      storeName,
+      isOpen
+    ) => {
+
+      const { error } =
+        await supabase
+          .from("store_status")
+          .upsert({
+            store_name:
+              storeName,
+            is_open:
+              isOpen,
+            updated_at:
+              new Date()
+                .toISOString()
+          })
+
+      if (error) {
+
+        console.log(error)
+
+        showToast(
+          "Gagal update store",
+          "error"
+        )
+
+        return
+
+      }
+
+      setStoreStatus(prev => ({
+        ...prev,
+        [storeName]:
+          isOpen
+      }))
+
+      showToast(
+
+        isOpen
+          ? `${storeName} dibuka`
+          : `${storeName} ditutup`,
+
+        isOpen
+          ? "success"
+          : "warning"
 
       )
 
@@ -293,43 +420,93 @@ function Admin() {
       }, 350)
 
     return () =>
-      clearTimeout(debounce)
+      clearTimeout(
+        debounce
+      )
 
   }, [search])
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "sound",
+      soundOn
+    )
+
+  }, [soundOn])
+
+  useEffect(() => {
+
+    const interval =
+      setInterval(() => {
+
+        setCurrentTime(
+          Date.now()
+        )
+
+      }, 60000)
+
+    return () =>
+      clearInterval(
+        interval
+      )
+
+  }, [])
+
+  useEffect(() => {
+
+    const timeout =
+      setTimeout(() => {
+
+        setHighlightId(null)
+
+      }, 4500)
+
+    return () =>
+      clearTimeout(timeout)
+
+  }, [highlightId])
 
   const filteredOrders =
     useMemo(() => {
 
-      return orders.filter(order => {
+      return orders.filter(
+        order => {
 
-        const matchFilter =
+          const matchFilter =
 
-          filter === "all" ||
+            filter === "all" ||
 
-          order.status === filter
+            order.status ===
+            filter
 
-        const keyword =
-          debouncedSearch
-            .toLowerCase()
+          const keyword =
+            debouncedSearch
+              .toLowerCase()
 
-        const matchSearch =
+          const matchSearch =
 
-          order.order_id
-            ?.toLowerCase()
-            .includes(keyword)
+            order.order_id
+              ?.toLowerCase()
+              .includes(
+                keyword
+              )
 
-          ||
+            ||
 
-          order.customer_name
-            ?.toLowerCase()
-            .includes(keyword)
+            order.customer_name
+              ?.toLowerCase()
+              .includes(
+                keyword
+              )
 
-        return (
-          matchFilter &&
-          matchSearch
-        )
+          return (
+            matchFilter &&
+            matchSearch
+          )
 
-      })
+        }
+      )
 
     }, [
       orders,
@@ -363,7 +540,9 @@ function Admin() {
           await supabase.auth
             .getSession()
 
-        if (!data.session) {
+        if (
+          !data.session
+        ) {
 
           navigate("/login")
 
@@ -403,49 +582,11 @@ function Admin() {
 
   useEffect(() => {
 
-    localStorage.setItem(
-      "sound",
-      soundOn
-    )
-
-  }, [soundOn])
-
-useEffect(() => {
-
-  const interval =
-    setInterval(() => {
-
-      setCurrentTime(
-        Date.now()
-      )
-
-    }, 60000)
-
-  return () =>
-    clearInterval(interval)
-
-}, [])
-
-  useEffect(() => {
-
-    const clearHighlight =
-      setTimeout(() => {
-
-        setHighlightId(null)
-
-      }, 4500)
-
-    return () =>
-      clearTimeout(clearHighlight)
-
-  }, [highlightId])
-
-  useEffect(() => {
-
     const sortOrders =
       (data) => {
 
         return data
+
           .map(o => ({
             ...o,
             status:
@@ -453,6 +594,7 @@ useEffect(() => {
                 o.status
               )
           }))
+
           .sort((a, b) => {
 
             const priority = {
@@ -462,8 +604,12 @@ useEffect(() => {
             }
 
             return (
-              priority[a.status] -
-              priority[b.status]
+              priority[
+                a.status
+              ] -
+              priority[
+                b.status
+              ]
             )
 
           })
@@ -473,7 +619,10 @@ useEffect(() => {
     const fetchOrders =
       async () => {
 
-        const { data, error } =
+        const {
+          data,
+          error
+        } =
 
           await supabase
             .from("orders")
@@ -481,7 +630,8 @@ useEffect(() => {
             .order(
               "created_at",
               {
-                ascending: false
+                ascending:
+                  false
               }
             )
 
@@ -497,19 +647,53 @@ useEffect(() => {
 
         }
 
-        if (data) {
+        setOrders(
+          sortOrders(data)
+        )
 
-          setOrders(
-            sortOrders(data)
-          )
+        setLoading(false)
 
-          setLoading(false)
+      }
 
-        }
+    const fetchStoreStatus =
+      async () => {
+
+        const {
+          data,
+          error
+        } =
+
+          await supabase
+            .from(
+              "store_status"
+            )
+            .select("*")
+
+        if (
+          error ||
+          !data
+        ) return
+
+        const mapped = {}
+
+        data.forEach(item => {
+
+          mapped[
+            item.store_name
+          ] = item.is_open
+
+        })
+
+        setStoreStatus(prev => ({
+          ...prev,
+          ...mapped
+        }))
 
       }
 
     fetchOrders()
+
+    fetchStoreStatus()
 
     const interval =
       setInterval(
@@ -535,12 +719,17 @@ useEffect(() => {
               "postgres_changes",
 
               {
-                event: "INSERT",
-                schema: "public",
-                table: "orders"
+                event:
+                  "INSERT",
+
+                schema:
+                  "public",
+
+                table:
+                  "orders"
               },
 
-              (payload) => {
+              payload => {
 
                 const data =
                   payload.new
@@ -578,13 +767,19 @@ useEffect(() => {
                         data.id
                     )
 
-                  if (exists) {
+                  if (
+                    exists
+                  ) {
 
-                    return prev.map(o =>
+                    return prev.map(
+                      o =>
 
-                      o.id === data.id
-                        ? data
-                        : o
+                        o.id ===
+                        data.id
+
+                          ? data
+
+                          : o
 
                     )
 
@@ -601,7 +796,7 @@ useEffect(() => {
             )
 
             .subscribe(
-              (status) => {
+              status => {
 
                 if (
                   status ===
@@ -645,11 +840,14 @@ useEffect(() => {
                   )
 
                   reconnectTimeoutRef.current =
-                    setTimeout(() => {
+                    setTimeout(
+                      () => {
 
-                      createChannel()
+                        createChannel()
 
-                    }, 3000)
+                      },
+                      3000
+                    )
 
                 }
 
@@ -665,10 +863,16 @@ useEffect(() => {
 
     return () => {
 
-      clearInterval(interval)
+      clearInterval(
+        interval
+      )
 
       clearTimeout(
         reconnectTimeoutRef.current
+      )
+
+      clearTimeout(
+        toastTimeoutRef.current
       )
 
       if (
@@ -715,34 +919,31 @@ useEffect(() => {
 
   return (
 
-    <div className="admin-page">
+    <div className="
+      admin-page
+    ">
 
-      {toast && (
+      <AdminToast
+        toast={toast}
+      />
 
-        <div
-          className={`
-            admin-toast
-            admin-toast-${toast.type}
-          `}
-        >
-
-          {toast.message}
-
-        </div>
-
-      )}
-
-      <div
-        className="admin-container"
-      >
+      <div className="
+        admin-container
+      ">
 
         <div ref={topRef}></div>
 
         <DashboardHeader
-          displayName={displayName}
+          displayName={
+            displayName
+          }
           soundOn={soundOn}
-          setSoundOn={setSoundOn}
-          exportCSV={exportCSV}
+          setSoundOn={
+            setSoundOn
+          }
+          exportCSV={
+            exportCSV
+          }
           navigate={navigate}
           role={role}
           realtimeStatus={
@@ -753,17 +954,33 @@ useEffect(() => {
           }
         />
 
+        <StoreToggleCard
+          storeStatus={
+            storeStatus
+          }
+          updateStoreStatus={
+            updateStoreStatus
+          }
+        />
+
         <FilterBar
           search={search}
-          setSearch={setSearch}
+          setSearch={
+            setSearch
+          }
           filter={filter}
-          setFilter={setFilter}
+          setFilter={
+            setFilter
+          }
           orders={orders}
           formatStatus={
             formatStatus
           }
           debouncedSearch={
             debouncedSearch
+          }
+          unreadCount={
+            unreadCount
           }
         />
 
@@ -785,29 +1002,45 @@ useEffect(() => {
           }
         />
 
-        {!loading &&
-          filteredOrders.length === 0 && (
-
-          <div
-            className="admin-empty-state"
-          >
-
-            Tidak ada order.
-            Manusia lagi hemat
-            atau bangkrut.
-            Sulit dibedakan.
-
-          </div>
-
-        )}
-
         {loading && (
 
-          <div
-            className="admin-loading"
-          >
+          <>
+            <SkeletonOrder />
+            <SkeletonOrder />
+            <SkeletonOrder />
+          </>
 
-            Loading order...
+        )}
+
+        {!loading &&
+          filteredOrders
+            .length === 0 && (
+
+          <div className="
+            admin-empty
+          ">
+
+            <div className="
+              admin-empty-icon
+            ">
+              ☕
+            </div>
+
+            <div className="
+              admin-empty-title
+            ">
+              Tidak Ada Order
+            </div>
+
+            <div className="
+              admin-empty-subtitle
+            ">
+              Manusia lagi hemat
+              atau memang dompetnya
+              sekarat. Statistik
+              ekonomi lokal sulit
+              dipastikan.
+            </div>
 
           </div>
 
@@ -815,39 +1048,43 @@ useEffect(() => {
 
         {!loading &&
 
-          filteredOrders.map(order => (
+          filteredOrders.map(
+            order => (
 
-            <OrderCard
-              key={order.id}
-              order={order}
-              currentTime={currentTime}
-              highlightId={
-                highlightId
-              }
-              setSelectedOrder={
-                setSelectedOrder
-              }
-              updateStatus={
-                updateStatus
-              }
-              getStatusColor={
-                getStatusColor
-              }
-              formatStatus={
-                formatStatus
-              }
-              formatRupiah={
-                formatRupiah
-              }
-              getTimeAgo={
-                getTimeAgo
-              }
-              getTimeColor={
-                getTimeColor
-              }
-            />
+              <OrderCard
+                key={order.id}
+                order={order}
+                currentTime={
+                  currentTime
+                }
+                highlightId={
+                  highlightId
+                }
+                setSelectedOrder={
+                  setSelectedOrder
+                }
+                updateStatus={
+                  updateStatus
+                }
+                getStatusColor={
+                  getStatusColor
+                }
+                formatStatus={
+                  formatStatus
+                }
+                formatRupiah={
+                  formatRupiah
+                }
+                getTimeAgo={
+                  getTimeAgo
+                }
+                getTimeColor={
+                  getTimeColor
+                }
+              />
 
-          ))}
+            )
+          )}
 
         <OrderModal
           selectedOrder={
