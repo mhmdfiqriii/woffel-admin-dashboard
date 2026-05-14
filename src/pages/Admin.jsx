@@ -981,11 +981,19 @@ function Admin() {
         />
 
         <StoreToggleCard
-          storeStatus={
+          isOpen={
             storeStatus
+              ?.admin_status ===
+            "online"
           }
-          updateStoreStatus={
-            updateStoreStatus
+          onToggle={() =>
+
+            updateStoreStatus(
+              storeStatus
+                ?.admin_status !==
+              "online"
+            )
+
           }
         />
 

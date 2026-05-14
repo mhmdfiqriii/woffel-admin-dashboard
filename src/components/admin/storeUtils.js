@@ -10,18 +10,14 @@ export const normalizeStoreData = (
 
   if (!data) {
 
-    return {
-      ...DEFAULT_STORE_STATUS
-    }
+    return DEFAULT_STORE_STATUS
 
   }
 
   return {
-
     admin_status:
       data.admin_status ||
       "online"
-
   }
 
 }
@@ -48,7 +44,7 @@ async () => {
   if (error) {
 
     console.log(
-      "Fetch settings error:",
+      "Fetch store status error:",
       error
     )
 
@@ -72,49 +68,34 @@ async () => {
 
 export const updateStoreStatus =
 async (
-  isOpen,
-  adminUser = null
+  isOpen
 ) => {
 
-  const payload = {
-
-    admin_status:
-      isOpen
-        ? "online"
-        : "offline",
-
-    updated_at:
-      new Date()
-        .toISOString()
-
-  }
-
-  if (adminUser) {
-
-    payload.updated_by =
-      adminUser
-
-  }
-
   const {
-    data,
     error
   } = await supabase
 
     .from("settings")
 
-    .update(payload)
+    .update({
+
+      admin_status:
+        isOpen
+          ? "online"
+          : "offline",
+
+      updated_at:
+        new Date()
+          .toISOString()
+
+    })
 
     .eq("id", 1)
-
-    .select()
-
-    .single()
 
   if (error) {
 
     console.log(
-      "Update settings error:",
+      "Update store status error:",
       error
     )
 
@@ -126,13 +107,13 @@ async (
   }
 
   return {
-    success: true,
-    data
+    success: true
   }
 
 }
 
-export const subscribeStoreRealtime = ({
+export const subscribeStoreRealtime =
+({
   onUpdate,
   onStatusChange
 }) => {
@@ -150,23 +131,19 @@ export const subscribeStoreRealtime = ({
         {
           event: "*",
           schema: "public",
-          table: "settings",
-          filter: "id=eq.1"
+          table: "settings"
         },
 
         payload => {
 
-          const latest =
-            payload.new
-
           if (
-            latest &&
+            payload.new &&
             onUpdate
           ) {
 
             onUpdate(
               normalizeStoreData(
-                latest
+                payload.new
               )
             )
 
@@ -177,15 +154,9 @@ export const subscribeStoreRealtime = ({
 
       .subscribe(status => {
 
-        if (
-          onStatusChange
-        ) {
-
-          onStatusChange(
-            status
-          )
-
-        }
+        onStatusChange?.(
+          status
+        )
 
       })
 
@@ -194,7 +165,9 @@ export const subscribeStoreRealtime = ({
 }
 
 export const removeStoreRealtime =
-async (channel) => {
+async (
+  channel
+) => {
 
   if (!channel)
     return
@@ -203,53 +176,5 @@ async (channel) => {
     .removeChannel(
       channel
     )
-
-}
-
-export const buildStoreToastMessage = (
-  isOpen
-) => {
-
-  if (isOpen) {
-
-    return `
-      Store berhasil dibuka
-    `.trim()
-
-  }
-
-  return `
-    Store berhasil ditutup
-  `.trim()
-
-}
-
-export const buildRealtimeLabel = (
-  status
-) => {
-
-  const labels = {
-
-    SUBSCRIBED:
-      "Realtime Online",
-
-    CLOSED:
-      "Realtime Closed",
-
-    CHANNEL_ERROR:
-      "Realtime Error",
-
-    TIMED_OUT:
-      "Realtime Timeout",
-
-    CONNECTING:
-      "Realtime Connecting"
-
-  }
-
-  return (
-    labels[status] ||
-    "Realtime Unknown"
-  )
 
 }

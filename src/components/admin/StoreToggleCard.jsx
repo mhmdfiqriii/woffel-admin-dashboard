@@ -1,45 +1,8 @@
 function StoreToggleCard({
-  store,
   isOpen,
-  loading,
-  onToggle
+  onToggle,
+  loading = false
 }) {
-
-  const storeConfig = {
-
-    kopken: {
-      label:
-        "Kopi Kenangan",
-
-      emoji:
-        "☕"
-    },
-
-    fore: {
-      label:
-        "Fore Coffee",
-
-      emoji:
-        "⚡"
-    },
-
-    tomoro: {
-      label:
-        "Tomoro Coffee",
-
-      emoji:
-        "🟠"
-    }
-
-  }
-
-  const currentStore =
-    storeConfig[store] || {
-
-      label: store,
-      emoji: "🏪"
-
-    }
 
   return (
 
@@ -69,7 +32,7 @@ function StoreToggleCard({
           <div className="
             admin-store-icon
           ">
-            {currentStore.emoji}
+            🛒
           </div>
 
           <div>
@@ -77,13 +40,13 @@ function StoreToggleCard({
             <div className="
               admin-store-label
             ">
-              STORE
+              GLOBAL STORE
             </div>
 
             <div className="
               admin-store-name
             ">
-              {currentStore.label}
+              Woffel Store
             </div>
 
           </div>
@@ -106,9 +69,11 @@ function StoreToggleCard({
           "></div>
 
           <span>
+
             {isOpen
-              ? "BUKA"
-              : "TUTUP"}
+              ? "ONLINE"
+              : "OFFLINE"}
+
           </span>
 
         </div>
@@ -124,42 +89,50 @@ function StoreToggleCard({
         ">
 
           {isOpen
-            ? "Store aktif dan bisa menerima order."
-            : "Store dimatikan. Customer ga bisa checkout."}
+
+            ? `
+              Store aktif dan
+              customer bisa checkout.
+            `
+
+            : `
+              Semua store ditutup.
+              Customer tidak bisa
+              checkout sementara.
+            `
+          }
 
         </div>
 
         <button
 
-          onClick={() =>
-            onToggle?.(
-              store,
-              !isOpen
-            )
+          type="button"
+
+          onClick={
+            onToggle
           }
 
           disabled={loading}
 
           className={`
             admin-store-toggle
+
             ${
               isOpen
-                ? "admin-store-toggle-open"
-                : "admin-store-toggle-closed"
-            }
-            ${
-              loading
-                ? "admin-store-toggle-loading"
-                : ""
+                ? `
+                  admin-store-toggle-open
+                `
+                : `
+                  admin-store-toggle-closed
+                `
             }
           `}
+
         >
 
-          {loading
-            ? "..."
-            : isOpen
-              ? "Tutup Store"
-              : "Buka Store"}
+          {isOpen
+            ? "Tutup Store"
+            : "Aktifkan Store"}
 
         </button>
 
