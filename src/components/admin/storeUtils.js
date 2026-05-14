@@ -1,49 +1,28 @@
 import { supabase } from "../../lib/supabase"
 
 export const DEFAULT_STORE_STATUS = {
-  kopken: true,
-  fore: true,
-  tomoro: true
+  admin_status: "online"
 }
 
-export const STORE_LIST = [
-  {
-    key: "kopken",
-    label: "Kopi Kenangan"
-  },
-  {
-    key: "fore",
-    label: "Fore"
-  },
-  {
-    key: "tomoro",
-    label: "Tomoro"
-  }
-]
-
 export const normalizeStoreData = (
-  data = []
+  data
 ) => {
 
-  const normalized = {
-    ...DEFAULT_STORE_STATUS
-  }
+  if (!data) {
 
-  data.forEach(item => {
-
-    if (
-      item?.store_name
-    ) {
-
-      normalized[
-        item.store_name
-      ] = item.is_open
-
+    return {
+      ...DEFAULT_STORE_STATUS
     }
 
-  })
+  }
 
-  return normalized
+  return {
+
+    admin_status:
+      data.admin_status ||
+      "online"
+
+  }
 
 }
 
@@ -54,13 +33,22 @@ async () => {
     data,
     error
   } = await supabase
-    .from("store_status")
-    .select("*")
+
+    .from("settings")
+
+    .select(`
+      admin_status,
+      updated_at
+    `)
+
+    .eq("id", 1)
+
+    .single()
 
   if (error) {
 
     console.log(
-      "Fetch store status error:",
+      "Fetch settings error:",
       error
     )
 
@@ -84,21 +72,21 @@ async () => {
 
 export const updateStoreStatus =
 async (
-  storeName,
   isOpen,
   adminUser = null
 ) => {
 
   const payload = {
-    store_name:
-      storeName,
 
-    is_open:
-      isOpen,
+    admin_status:
+      isOpen
+        ? "online"
+        : "offline",
 
     updated_at:
       new Date()
         .toISOString()
+
   }
 
   if (adminUser) {
@@ -113,22 +101,20 @@ async (
     error
   } = await supabase
 
-    .from("store_status")
+    .from("settings")
 
-    .upsert(
-      payload,
-      {
-        onConflict:
-          "store_name"
-      }
-    )
+    .update(payload)
+
+    .eq("id", 1)
 
     .select()
+
+    .single()
 
   if (error) {
 
     console.log(
-      "Update store status error:",
+      "Update settings error:",
       error
     )
 
@@ -155,7 +141,7 @@ export const subscribeStoreRealtime = ({
     supabase
 
       .channel(
-        "store-status-realtime"
+        "settings-realtime"
       )
 
       .on(
@@ -164,7 +150,8 @@ export const subscribeStoreRealtime = ({
         {
           event: "*",
           schema: "public",
-          table: "store_status"
+          table: "settings",
+          filter: "id=eq.1"
         },
 
         payload => {
@@ -177,7 +164,11 @@ export const subscribeStoreRealtime = ({
             onUpdate
           ) {
 
-            onUpdate(latest)
+            onUpdate(
+              normalizeStoreData(
+                latest
+              )
+            )
 
           }
 
@@ -215,40 +206,21 @@ async (channel) => {
 
 }
 
-export const getStoreLabel = (
-  key
-) => {
-
-  const found =
-    STORE_LIST.find(
-      store =>
-        store.key === key
-    )
-
-  return (
-    found?.label ||
-    key
-  )
-
-}
-
 export const buildStoreToastMessage = (
-  storeName,
   isOpen
 ) => {
 
-  const label =
-    getStoreLabel(
-      storeName
-    )
-
   if (isOpen) {
 
-    return `${label} sekarang buka`
+    return `
+      Store berhasil dibuka
+    `.trim()
 
   }
 
-  return `${label} sekarang tutup`
+  return `
+    Store berhasil ditutup
+  `.trim()
 
 }
 

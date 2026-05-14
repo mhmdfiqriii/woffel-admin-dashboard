@@ -93,17 +93,15 @@ function Admin() {
   ] = useState(0)
 
   const [
-  currentTime,
-  setCurrentTime
+    currentTime,
+    setCurrentTime
   ] = useState(() => Date.now())
 
   const [
     storeStatus,
     setStoreStatus
   ] = useState({
-    kopken: true,
-    fore: true,
-    tomoro: true
+    admin_status: "online"
   })
 
   const [soundOn, setSoundOn] =
@@ -358,22 +356,28 @@ function Admin() {
 
   const updateStoreStatus =
     async (
-      storeName,
       isOpen
     ) => {
 
       const { error } =
         await supabase
-          .from("store_status")
-          .upsert({
-            store_name:
-              storeName,
-            is_open:
-              isOpen,
+
+          .from("settings")
+
+          .update({
+
+            admin_status:
+              isOpen
+                ? "online"
+                : "offline",
+
             updated_at:
               new Date()
                 .toISOString()
+
           })
+
+          .eq("id", 1)
 
       if (error) {
 
@@ -388,17 +392,18 @@ function Admin() {
 
       }
 
-      setStoreStatus(prev => ({
-        ...prev,
-        [storeName]:
+      setStoreStatus({
+        admin_status:
           isOpen
-      }))
+            ? "online"
+            : "offline"
+      })
 
       showToast(
 
         isOpen
-          ? `${storeName} dibuka`
-          : `${storeName} ditutup`,
+          ? "Store dibuka"
+          : "Store ditutup",
 
         isOpen
           ? "success"
@@ -664,30 +669,27 @@ function Admin() {
         } =
 
           await supabase
-            .from(
-              "store_status"
-            )
-            .select("*")
+
+            .from("settings")
+
+            .select(`
+              admin_status,
+              updated_at
+            `)
+
+            .eq("id", 1)
+
+            .single()
 
         if (
           error ||
           !data
         ) return
 
-        const mapped = {}
-
-        data.forEach(item => {
-
-          mapped[
-            item.store_name
-          ] = item.is_open
-
+        setStoreStatus({
+          admin_status:
+            data.admin_status
         })
-
-        setStoreStatus(prev => ({
-          ...prev,
-          ...mapped
-        }))
 
       }
 
@@ -790,6 +792,30 @@ function Admin() {
                     ...prev
                   ]
 
+                })
+
+              }
+            )
+
+            .on(
+              "postgres_changes",
+
+              {
+                event: "UPDATE",
+                schema: "public",
+                table: "settings",
+                filter: "id=eq.1"
+              },
+
+              payload => {
+
+                if (!payload.new)
+                  return
+
+                setStoreStatus({
+                  admin_status:
+                    payload.new
+                      .admin_status
                 })
 
               }
@@ -1037,9 +1063,7 @@ function Admin() {
             ">
               Manusia lagi hemat
               atau memang dompetnya
-              sekarat. Statistik
-              ekonomi lokal sulit
-              dipastikan.
+              sekarat.
             </div>
 
           </div>

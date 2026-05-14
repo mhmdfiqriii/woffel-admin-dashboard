@@ -1368,3 +1368,281 @@ body{
 
   -webkit-touch-callout:none;
 }
+
+/* STORE TOGGLE */
+
+.admin-store-grid{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+
+  margin-bottom:18px;
+}
+
+.admin-store-card{
+  position:relative;
+
+  overflow:hidden;
+
+  padding:18px;
+
+  border-radius:24px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.18);
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    background .2s ease;
+}
+
+.admin-store-card:hover{
+  transform:
+    translateY(-2px);
+}
+
+.admin-store-open{
+  border-color:
+    rgba(77,255,136,.14);
+}
+
+.admin-store-closed{
+  border-color:
+    rgba(255,80,80,.14);
+}
+
+.admin-store-glow{
+  position:absolute;
+
+  inset:-80px;
+
+  opacity:.12;
+
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.12) 0%,
+      transparent 70%
+    );
+}
+
+.admin-store-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+
+  margin-bottom:18px;
+}
+
+.admin-store-brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.admin-store-icon{
+  width:52px;
+  height:52px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:24px;
+
+  background:
+    rgba(255,255,255,.06);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+}
+
+.admin-store-label{
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:1.4px;
+
+  color:
+    rgba(255,255,255,.42);
+
+  margin-bottom:4px;
+}
+
+.admin-store-name{
+  font-size:18px;
+  font-weight:800;
+
+  letter-spacing:-.4px;
+}
+
+.admin-store-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  min-height:36px;
+
+  padding:0 14px;
+
+  border-radius:999px;
+
+  font-size:12px;
+  font-weight:800;
+}
+
+.admin-store-status-dot{
+  width:8px;
+  height:8px;
+
+  border-radius:999px;
+}
+
+.admin-store-status-open{
+  background:
+    rgba(77,255,136,.08);
+
+  color:#9effbd;
+
+  border:
+    1px solid rgba(77,255,136,.14);
+}
+
+.admin-store-status-open
+.admin-store-status-dot{
+  background:#4dff88;
+
+  box-shadow:
+    0 0 12px rgba(77,255,136,.7);
+}
+
+.admin-store-status-closed{
+  background:
+    rgba(255,80,80,.08);
+
+  color:#ffbaba;
+
+  border:
+    1px solid rgba(255,80,80,.14);
+}
+
+.admin-store-status-closed
+.admin-store-status-dot{
+  background:#ff5d5d;
+
+  box-shadow:
+    0 0 12px rgba(255,93,93,.7);
+}
+
+.admin-store-bottom{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.admin-store-desc{
+  flex:1;
+
+  font-size:13px;
+  line-height:1.6;
+
+  color:
+    rgba(255,255,255,.52);
+}
+
+.admin-store-toggle{
+  min-width:126px;
+  height:46px;
+
+  padding:0 18px;
+
+  border:none;
+  outline:none;
+  cursor:pointer;
+
+  border-radius:16px;
+
+  font-size:13px;
+  font-weight:800;
+
+  transition:
+    transform .18s ease,
+    opacity .18s ease,
+    background .2s ease;
+}
+
+.admin-store-toggle:hover{
+  transform:
+    translateY(-2px);
+}
+
+.admin-store-toggle-open{
+  background:#ff5d5d;
+  color:white;
+}
+
+.admin-store-toggle-closed{
+  background:#4dff88;
+  color:black;
+}
+
+.admin-store-toggle-loading{
+  opacity:.6;
+
+  cursor:not-allowed;
+}
+
+/* BETTER STICKY */
+
+.admin-header{
+  top:12px;
+}
+
+.admin-filter{
+  top:190px;
+}
+
+/* MODAL FIX */
+
+.admin-modal{
+  overscroll-behavior:contain;
+}
+
+/* SCROLLBAR */
+
+.admin-modal::-webkit-scrollbar,
+.admin-filter-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:480px){
+
+  .admin-store-bottom{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .admin-store-toggle{
+    width:100%;
+  }
+
+  .admin-filter{
+    top:210px;
+  }
+
+}

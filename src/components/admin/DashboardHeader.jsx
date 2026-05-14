@@ -3,8 +3,9 @@ import {
   useState
 } from "react"
 
-import { supabase }
-from "../../lib/supabase"
+import {
+  supabase
+} from "../../lib/supabase"
 
 import StoreStatusBadge
 from "./StoreStatusBadge"
@@ -85,22 +86,24 @@ function DashboardHeader({
           admin-header-brand
         ">
 
-          <div className={`
-            admin-header-dot
+          <div
+            className={`
+              admin-header-dot
 
-            ${
-              realtimeStatus ===
-              "online"
+              ${
+                realtimeStatus ===
+                "online"
 
-                ? `
-                  admin-header-dot-online
-                `
+                  ? `
+                    admin-header-dot-online
+                  `
 
-                : `
-                  admin-header-dot-offline
-                `
-            }
-          `}></div>
+                  : `
+                    admin-header-dot-offline
+                  `
+              }
+            `}
+          ></div>
 
           <div>
 
@@ -108,7 +111,7 @@ function DashboardHeader({
               admin-header-label
             ">
 
-              WOFFEL ADMIN
+              WOFFEL STORE
 
             </div>
 
@@ -116,7 +119,7 @@ function DashboardHeader({
               admin-header-title
             ">
 
-              Dashboard
+              Admin Dashboard
 
             </h1>
 
@@ -190,7 +193,7 @@ function DashboardHeader({
               admin-header-user
             ">
 
-              {displayName}
+              {displayName || "Admin"}
 
             </div>
 
@@ -258,6 +261,27 @@ function DashboardHeader({
 
         </button>
 
+        {role === "admin" && (
+
+          <button
+
+            type="button"
+
+            onClick={exportCSV}
+
+            className="
+              admin-btn
+              admin-btn-export
+            "
+
+          >
+
+            ⭳ Export CSV
+
+          </button>
+
+        )}
+
         <button
 
           type="button"
@@ -281,27 +305,6 @@ function DashboardHeader({
         </button>
 
       </div>
-
-      {role === "admin" && (
-
-        <button
-
-          type="button"
-
-          onClick={exportCSV}
-
-          className="
-            admin-btn
-            admin-btn-export
-          "
-
-        >
-
-          ⭳ Export CSV
-
-        </button>
-
-      )}
 
     </div>
 
