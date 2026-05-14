@@ -34,7 +34,7 @@ export const formatStatus = (
 
   return (
     labels[cleaned] ||
-    "Unknown"
+    "All"
   )
 
 }
