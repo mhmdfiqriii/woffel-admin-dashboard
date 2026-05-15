@@ -41,17 +41,6 @@ function OrderModal({
 
   }
 
-  const createdAt =
-    new Date(
-      selectedOrder.created_at
-    ).toLocaleString(
-      "id-ID",
-      {
-        timeZone:
-          "Asia/Jakarta"
-      }
-    )
-
   return (
 
     <div
@@ -103,12 +92,6 @@ function OrderModal({
               {selectedOrder.order_id}
             </div>
 
-            <div className="
-              admin-modal-created
-            ">
-              {createdAt}
-            </div>
-
           </div>
 
           <div
@@ -131,25 +114,46 @@ function OrderModal({
         ">
 
           <div className="
-            admin-modal-meta-card
-          ">
+  admin-modal-meta-card
+">
 
-            <div className="
-              admin-modal-meta-label
-            ">
-              Tipe Order
-            </div>
+  <div className="
+    admin-modal-meta-label
+  ">
+    Waktu Order
+  </div>
 
-            <div className="
-              admin-modal-meta-value
-            ">
+  <div className="
+    admin-modal-meta-value
+  ">
 
-              {selectedOrder.type
-                ?.toUpperCase()}
+    {
+      new Date(
+        selectedOrder.created_at
+      ).toLocaleString(
+        "id-ID",
+        {
+          timeZone:
+            "Asia/Jakarta",
 
-            </div>
+          day:
+            "numeric",
 
-          </div>
+          month:
+            "short",
+
+          hour:
+            "2-digit",
+
+          minute:
+            "2-digit"
+        }
+      )
+    }
+
+  </div>
+
+</div>
 
           <div className="
             admin-modal-meta-card
