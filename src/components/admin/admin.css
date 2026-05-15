@@ -1646,3 +1646,318 @@ body{
   }
 
 }
+
+/* ORDER MODAL DETAIL */
+
+.admin-modal-handle{
+  width:56px;
+  height:5px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.12);
+
+  margin:
+    0 auto 22px;
+}
+
+.admin-modal-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+
+  margin-bottom:20px;
+}
+
+.admin-modal-header-left{
+  flex:1;
+  min-width:0;
+}
+
+.admin-modal-label{
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:1.4px;
+
+  color:
+    rgba(255,255,255,.38);
+
+  margin-bottom:8px;
+}
+
+.admin-modal-id{
+  font-size:28px;
+  font-weight:800;
+
+  letter-spacing:-1px;
+
+  line-height:1.1;
+
+  word-break:break-word;
+
+  margin-bottom:8px;
+}
+
+.admin-modal-created{
+  font-size:13px;
+
+  color:
+    rgba(255,255,255,.45);
+}
+
+.admin-modal-meta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+
+  margin-bottom:24px;
+}
+
+.admin-modal-meta-card{
+  padding:16px;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+}
+
+.admin-modal-meta-label{
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:1.2px;
+
+  color:
+    rgba(255,255,255,.38);
+
+  margin-bottom:8px;
+}
+
+.admin-modal-meta-value{
+  font-size:15px;
+  font-weight:700;
+}
+
+.admin-modal-section{
+  margin-bottom:24px;
+}
+
+.admin-modal-section-title{
+  font-size:14px;
+  font-weight:800;
+
+  margin-bottom:12px;
+}
+
+.admin-modal-card{
+  padding:18px;
+
+  border-radius:22px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+}
+
+.admin-modal-customer{
+  font-size:18px;
+  font-weight:700;
+
+  margin-bottom:8px;
+}
+
+.admin-modal-sub{
+  font-size:13px;
+
+  color:
+    rgba(255,255,255,.46);
+}
+
+.admin-modal-sub-highlight{
+  color:white;
+  font-weight:700;
+}
+
+.admin-modal-items{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.admin-modal-item{
+  padding:16px;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+}
+
+.admin-modal-item-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.admin-modal-item-left{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+
+  flex:1;
+  min-width:0;
+}
+
+.admin-modal-item-index{
+  width:28px;
+  height:28px;
+
+  border-radius:10px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(255,255,255,.06);
+
+  font-size:12px;
+  font-weight:800;
+
+  flex-shrink:0;
+}
+
+.admin-modal-item-name{
+  font-size:15px;
+  font-weight:700;
+
+  line-height:1.5;
+
+  word-break:break-word;
+}
+
+.admin-modal-item-qty{
+  font-size:13px;
+  font-weight:800;
+
+  color:
+    rgba(255,255,255,.56);
+}
+
+.admin-modal-item-option{
+  margin-top:10px;
+
+  padding-left:40px;
+
+  font-size:13px;
+  line-height:1.6;
+
+  color:
+    rgba(255,255,255,.46);
+}
+
+.admin-modal-total-card{
+  padding:18px;
+
+  border-radius:24px;
+
+  background:
+    rgba(255,255,255,.05);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+}
+
+.admin-modal-total-label{
+  font-size:12px;
+  font-weight:700;
+
+  color:
+    rgba(255,255,255,.4);
+
+  margin-bottom:10px;
+}
+
+.admin-modal-total-price{
+  font-size:30px;
+  font-weight:800;
+
+  letter-spacing:-1px;
+}
+
+.admin-modal-footer-actions{
+  display:flex;
+  gap:12px;
+}
+
+.admin-btn-modal{
+  flex:1;
+
+  min-height:52px;
+
+  border-radius:18px;
+
+  font-size:14px;
+  font-weight:800;
+}
+
+.admin-btn-close{
+  width:100%;
+  min-height:52px;
+
+  border:none;
+  outline:none;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.05);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  color:white;
+
+  font-size:14px;
+  font-weight:700;
+}
+
+/* MOBILE */
+
+@media (max-width:480px){
+
+  .admin-modal-header{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .admin-modal-id{
+    font-size:22px;
+  }
+
+  .admin-modal-meta{
+    grid-template-columns:1fr;
+  }
+
+  .admin-modal-total-price{
+    font-size:24px;
+  }
+
+  .admin-modal-footer-actions{
+    flex-direction:column;
+  }
+
+}
