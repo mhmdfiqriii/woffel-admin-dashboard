@@ -5,14 +5,35 @@ import {
   Navigate
 } from "react-router-dom"
 
-import { useEffect, useState } from "react"
+import {
+  useEffect,
+  useState
+} from "react"
 
-import { supabase } from "./lib/supabase"
+import {
+  supabase
+} from "./lib/supabase"
 
-import Admin from "./pages/AdminDashboard"
-import AdminLogin from "./pages/AdminLogin"
+import AdminDashboard
+from "./pages/AdminDashboard"
 
-import ProtectedRoute from "./components/ProtectedRoute"
+import ProductsPage
+from "./pages/ProductsPage"
+
+import ReviewsPage
+from "./pages/ReviewsPage"
+
+import StorePage
+from "./pages/StorePage"
+
+import SettingsPage
+from "./pages/SettingsPage"
+
+import AdminLogin
+from "./pages/AdminLogin"
+
+import ProtectedRoute
+from "./components/ProtectedRoute"
 
 function App() {
 
@@ -24,24 +45,37 @@ function App() {
 
   useEffect(() => {
 
-    supabase.auth.getSession()
+    supabase.auth
+      .getSession()
+
       .then(({ data }) => {
 
-        setSession(data.session)
+        setSession(
+          data.session
+        )
+
         setLoading(false)
 
       })
 
     const {
       data: listener
-    } = supabase.auth.onAuthStateChange(
-      (_, session) => {
-        setSession(session)
-      }
-    )
+    } =
+
+      supabase.auth
+        .onAuthStateChange(
+          (_, session) => {
+
+            setSession(session)
+
+          }
+        )
 
     return () => {
-      listener.subscription.unsubscribe()
+
+      listener.subscription
+        .unsubscribe()
+
     }
 
   }, [])
@@ -51,37 +85,112 @@ function App() {
   }
 
   return (
+
     <BrowserRouter>
 
-     <Routes>
+      <Routes>
 
-  <Route
-    path="/login"
-    element={
-      session
-        ? <Navigate to="/" replace />
-        : <AdminLogin />
-    }
-  />
+        <Route
+          path="/login"
+          element={
 
-  <Route
-    path="/"
-    element={
-      <ProtectedRoute session={session}>
-        <Admin />
-      </ProtectedRoute>
-    }
-  />
+            session
 
-  <Route
-    path="*"
-    element={<Navigate to="/login" replace />}
-  />
+              ? (
+                  <Navigate
+                    to="/admin/dashboard"
+                    replace
+                  />
+                )
 
-</Routes>
+              : (
+                  <AdminLogin />
+                )
+
+          }
+        />
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute
+              session={session}
+            >
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute
+              session={session}
+            >
+              <ProductsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/reviews"
+          element={
+            <ProtectedRoute
+              session={session}
+            >
+              <ReviewsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/store"
+          element={
+            <ProtectedRoute
+              session={session}
+            >
+              <StorePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/settings"
+          element={
+            <ProtectedRoute
+              session={session}
+            >
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <Navigate
+              to="/admin/dashboard"
+              replace
+            />
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to="/admin/dashboard"
+              replace
+            />
+          }
+        />
+
+      </Routes>
 
     </BrowserRouter>
+
   )
+
 }
 
 export default App

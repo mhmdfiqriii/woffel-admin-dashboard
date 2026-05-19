@@ -1,3 +1,6 @@
+import AdminBottomNav
+from "./AdminBottomNav"
+
 function AdminLayout({
   children
 }) {
@@ -5,16 +8,18 @@ function AdminLayout({
   return (
 
     <div className="
-      admin-page
+      admin-layout
     ">
 
-      <div className="
-        admin-container
+      <main className="
+        admin-layout-content
       ">
 
         {children}
 
-      </div>
+      </main>
+
+      <AdminBottomNav />
 
     </div>
 
