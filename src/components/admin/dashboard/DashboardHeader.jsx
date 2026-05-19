@@ -5,10 +5,10 @@ import {
 
 import {
   supabase
-} from "../../lib/supabase"
+} from "../../../lib/supabase"
 
 import StoreStatusBadge
-from "./StoreStatusBadge"
+from "../store/StoreStatusBadge"
 
 function DashboardHeader({
   displayName,

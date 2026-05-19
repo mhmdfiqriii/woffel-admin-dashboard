@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 
 import { supabase } from "./lib/supabase"
 
-import Admin from "./pages/Admin"
+import Admin from "./pages/AdminDashboard"
 import AdminLogin from "./pages/AdminLogin"
 
 import ProtectedRoute from "./components/ProtectedRoute"

@@ -1,0 +1,389 @@
+import {
+  useState,
+  useRef
+} from "react"
+import {
+  useNavigate
+} from "react-router-dom"
+
+import "../components/admin/admin.css"
+
+import DashboardHeader
+from "../components/admin/dashboard/DashboardHeader"
+
+import FilterBar
+from "../components/admin/orders/FilterBar"
+
+import DashboardStats
+from "../components/admin/dashboard/DashboardStats"
+
+import OrderCard
+from "../components/admin/orders/OrderCard"
+
+import OrderModal
+from "../components/admin/orders/OrderModal"
+
+import AdminToast
+from "../components/admin/shared/AdminToast"
+
+import SkeletonOrder
+from "../components/admin/orders/SkeletonOrder"
+
+import StoreToggleCard
+from "../components/admin/store/StoreToggleCard"
+
+import useOrders
+from "../hooks/useOrders"
+
+import useRealtimeOrders
+from "../hooks/useRealtimeOrders"
+
+import useAdminSound
+from "../hooks/useAdminSound"
+
+import useStoreStatus
+from "../hooks/useStoreStatus"
+
+import useAuthAdmin
+from "../hooks/useAuthAdmin"
+
+import useAdminToast
+from "../hooks/useAdminToast"
+
+import useCurrentTime
+from "../hooks/useCurrentTime"
+
+import useHighlightOrder
+from "../hooks/useHighlightOrder"
+
+import useUnreadOrders
+from "../hooks/useUnreadOrders"
+
+import useDebounce
+from "../hooks/useDebounce"
+
+import useAdminStats
+from "../hooks/useAdminStats"
+
+import useAdminUser
+from "../hooks/useAdminUser"
+
+import useOrderActions
+from "../hooks/useOrderActions"
+
+import EmptyOrders
+from "../components/admin/orders/EmptyOrders"
+
+import AdminLayout
+from "../components/admin/shared/AdminLayout"
+
+import {
+  DEFAULT_FILTER
+} from "../constants/adminConfig"
+
+import {
+  formatRupiah,
+  formatStatus,
+  getStatusColor,
+  getTimeAgo,
+  getTimeColor,
+  exportOrdersCSV
+} from "../utils/adminUtils"
+
+function AdminDashboard() {
+
+  const [filter, setFilter] =
+    useState(DEFAULT_FILTER)
+
+  const [search, setSearch] =
+    useState("")
+
+const debouncedSearch =
+  useDebounce(search)
+
+    const {
+  orders,
+  setOrders,
+  loading,
+  filteredOrders,
+  updateOrderStatus
+} = useOrders(
+  filter,
+  debouncedSearch
+)
+
+const {
+  highlightId,
+  setHighlightId
+} = useHighlightOrder()
+
+  const [
+    selectedOrder,
+    setSelectedOrder
+  ] = useState(null)
+
+  const [
+    realtimeStatus,
+    setRealtimeStatus
+  ] = useState("connecting")
+
+ const currentTime =
+  useCurrentTime()
+
+  const topRef = useRef(null)
+
+  const navigate =
+    useNavigate()
+
+  const {
+  soundOn,
+  setSoundOn,
+  playNewOrder,
+  playProses,
+  playDone
+} = useAdminSound()
+
+const {
+  toast,
+  showToast
+} = useAdminToast()
+
+const {
+  unreadCount,
+  notify
+} = useUnreadOrders({
+  playNewOrder,
+  showToast
+})
+
+const {
+  adminUser,
+  displayName,
+  role
+} = useAdminUser()
+    
+  const {
+  storeStatus,
+  setStoreStatus,
+  updateStoreStatus
+} = useStoreStatus(
+  showToast
+)
+
+    useRealtimeOrders({
+  notify,
+  setOrders,
+  setHighlightId,
+  setRealtimeStatus,
+  setStoreStatus,
+  showToast,
+  topRef
+})
+
+const {
+  updateStatus
+} = useOrderActions({
+  updateOrderStatus,
+  adminUser,
+  playProses,
+  playDone,
+  showToast,
+  setSelectedOrder
+})
+
+  const {
+  totalPending,
+  totalProses,
+  totalSelesai,
+  totalOmzet
+} = useAdminStats(
+  orders,
+  filteredOrders
+)
+
+  const exportCSV = () => {
+
+    exportOrdersCSV(
+      orders,
+      filteredOrders
+    )
+
+  }
+
+  useAuthAdmin(
+  navigate
+)
+
+  return (
+
+  <AdminLayout>
+
+    <AdminToast
+      toast={toast}
+    />
+
+        <div ref={topRef}></div>
+
+        <DashboardHeader
+          displayName={
+            displayName
+          }
+          soundOn={soundOn}
+          setSoundOn={
+            setSoundOn
+          }
+          exportCSV={
+            exportCSV
+          }
+          navigate={navigate}
+          role={role}
+          realtimeStatus={
+            realtimeStatus
+          }
+          unreadCount={
+            unreadCount
+          }
+        />
+
+        <StoreToggleCard
+          isOpen={
+            storeStatus
+              ?.admin_status ===
+            "online"
+          }
+          onToggle={() =>
+
+            updateStoreStatus(
+              storeStatus
+                ?.admin_status !==
+              "online"
+            )
+
+          }
+        />
+
+        <FilterBar
+          search={search}
+          setSearch={
+            setSearch
+          }
+          filter={filter}
+          setFilter={
+            setFilter
+          }
+          orders={orders}
+          formatStatus={
+            formatStatus
+          }
+          debouncedSearch={
+            debouncedSearch
+          }
+          unreadCount={
+            unreadCount
+          }
+        />
+
+        <DashboardStats
+          totalPending={
+            totalPending
+          }
+          totalProses={
+            totalProses
+          }
+          totalSelesai={
+            totalSelesai
+          }
+          totalOmzet={
+            totalOmzet
+          }
+          formatRupiah={
+            formatRupiah
+          }
+        />
+
+        {loading && (
+
+          <>
+            <SkeletonOrder />
+            <SkeletonOrder />
+            <SkeletonOrder />
+          </>
+
+        )}
+
+        {!loading &&
+  filteredOrders
+    .length === 0 && (
+
+  <EmptyOrders />
+
+)}
+
+        {!loading &&
+
+          filteredOrders.map(
+            order => (
+
+              <OrderCard
+                key={order.id}
+                order={order}
+                currentTime={
+                  currentTime
+                }
+                highlightId={
+                  highlightId
+                }
+                setSelectedOrder={
+                  setSelectedOrder
+                }
+                updateStatus={
+                  updateStatus
+                }
+                getStatusColor={
+                  getStatusColor
+                }
+                formatStatus={
+                  formatStatus
+                }
+                formatRupiah={
+                  formatRupiah
+                }
+                getTimeAgo={
+                  getTimeAgo
+                }
+                getTimeColor={
+                  getTimeColor
+                }
+              />
+
+            )
+          )}
+
+        <OrderModal
+          selectedOrder={
+            selectedOrder
+          }
+          setSelectedOrder={
+            setSelectedOrder
+          }
+          updateStatus={
+            updateStatus
+          }
+          getStatusColor={
+            getStatusColor
+          }
+          formatStatus={
+            formatStatus
+          }
+          formatRupiah={
+            formatRupiah
+          }
+        />
+
+      </AdminLayout>
+
+  )
+
+}
+
+export default AdminDashboard
