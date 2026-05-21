@@ -101,6 +101,12 @@ function SettingsPage() {
 
         </div>
 
+        <div className="
+  admin-settings-section-title
+">
+  Preferences
+</div>
+
         <button className="
           admin-settings-menu
         ">
@@ -166,6 +172,12 @@ function SettingsPage() {
 
 </div>
 
+<div className="
+  admin-settings-section-title
+">
+  System
+</div>
+
         <button className="
           admin-settings-menu
         ">
@@ -185,6 +197,31 @@ function SettingsPage() {
           <ChevronRight size={18} />
 
         </button>
+
+        <button
+  onClick={() =>
+    navigate("/admin/analytics")
+  }
+  className="
+    admin-settings-menu
+  "
+>
+
+  <div className="
+    admin-settings-menu-left
+  ">
+
+    <Info size={18} />
+
+    <span>
+      Analytics
+    </span>
+
+  </div>
+
+  <ChevronRight size={18} />
+
+</button>
 
         <div className="
           admin-settings-card
@@ -216,7 +253,14 @@ function SettingsPage() {
 
         </div>
 
+        <div className="
+  admin-settings-section-title
+">
+  Account
+</div>
+
         <button
+        
           onClick={handleLogout}
           className="
             admin-settings-logout

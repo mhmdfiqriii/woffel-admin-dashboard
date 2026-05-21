@@ -35,6 +35,9 @@ from "./pages/AdminLogin"
 import ProtectedRoute
 from "./components/ProtectedRoute"
 
+import AnalyticsPage
+from "./pages/AnalyticsPage"
+
 function App() {
 
   const [session, setSession] =
@@ -153,6 +156,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/admin/analytics"
+  element={
+    <ProtectedRoute
+      session={session}
+    >
+      <AnalyticsPage />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/admin/settings"
