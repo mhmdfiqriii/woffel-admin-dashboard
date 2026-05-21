@@ -2705,3 +2705,53 @@ body{
     rgba(255,255,255,.38);
 
 }
+.admin-product-toggle{
+
+  position:relative;
+
+  width:52px;
+  height:30px;
+
+  border:none;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.12);
+
+  align-self:center;
+
+  flex-shrink:0;
+
+  transition:.2s ease;
+}
+
+.admin-product-toggle-active{
+
+  background:#6dff7a;
+
+}
+
+.admin-product-toggle-thumb{
+
+  position:absolute;
+
+  top:4px;
+  left:4px;
+
+  width:22px;
+  height:22px;
+
+  border-radius:999px;
+
+  background:white;
+
+  transition:.2s ease;
+}
+
+.admin-product-toggle-active
+.admin-product-toggle-thumb{
+
+  left:26px;
+
+}

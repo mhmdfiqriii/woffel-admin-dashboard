@@ -1,4 +1,11 @@
-function ProductCard() {
+function ProductCard({
+
+  name = "Americano",
+  category = "Coffee",
+  price = "18K",
+  available = true
+
+}) {
 
   return (
 
@@ -8,7 +15,7 @@ function ProductCard() {
 
       <div className="
         admin-product-image
-      " />
+      "></div>
 
       <div className="
         admin-product-body
@@ -17,22 +24,49 @@ function ProductCard() {
         <div className="
           admin-product-category
         ">
-          Coffee
+
+          {category}
+
         </div>
 
         <div className="
           admin-product-name
         ">
-          Kopi Kenangan Mantan
+
+          {name}
+
         </div>
 
         <div className="
           admin-product-price
         ">
-          Rp 24.000
+
+          Rp {price}
+
         </div>
 
       </div>
+
+      <button
+        type="button"
+        className={`
+          admin-product-toggle
+
+          ${
+            available
+              ? `
+                admin-product-toggle-active
+              `
+              : ""
+          }
+        `}
+      >
+
+        <div className="
+          admin-product-toggle-thumb
+        "></div>
+
+      </button>
 
     </div>
 

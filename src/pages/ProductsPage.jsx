@@ -45,21 +45,25 @@ function ProductsPage() {
 
       ) : (
 
-        <div className="
-          admin-product-list
-        ">
+       <div className="
+  admin-product-list
+">
 
-          {products.map(
-            product => (
+  <ProductCard
+    name="Kopi Susu Gula Aren"
+    category="Coffee"
+    price="28.000"
+    available={true}
+  />
 
-              <ProductCard
-                key={product}
-              />
+  <ProductCard
+    name="Matcha Latte"
+    category="Non Coffee"
+    price="32.000"
+    available={false}
+  />
 
-            )
-          )}
-
-        </div>
+</div>
 
       )}
 
