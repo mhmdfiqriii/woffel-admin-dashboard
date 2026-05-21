@@ -77,8 +77,7 @@ import {
   formatStatus,
   getStatusColor,
   getTimeAgo,
-  getTimeColor,
-  exportOrdersCSV
+  getTimeColor
 } from "../utils/adminUtils"
 
 function AdminDashboard() {
@@ -181,14 +180,6 @@ const {
   showToast,
   setSelectedOrder
 })
-  const exportCSV = () => {
-
-    exportOrdersCSV(
-      orders,
-      filteredOrders
-    )
-
-  }
 
   useAuthAdmin(
   navigate
@@ -205,25 +196,16 @@ const {
         <div ref={topRef}></div>
 
         <DashboardHeader
-          displayName={
-            displayName
-          }
-          soundOn={soundOn}
-          setSoundOn={
-            setSoundOn
-          }
-          exportCSV={
-            exportCSV
-          }
-          navigate={navigate}
-          role={role}
-          realtimeStatus={
-            realtimeStatus
-          }
-          unreadCount={
-            unreadCount
-          }
-        />
+  displayName={
+    displayName
+  }
+  realtimeStatus={
+    realtimeStatus
+  }
+  unreadCount={
+    unreadCount
+  }
+/>
 
         <FilterBar
           search={search}

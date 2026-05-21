@@ -177,21 +177,7 @@ const {
               </span>
 
             </div>
-
-            <div className="
-              admin-store-history-item
-            ">
-
-              <div>
-                Delivery enabled
-              </div>
-
-              <span>
-                10 min ago
-              </span>
-
-            </div>
-
+            
             <div className="
               admin-store-history-item
             ">

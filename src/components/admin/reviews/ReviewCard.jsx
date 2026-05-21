@@ -1,4 +1,8 @@
-function ReviewCard() {
+function ReviewCard({
+  name,
+  rating,
+  review
+}) {
 
   return (
 
@@ -13,13 +17,13 @@ function ReviewCard() {
         <div className="
           admin-review-name
         ">
-          Pikri
+          {name}
         </div>
 
         <div className="
           admin-review-rating
         ">
-          ★ 5.0
+          ★ {rating}
         </div>
 
       </div>
@@ -27,8 +31,7 @@ function ReviewCard() {
       <div className="
         admin-review-text
       ">
-        Kopinya bikin melek
-        sampe lupa mantan.
+        {review}
       </div>
 
     </div>

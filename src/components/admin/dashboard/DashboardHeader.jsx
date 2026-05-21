@@ -3,20 +3,11 @@ import {
   useState
 } from "react"
 
-import {
-  supabase
-} from "../../../lib/supabase"
-
 import StoreStatusBadge
 from "../store/StoreStatusBadge"
 
 function DashboardHeader({
   displayName,
-  soundOn,
-  setSoundOn,
-  exportCSV,
-  navigate,
-  role,
   realtimeStatus,
   unreadCount
 }) {
@@ -57,20 +48,6 @@ function DashboardHeader({
       clearInterval(interval)
 
   }, [])
-
-  const handleLogout =
-    async () => {
-
-      await supabase.auth
-        .signOut()
-
-      localStorage.removeItem(
-        "admin_user"
-      )
-
-      navigate("/login")
-
-    }
 
   return (
 
@@ -206,103 +183,6 @@ function DashboardHeader({
           />
 
         </div>
-
-      </div>
-
-      <div className="
-        admin-header-actions
-      ">
-
-        <button
-
-          type="button"
-
-          onClick={() =>
-            setSoundOn(
-              prev => !prev
-            )
-          }
-
-          className={`
-            admin-btn
-
-            ${
-              soundOn
-
-                ? `
-                  admin-btn-active
-                `
-
-                : ""
-            }
-          `}
-
-        >
-
-          <span>
-
-            {
-              soundOn
-                ? "🔊"
-                : "🔇"
-            }
-
-          </span>
-
-          <span>
-
-            {
-              soundOn
-                ? "Sound On"
-                : "Muted"
-            }
-
-          </span>
-
-        </button>
-
-        {role === "admin" && (
-
-          <button
-
-            type="button"
-
-            onClick={exportCSV}
-
-            className="
-              admin-btn
-              admin-btn-export
-            "
-
-          >
-
-            ⭳ Export CSV
-
-          </button>
-
-        )}
-
-        <button
-
-          type="button"
-
-          onClick={handleLogout}
-
-          className="
-            admin-btn
-          "
-
-        >
-
-          <span>
-            ↗
-          </span>
-
-          <span>
-            Logout
-          </span>
-
-        </button>
 
       </div>
 
