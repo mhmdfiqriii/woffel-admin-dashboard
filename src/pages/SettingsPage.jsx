@@ -24,6 +24,9 @@ from "../components/admin/shared/PageHeader"
 import useAdminUser
 from "../hooks/useAdminUser"
 
+import useAdminSound
+from "../hooks/useAdminSound"
+
 function SettingsPage() {
 
   const navigate =
@@ -33,6 +36,11 @@ function SettingsPage() {
     displayName,
     role
   } = useAdminUser()
+
+  const {
+  soundOn,
+  setSoundOn
+} = useAdminSound()
 
   const handleLogout =
     async () => {
@@ -113,25 +121,50 @@ function SettingsPage() {
 
         </button>
 
-        <button className="
-          admin-settings-menu
-        ">
+       <div className="
+  admin-settings-menu
+">
 
-          <div className="
-            admin-settings-menu-left
-          ">
+  <div className="
+    admin-settings-menu-left
+  ">
 
-            <Volume2 size={18} />
+    <Volume2 size={18} />
 
-            <span>
-              Sound Settings
-            </span>
+    <span>
+      Sound Effects
+    </span>
 
-          </div>
+  </div>
 
-          <ChevronRight size={18} />
+  <button
 
-        </button>
+    type="button"
+
+    onClick={() =>
+      setSoundOn(
+        prev => !prev
+      )
+    }
+
+    className={`
+      admin-settings-toggle
+
+      ${
+        soundOn
+          ? "admin-settings-toggle-active"
+          : ""
+      }
+    `}
+  >
+
+    <div className="
+      admin-settings-toggle-thumb
+    "></div>
+
+  </button>
+
+</div>
 
         <button className="
           admin-settings-menu

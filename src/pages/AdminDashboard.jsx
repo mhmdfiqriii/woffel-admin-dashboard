@@ -126,8 +126,6 @@ const {
     useNavigate()
 
   const {
-  soundOn,
-  setSoundOn,
   playNewOrder,
   playProses,
   playDone

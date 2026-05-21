@@ -2638,3 +2638,51 @@ body{
 
   cursor:pointer;
 }
+
+.admin-settings-toggle{
+
+  position:relative;
+
+  width:52px;
+  height:30px;
+
+  border:none;
+  cursor:pointer;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.12);
+
+  transition:.2s ease;
+}
+
+.admin-settings-toggle-active{
+
+  background:#6dff7a;
+
+}
+
+.admin-settings-toggle-thumb{
+
+  position:absolute;
+
+  top:4px;
+  left:4px;
+
+  width:22px;
+  height:22px;
+
+  border-radius:999px;
+
+  background:white;
+
+  transition:.2s ease;
+}
+
+.admin-settings-toggle-active
+.admin-settings-toggle-thumb{
+
+  left:26px;
+
+}
