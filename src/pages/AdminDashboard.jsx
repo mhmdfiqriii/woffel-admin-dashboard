@@ -14,9 +14,6 @@ from "../components/admin/dashboard/DashboardHeader"
 import FilterBar
 from "../components/admin/orders/FilterBar"
 
-import DashboardStats
-from "../components/admin/dashboard/DashboardStats"
-
 import OrderCard
 from "../components/admin/orders/OrderCard"
 
@@ -61,9 +58,6 @@ from "../hooks/useUnreadOrders"
 
 import useDebounce
 from "../hooks/useDebounce"
-
-import useAdminStats
-from "../hooks/useAdminStats"
 
 import useAdminUser
 from "../hooks/useAdminUser"
@@ -190,17 +184,6 @@ const {
   showToast,
   setSelectedOrder
 })
-
-  const {
-  totalPending,
-  totalProses,
-  totalSelesai,
-  totalOmzet
-} = useAdminStats(
-  orders,
-  filteredOrders
-)
-
   const exportCSV = () => {
 
     exportOrdersCSV(
@@ -280,24 +263,6 @@ const {
           }
           unreadCount={
             unreadCount
-          }
-        />
-
-        <DashboardStats
-          totalPending={
-            totalPending
-          }
-          totalProses={
-            totalProses
-          }
-          totalSelesai={
-            totalSelesai
-          }
-          totalOmzet={
-            totalOmzet
-          }
-          formatRupiah={
-            formatRupiah
           }
         />
 
