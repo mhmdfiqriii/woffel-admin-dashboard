@@ -1,7 +1,6 @@
 import {
   Clock3,
-  Store,
-  Truck
+  Store
 } from "lucide-react"
 
 import AdminLayout
@@ -13,7 +12,24 @@ from "../components/admin/shared/PageHeader"
 import StoreToggleCard
 from "../components/admin/store/StoreToggleCard"
 
+import useStoreStatus
+from "../hooks/useStoreStatus"
+
+import useAdminToast
+from "../hooks/useAdminToast"
+
 function StorePage() {
+
+  const {
+  showToast
+} = useAdminToast()
+
+const {
+  storeStatus,
+  updateStoreStatus
+} = useStoreStatus(
+  showToast
+)
 
   return (
 
@@ -76,10 +92,23 @@ function StorePage() {
 
         </div>
 
-        <StoreToggleCard
-          isOpen={true}
-          onToggle={() => {}}
-        />
+       <StoreToggleCard
+  isOpen={
+    storeStatus
+      ?.admin_status ===
+    "online"
+  }
+
+  onToggle={() =>
+
+    updateStoreStatus(
+      storeStatus
+        ?.admin_status !==
+      "online"
+    )
+
+  }
+/>
 
         <div className="
           admin-store-box
@@ -107,40 +136,6 @@ function StorePage() {
                 admin-store-box-title
               ">
                 09:00 - 22:00
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="
-          admin-store-box
-        ">
-
-          <div className="
-            admin-store-box-top
-          ">
-
-            <div className="
-              admin-store-box-icon
-            ">
-              <Truck size={20} />
-            </div>
-
-            <div>
-
-              <div className="
-                admin-store-box-label
-              ">
-                Delivery Settings
-              </div>
-
-              <div className="
-                admin-store-box-title
-              ">
-                GoSend & Grab Active
               </div>
 
             </div>

@@ -26,9 +26,6 @@ from "../components/admin/shared/AdminToast"
 import SkeletonOrder
 from "../components/admin/orders/SkeletonOrder"
 
-import StoreToggleCard
-from "../components/admin/store/StoreToggleCard"
-
 import useOrders
 from "../hooks/useOrders"
 
@@ -225,23 +222,6 @@ const {
           }
           unreadCount={
             unreadCount
-          }
-        />
-
-        <StoreToggleCard
-          isOpen={
-            storeStatus
-              ?.admin_status ===
-            "online"
-          }
-          onToggle={() =>
-
-            updateStoreStatus(
-              storeStatus
-                ?.admin_status !==
-              "online"
-            )
-
           }
         />
 
