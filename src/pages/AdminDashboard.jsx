@@ -266,6 +266,28 @@ const {
           }
         />
 
+        <div className="
+  admin-orders-section
+">
+
+  <div className="
+  admin-orders-head
+">
+
+  <h2 className="
+    admin-orders-title
+  ">
+    Live Orders
+  </h2>
+
+  <span className="
+    admin-orders-count
+  ">
+    {filteredOrders.length}
+  </span>
+
+</div>
+
         {loading && (
 
           <>
@@ -323,6 +345,8 @@ const {
 
             )
           )}
+
+          </div>
 
         <OrderModal
           selectedOrder={
