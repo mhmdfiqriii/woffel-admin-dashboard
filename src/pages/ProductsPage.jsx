@@ -60,15 +60,15 @@ function ProductsPage() {
           {products.map(product => (
 
             <ProductCard
-              key={product.id}
-              name={product.name}
-              category={product.category}
-              price={product.price}
-              image={product.image_url}
-              available={
-                product.is_available
-              }
-            />
+  key={product.id}
+  name={product.name}
+  category={product.category}
+  price={product.price}
+  image={product.image_url}
+  available={
+    product.is_available
+  }
+/>
 
           ))}
 

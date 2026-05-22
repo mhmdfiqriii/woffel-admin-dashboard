@@ -2756,12 +2756,19 @@ body{
 
 }
 
+.admin-product-card {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
 .admin-product-image {
-  width: 100%;
-  height: 140px;
-  overflow: hidden;
+  width: 88px;
+  min-width: 88px;
+  height: 88px;
   border-radius: 18px;
-  background: #f4f4f4;
+  overflow: hidden;
+  background: #111;
 }
 
 .admin-product-image-tag {
@@ -2769,4 +2776,8 @@ body{
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.admin-product-body {
+  flex: 1;
 }
