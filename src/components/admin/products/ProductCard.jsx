@@ -1,8 +1,13 @@
 function ProductCard({
 
   name = "Americano",
+
   category = "Coffee",
+
   price = "18K",
+
+  image = "",
+
   available = true
 
 }) {
@@ -15,7 +20,17 @@ function ProductCard({
 
       <div className="
         admin-product-image
-      "></div>
+      ">
+
+        <img
+          src={image}
+          alt={name}
+          className="
+            admin-product-image-tag
+          "
+        />
+
+      </div>
 
       <div className="
         admin-product-body
@@ -54,9 +69,11 @@ function ProductCard({
 
           ${
             available
+
               ? `
                 admin-product-toggle-active
               `
+
               : ""
           }
         `}

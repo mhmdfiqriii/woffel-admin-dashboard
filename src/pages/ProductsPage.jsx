@@ -16,13 +16,15 @@ from "../components/admin/products/ProductCard"
 import EmptyProducts
 from "../components/admin/products/EmptyProducts"
 
+import useProducts
+from "../hooks/useProducts"
+
 function ProductsPage() {
 
-  const products = [
-    1,
-    2,
-    3
-  ]
+  const {
+    products,
+    loading
+  } = useProducts()
 
   return (
 
@@ -39,31 +41,38 @@ function ProductsPage() {
 
       <ProductsCategories />
 
-      {products.length === 0 ? (
+      {loading ? (
+
+        <div>
+          Loading...
+        </div>
+
+      ) : products.length === 0 ? (
 
         <EmptyProducts />
 
       ) : (
 
-       <div className="
-  admin-product-list
-">
+        <div className="
+          admin-product-list
+        ">
 
-  <ProductCard
-    name="Kopi Susu Gula Aren"
-    category="Coffee"
-    price="28.000"
-    available={true}
-  />
+          {products.map(product => (
 
-  <ProductCard
-    name="Matcha Latte"
-    category="Non Coffee"
-    price="32.000"
-    available={false}
-  />
+            <ProductCard
+              key={product.id}
+              name={product.name}
+              category={product.category}
+              price={product.price}
+              image={product.image_url}
+              available={
+                product.is_available
+              }
+            />
 
-</div>
+          ))}
+
+        </div>
 
       )}
 
