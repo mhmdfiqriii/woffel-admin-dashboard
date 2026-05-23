@@ -2,6 +2,10 @@ import {
   useNavigate
 } from "react-router-dom"
 
+import {
+  useMemo
+} from "react"
+
 import AdminLayout
 from "../components/admin/shared/AdminLayout"
 
@@ -14,10 +18,54 @@ from "../components/admin/products/BrandCard"
 import brands
 from "../constants/brands"
 
+import useProducts
+from "../hooks/useProducts"
+
 function ProductsPage() {
 
   const navigate =
     useNavigate()
+
+  const {
+    products,
+    loading
+  } = useProducts()
+
+  // =====================
+  // COUNT PRODUCTS
+  // =====================
+
+  const brandsWithTotal =
+    useMemo(() => {
+
+      return brands.map(brand => {
+
+        const total =
+          products.filter(product => {
+
+            const productBrand =
+              product.brand
+                ?.toLowerCase()
+                .replaceAll(
+                  " ",
+                  "-"
+                )
+
+            return (
+              productBrand ===
+              brand.slug
+            )
+
+          }).length
+
+        return {
+          ...brand,
+          total
+        }
+
+      })
+
+    }, [products])
 
   return (
 
@@ -30,33 +78,47 @@ function ProductsPage() {
         "
       />
 
-      <div className="
-        admin-brand-list
-      ">
+      {loading ? (
 
-        {brands.map(brand => (
+        <div>
+          Loading...
+        </div>
 
-          <BrandCard
-            key={brand.slug}
+      ) : (
 
-            title={brand.label}
+        <div className="
+          admin-brand-list
+        ">
 
-            logo={brand.logo}
+          {brandsWithTotal.map(
+            brand => (
 
-            color={brand.color}
+              <BrandCard
+                key={brand.slug}
 
-            onClick={() =>
+                title={brand.label}
 
-              navigate(
-                `/admin/products/${brand.slug}`
-              )
+                logo={brand.logo}
 
-            }
-          />
+                color={brand.color}
 
-        ))}
+                total={brand.total}
 
-      </div>
+                onClick={() =>
+
+                  navigate(
+                    `/admin/products/${brand.slug}`
+                  )
+
+                }
+              />
+
+            )
+          )}
+
+        </div>
+
+      )}
 
     </AdminLayout>
 
