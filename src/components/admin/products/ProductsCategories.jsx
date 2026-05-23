@@ -1,10 +1,30 @@
-function ProductsCategories() {
+function ProductsCategories({
+
+  selectedCategory = "All",
+
+  onChange = () => {},
+
+  products = []
+
+}) {
+
+  // =====================
+  // DYNAMIC CATEGORY
+  // =====================
 
   const categories = [
+
     "All",
-    "Coffee",
-    "Non Coffee",
-    "Snack"
+
+    ...new Set(
+
+      products.map(
+        product =>
+          product.category
+      )
+
+    )
+
   ]
 
   return (
@@ -22,11 +42,31 @@ function ProductsCategories() {
 
             <button
               key={category}
-              className="
+
+              type="button"
+
+              onClick={() =>
+                onChange(category)
+              }
+
+              className={`
                 admin-category-pill
-              "
+
+                ${
+                  selectedCategory ===
+                  category
+
+                    ? `
+                      admin-category-pill-active
+                    `
+
+                    : ""
+                }
+              `}
             >
+
               {category}
+
             </button>
 
           )

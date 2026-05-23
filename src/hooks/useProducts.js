@@ -81,14 +81,11 @@ function useProducts({
             payload.new
 
           if (
-            brand &&
-            product.brand
-              ?.toLowerCase()
-              .replaceAll(
-                " ",
-                "-"
-              ) !== brand
-          ) return
+  brand &&
+  normalizeBrand(
+    product.brand
+  ) !== brand
+) return
 
           setProducts(prev => [
             product,
@@ -103,14 +100,11 @@ function useProducts({
             payload.new
 
           if (
-            brand &&
-            product.brand
-              ?.toLowerCase()
-              .replaceAll(
-                " ",
-                "-"
-              ) !== brand
-          ) return
+  brand &&
+  normalizeBrand(
+    product.brand
+  ) !== brand
+) return
 
           setProducts(prev =>
 

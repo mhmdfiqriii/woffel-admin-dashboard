@@ -2948,3 +2948,31 @@ body{
   }
 
 }
+
+.admin-category-pill-active{
+
+  background:white;
+
+  color:black;
+
+  font-weight:700;
+
+}
+
+.admin-category-scroll{
+
+  overflow-x:auto;
+
+  scrollbar-width:none;
+
+  -ms-overflow-style:none;
+
+  -webkit-overflow-scrolling:touch;
+
+}
+
+.admin-category-scroll::-webkit-scrollbar{
+
+  display:none;
+
+}

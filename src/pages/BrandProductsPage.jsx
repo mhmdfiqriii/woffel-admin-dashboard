@@ -58,20 +58,41 @@ function BrandProductsPage() {
     brand
   })
 
+  const [
+  selectedCategory,
+  setSelectedCategory
+  ] = useState("All")
+
   // =====================
   // SEARCH FILTER
   // =====================
 
   const filteredProducts =
-    products.filter(product =>
+  products.filter(product => {
 
+    const matchSearch =
       product.name
         ?.toLowerCase()
         .includes(
           search.toLowerCase()
         )
 
+    const matchCategory =
+
+      selectedCategory ===
+      "All"
+
+        ? true
+
+        : product.category ===
+          selectedCategory
+
+    return (
+      matchSearch &&
+      matchCategory
     )
+
+  })
 
   return (
 
@@ -92,7 +113,17 @@ function BrandProductsPage() {
         onChange={setSearch}
       />
 
-      <ProductsCategories />
+      <ProductsCategories
+  products={products}
+
+  selectedCategory={
+    selectedCategory
+  }
+
+  onChange={
+    setSelectedCategory
+  }
+/>
 
       {loading ? (
 
