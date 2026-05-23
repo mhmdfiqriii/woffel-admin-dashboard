@@ -2976,3 +2976,135 @@ body{
   display:none;
 
 }
+
+/* SKELETON PRODUCTS */
+
+.admin-skeleton-card{
+  position:relative;
+  overflow:hidden;
+}
+
+.admin-skeleton-card::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  transform:translateX(-100%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.05),
+      transparent
+    );
+
+  animation:
+    adminSkeletonLoading 1.2s infinite;
+}
+
+.admin-skeleton-line{
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.06);
+}
+
+/* BRAND */
+
+.admin-skeleton-brand-logo{
+  width:62px;
+  height:62px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.06);
+}
+
+.admin-skeleton-brand-title{
+  width:140px;
+  height:18px;
+
+  margin-bottom:10px;
+}
+
+.admin-skeleton-brand-total{
+  width:90px;
+  height:12px;
+}
+
+.admin-skeleton-arrow{
+  width:18px;
+  height:18px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.06);
+}
+
+/* PRODUCT */
+
+.admin-skeleton-product-image{
+  width:88px;
+  height:88px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.06);
+
+  flex-shrink:0;
+}
+
+.admin-skeleton-product-body{
+  flex:1;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.admin-skeleton-category{
+  width:90px;
+  height:12px;
+
+  margin-bottom:10px;
+}
+
+.admin-skeleton-product-name{
+  width:180px;
+  height:18px;
+
+  margin-bottom:12px;
+}
+
+.admin-skeleton-product-price{
+  width:110px;
+  height:16px;
+}
+
+.admin-skeleton-toggle{
+  width:52px;
+  height:30px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.06);
+
+  align-self:center;
+
+  flex-shrink:0;
+}
+
+@keyframes adminSkeletonLoading{
+
+  100%{
+    transform:
+      translateX(100%);
+  }
+
+}

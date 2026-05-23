@@ -24,6 +24,12 @@ from "../hooks/useProducts"
 import EmptyProducts
 from "../components/admin/products/EmptyProducts"
 
+import SkeletonBrandCard
+from "../components/admin/products/SkeletonBrandCard"
+
+import normalizeBrandSlug
+from "../utils/normalizeBrandSlug"
+
 function ProductsPage() {
 
   const navigate =
@@ -47,12 +53,9 @@ function ProductsPage() {
           products.filter(product => {
 
             const productBrand =
-              product.brand
-                ?.toLowerCase()
-                .replaceAll(
-                  " ",
-                  "-"
-                )
+  normalizeBrandSlug(
+    product.brand
+  )
 
             return (
               productBrand ===
@@ -83,9 +86,21 @@ function ProductsPage() {
 
       {loading ? (
 
-        <div>
-          Loading...
-        </div>
+        <div className="
+  admin-brand-list
+">
+
+  {Array.from({
+    length: 3
+  }).map((_, index) => (
+
+    <SkeletonBrandCard
+      key={index}
+    />
+
+  ))}
+
+</div>
 
       ) : brandsWithTotal.length === 0 ? (
 

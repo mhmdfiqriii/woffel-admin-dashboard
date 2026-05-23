@@ -30,6 +30,9 @@ from "../hooks/useProducts"
 import brands
 from "../constants/brands"
 
+import SkeletonProductCard
+from "../components/admin/products/SkeletonProductCard"
+
 function BrandProductsPage() {
 
   const {
@@ -128,20 +131,20 @@ function BrandProductsPage() {
       {loading ? (
 
         <div className="
-          admin-products-loading
-        ">
+  admin-product-list
+">
 
-          <div className="
-            admin-products-loader
-          "></div>
+  {Array.from({
+    length: 6
+  }).map((_, index) => (
 
-          <div className="
-            admin-products-loading-text
-          ">
-            Loading products...
-          </div>
+    <SkeletonProductCard
+      key={index}
+    />
 
-        </div>
+  ))}
+
+</div>
 
       ) : filteredProducts.length === 0 ? (
 

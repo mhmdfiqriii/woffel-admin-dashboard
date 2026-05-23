@@ -7,13 +7,12 @@ import fetchProducts
 from "../services/products/fetchProducts"
 
 import {
-  normalizeBrand
-} from "../utils/storeUtils"
-
-import {
   subscribeProducts,
   removeProductsSubscription
 } from "../services/products/subscribeProducts"
+
+import normalizeBrandSlug
+from "../utils/normalizeBrandSlug"
 
 function useProducts({
 
@@ -48,13 +47,13 @@ function useProducts({
         if (brand) {
 
           filtered =
-            result.data.filter(
-  product =>
+  result.data.filter(
+    product =>
 
-    normalizeBrand(
-      product.brand
-    ) === brand
-)
+      normalizeBrandSlug(
+        product.brand
+      ) === brand
+  )
 
         }
 
@@ -82,7 +81,7 @@ function useProducts({
 
           if (
   brand &&
-  normalizeBrand(
+  normalizeBrandSlug(
     product.brand
   ) !== brand
 ) return
@@ -101,7 +100,7 @@ function useProducts({
 
           if (
   brand &&
-  normalizeBrand(
+  normalizeBrandSlug(
     product.brand
   ) !== brand
 ) return
