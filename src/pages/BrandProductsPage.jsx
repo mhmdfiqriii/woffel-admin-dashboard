@@ -145,9 +145,59 @@ function BrandProductsPage() {
 
       ) : filteredProducts.length === 0 ? (
 
-        <EmptyProducts />
+  <EmptyProducts
 
-      ) : (
+    icon={
+      search
+        ? "🔍"
+        : selectedCategory !==
+          "All"
+
+          ? "📂"
+
+          : "🍔"
+    }
+
+    title={
+
+      search
+
+        ? "Produk Tidak Ditemukan"
+
+        : selectedCategory !==
+          "All"
+
+          ? "Category Kosong"
+
+          : "Belum Ada Produk"
+
+    }
+
+    subtitle={
+
+      search
+
+        ? `
+          Tidak ada hasil
+          untuk pencarian "${search}"
+        `
+
+        : selectedCategory !==
+          "All"
+
+          ? `
+            Tidak ada produk
+            pada category ini.
+          `
+
+          : `
+            Brand ini belum
+            punya produk.
+          `
+    }
+  />
+
+) : (
 
         <div className="
           admin-product-list

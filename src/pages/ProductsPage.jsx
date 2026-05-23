@@ -21,6 +21,9 @@ from "../constants/brands"
 import useProducts
 from "../hooks/useProducts"
 
+import EmptyProducts
+from "../components/admin/products/EmptyProducts"
+
 function ProductsPage() {
 
   const navigate =
@@ -84,11 +87,27 @@ function ProductsPage() {
           Loading...
         </div>
 
-      ) : (
+      ) : brandsWithTotal.length === 0 ? (
 
-        <div className="
-          admin-brand-list
-        ">
+  <EmptyProducts
+
+    icon="🏪"
+
+    title="
+      Belum Ada Brand
+    "
+
+    subtitle="
+      Belum ada brand tersedia.
+      Dashboard lagi sepi.
+    "
+  />
+
+) : (
+
+  <div className="
+    admin-brand-list
+  ">
 
           {brandsWithTotal.map(
             brand => (

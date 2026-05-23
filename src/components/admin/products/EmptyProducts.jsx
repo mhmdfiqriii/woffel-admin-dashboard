@@ -1,4 +1,15 @@
-function EmptyProducts() {
+function EmptyProducts({
+
+  icon = "📦",
+
+  title = "Tidak Ada Produk",
+
+  subtitle = `
+    Menu kosong.
+    Kapitalisme lagi tidur.
+  `
+
+}) {
 
   return (
 
@@ -9,20 +20,19 @@ function EmptyProducts() {
       <div className="
         admin-empty-icon
       ">
-        🍔
+        {icon}
       </div>
 
       <div className="
         admin-empty-title
       ">
-        Tidak Ada Produk
+        {title}
       </div>
 
       <div className="
         admin-empty-subtitle
       ">
-        Menu kosong.
-        Kapitalisme lagi tidur.
+        {subtitle}
       </div>
 
     </div>
