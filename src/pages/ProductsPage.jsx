@@ -1,30 +1,23 @@
+import {
+  useNavigate
+} from "react-router-dom"
+
 import AdminLayout
 from "../components/admin/shared/AdminLayout"
 
 import PageHeader
 from "../components/admin/shared/PageHeader"
 
-import ProductsSearch
-from "../components/admin/products/ProductsSearch"
+import BrandCard
+from "../components/admin/products/BrandCard"
 
-import ProductsCategories
-from "../components/admin/products/ProductsCategories"
-
-import ProductCard
-from "../components/admin/products/ProductCard"
-
-import EmptyProducts
-from "../components/admin/products/EmptyProducts"
-
-import useProducts
-from "../hooks/useProducts"
+import brands
+from "../constants/brands"
 
 function ProductsPage() {
 
-  const {
-    products,
-    loading
-  } = useProducts()
+  const navigate =
+    useNavigate()
 
   return (
 
@@ -33,54 +26,37 @@ function ProductsPage() {
       <PageHeader
         title="Products"
         subtitle="
-          Kelola menu store
+          Kelola brand store
         "
       />
 
-      <ProductsSearch />
-
-      <ProductsCategories />
-
-      {loading ? (
-
-        <div>
-          Loading...
-        </div>
-
-      ) : products.length === 0 ? (
-
-        <EmptyProducts />
-
-      ) : (
-
-        <div className="
-          admin-product-list
-        ">
-
-          {products.map(product => (
-
-            <ProductCard
-  key={product.id}
-  name={product.name}
-  category={product.category}
-  price={product.price}
-  image={product.image_url}
-  available={
-    product.is_available
-  }
-/>
-
-          ))}
-
-        </div>
-
-      )}
-
-      <button className="
-        admin-fab
+      <div className="
+        admin-brand-list
       ">
-        +
-      </button>
+
+        {brands.map(brand => (
+
+          <BrandCard
+            key={brand.slug}
+
+            title={brand.label}
+
+            logo={brand.logo}
+
+            color={brand.color}
+
+            onClick={() =>
+
+              navigate(
+                `/admin/products/${brand.slug}`
+              )
+
+            }
+          />
+
+        ))}
+
+      </div>
 
     </AdminLayout>
 

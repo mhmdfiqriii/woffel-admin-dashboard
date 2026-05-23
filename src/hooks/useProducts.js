@@ -7,11 +7,19 @@ import fetchProducts
 from "../services/products/fetchProducts"
 
 import {
+  normalizeBrand
+} from "../utils/storeUtils"
+
+import {
   subscribeProducts,
   removeProductsSubscription
 } from "../services/products/subscribeProducts"
 
-function useProducts() {
+function useProducts({
+
+  brand = null
+
+} = {}) {
 
   const [products, setProducts] =
     useState([])
@@ -30,7 +38,27 @@ function useProducts() {
 
       if (result.success) {
 
-        setProducts(result.data)
+        let filtered =
+          result.data
+
+        // =====================
+        // BRAND FILTER
+        // =====================
+
+        if (brand) {
+
+          filtered =
+            result.data.filter(
+  product =>
+
+    normalizeBrand(
+      product.brand
+    ) === brand
+)
+
+        }
+
+        setProducts(filtered)
 
       }
 
@@ -40,13 +68,30 @@ function useProducts() {
 
     loadProducts()
 
+    // =====================
+    // REALTIME
+    // =====================
+
     const channel =
       subscribeProducts({
 
         onInsert: payload => {
 
+          const product =
+            payload.new
+
+          if (
+            brand &&
+            product.brand
+              ?.toLowerCase()
+              .replaceAll(
+                " ",
+                "-"
+              ) !== brand
+          ) return
+
           setProducts(prev => [
-            payload.new,
+            product,
             ...prev
           ])
 
@@ -54,15 +99,28 @@ function useProducts() {
 
         onUpdate: payload => {
 
+          const product =
+            payload.new
+
+          if (
+            brand &&
+            product.brand
+              ?.toLowerCase()
+              .replaceAll(
+                " ",
+                "-"
+              ) !== brand
+          ) return
+
           setProducts(prev =>
 
-            prev.map(product =>
+            prev.map(item =>
 
-              product.id ===
-              payload.new.id
+              item.id ===
+              product.id
 
-                ? payload.new
-                : product
+                ? product
+                : item
 
             )
 
@@ -95,7 +153,7 @@ function useProducts() {
 
     }
 
-  }, [])
+  }, [brand])
 
   return {
     products,

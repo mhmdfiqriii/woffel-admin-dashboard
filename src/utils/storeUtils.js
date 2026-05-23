@@ -178,3 +178,15 @@ async (
     )
 
 }
+
+export function normalizeBrand(
+  brand
+) {
+
+  if (!brand) return ""
+
+  return brand
+    .toLowerCase()
+    .replaceAll(" ", "-")
+
+}

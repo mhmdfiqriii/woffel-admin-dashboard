@@ -38,6 +38,9 @@ from "./components/ProtectedRoute"
 import AnalyticsPage
 from "./pages/AnalyticsPage"
 
+import BrandProductsPage
+from "./pages/BrandProductsPage"
+
 function App() {
 
   const [session, setSession] =
@@ -125,15 +128,26 @@ function App() {
         />
 
         <Route
-          path="/admin/products"
-          element={
-            <ProtectedRoute
-              session={session}
-            >
-              <ProductsPage />
-            </ProtectedRoute>
-          }
-        />
+  path="/admin/products"
+  element={
+    <ProtectedRoute
+      session={session}
+    >
+      <ProductsPage />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/products/:brand"
+  element={
+    <ProtectedRoute
+      session={session}
+    >
+      <BrandProductsPage />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/admin/reviews"
