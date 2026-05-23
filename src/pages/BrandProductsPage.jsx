@@ -2,6 +2,10 @@ import {
   useParams
 } from "react-router-dom"
 
+import {
+  useState
+} from "react"
+
 import AdminLayout
 from "../components/admin/shared/AdminLayout"
 
@@ -32,11 +36,20 @@ function BrandProductsPage() {
     brand
   } = useParams()
 
+  const [
+    search,
+    setSearch
+  ] = useState("")
+
   const brandData =
     brands.find(
       item =>
         item.slug === brand
     )
+
+  // =====================
+  // FETCH PRODUCTS
+  // =====================
 
   const {
     products,
@@ -44,6 +57,21 @@ function BrandProductsPage() {
   } = useProducts({
     brand
   })
+
+  // =====================
+  // SEARCH FILTER
+  // =====================
+
+  const filteredProducts =
+    products.filter(product =>
+
+      product.name
+        ?.toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
+
+    )
 
   return (
 
@@ -59,17 +87,32 @@ function BrandProductsPage() {
         "
       />
 
-      <ProductsSearch />
+      <ProductsSearch
+        value={search}
+        onChange={setSearch}
+      />
 
       <ProductsCategories />
 
       {loading ? (
 
-        <div>
-          Loading...
+        <div className="
+          admin-products-loading
+        ">
+
+          <div className="
+            admin-products-loader
+          "></div>
+
+          <div className="
+            admin-products-loading-text
+          ">
+            Loading products...
+          </div>
+
         </div>
 
-      ) : products.length === 0 ? (
+      ) : filteredProducts.length === 0 ? (
 
         <EmptyProducts />
 
@@ -79,7 +122,7 @@ function BrandProductsPage() {
           admin-product-list
         ">
 
-          {products.map(product => (
+          {filteredProducts.map(product => (
 
             <ProductCard
               key={product.id}

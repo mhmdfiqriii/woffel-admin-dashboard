@@ -2129,8 +2129,35 @@ body{
   font-weight:800;
 }
 
-.admin-products-search{
-  margin-bottom:16px;
+.admin-filter-search{
+  width:100%;
+  height:58px;
+
+  padding:
+    0 18px 0 18px;
+
+  border:none;
+  outline:none;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.045);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  color:white;
+
+  text-align:left;
+
+  font-size:14px;
+  font-weight:500;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
 }
 
 .admin-products-input{
@@ -2148,6 +2175,10 @@ body{
     rgba(255,255,255,.05);
 
   color:white;
+
+  text-align:left;
+
+  font-size:14px;
 }
 
 .admin-category-scroll{
@@ -2872,4 +2903,48 @@ body{
   opacity: 0.7;
 
   flex-shrink: 0;
+}
+
+.admin-products-loading{
+  min-height:40vh;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:18px;
+}
+
+.admin-products-loader{
+  width:52px;
+  height:52px;
+
+  border-radius:999px;
+
+  border:
+    4px solid
+    rgba(255,255,255,.08);
+
+  border-top-color:#6dff7a;
+
+  animation:
+    adminSpin .7s linear infinite;
+}
+
+.admin-products-loading-text{
+  font-size:14px;
+  font-weight:600;
+
+  color:
+    rgba(255,255,255,.58);
+}
+
+@keyframes adminSpin{
+
+  to{
+    transform:rotate(360deg);
+  }
+
 }

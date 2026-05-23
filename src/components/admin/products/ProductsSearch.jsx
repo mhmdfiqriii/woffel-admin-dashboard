@@ -1,4 +1,10 @@
-function ProductsSearch() {
+function ProductsSearch({
+
+  value = "",
+
+  onChange = () => {}
+
+}) {
 
   return (
 
@@ -8,9 +14,19 @@ function ProductsSearch() {
 
       <input
         type="text"
-        placeholder="
-          Cari product...
-        "
+
+        value={value}
+
+        onChange={event =>
+
+          onChange(
+            event.target.value
+          )
+
+        }
+
+        placeholder="Cari produk..."
+
         className="
           admin-filter-search
         "

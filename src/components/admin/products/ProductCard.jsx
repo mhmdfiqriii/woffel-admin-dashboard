@@ -4,13 +4,17 @@ function ProductCard({
 
   category = "Coffee",
 
-  price = "18K",
+  price = 18000,
 
   image = "",
 
   available = true
 
 }) {
+
+  const formattedPrice =
+    Number(price)
+      .toLocaleString("id-ID")
 
   return (
 
@@ -56,7 +60,7 @@ function ProductCard({
           admin-product-price
         ">
 
-          Rp {price}
+          Rp. {formattedPrice}
 
         </div>
 
