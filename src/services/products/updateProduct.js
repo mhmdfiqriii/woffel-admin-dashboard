@@ -55,6 +55,35 @@ function sanitizeUpdates(
 
     : {},
 
+    bundle_type:
+  Boolean(
+    updates.bundle_type
+  ),
+
+bundle_items:
+  Array.isArray(
+    updates.bundle_items
+  )
+
+    ? updates.bundle_items
+
+    : [],
+
+    is_hot_available:
+  Boolean(
+    updates.is_hot_available
+  ),
+
+is_ice_available:
+  Boolean(
+    updates.is_ice_available
+  ),
+
+is_large_available:
+  Boolean(
+    updates.is_large_available
+  ),
+
     is_available:
       Boolean(
         updates.is_available

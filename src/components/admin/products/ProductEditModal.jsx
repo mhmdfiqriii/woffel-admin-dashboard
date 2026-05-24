@@ -38,6 +38,25 @@ function getInitialForm(
   is_available:
     product.is_available ?? true,
 
+  is_hot_available:
+  product.is_hot_available ?? true,
+
+is_ice_available:
+  product.is_ice_available ?? true,
+
+is_large_available:
+  product.is_large_available ?? false,
+
+bundle_type:
+  product.bundle_type ?? false,
+
+bundle_items:
+  JSON.stringify(
+    product.bundle_items || [],
+    null,
+    2
+  ),
+
   options:
     JSON.stringify(
       product.options || {},
@@ -203,6 +222,7 @@ function ProductEditModal({
     }
 
     let parsedOptions
+    let parsedBundleItems
 
 try {
 
@@ -241,6 +261,44 @@ try {
 
 }
 
+try {
+
+  parsedBundleItems =
+
+    form.bundle_items.trim()
+
+      ? JSON.parse(
+          form.bundle_items
+        )
+
+      : []
+
+  if (
+    !Array.isArray(
+      parsedBundleItems
+    )
+  ) {
+
+    showToast(
+      "Bundle items harus array JSON",
+      "warning"
+    )
+
+    return
+
+  }
+
+} catch {
+
+  showToast(
+    "Format JSON bundle tidak valid",
+    "error"
+  )
+
+  return
+
+}
+
     const payload = {
 
       ...form,
@@ -257,6 +315,12 @@ try {
 
       options:
          parsedOptions,
+
+         bundle_type:
+  form.bundle_type,
+
+bundle_items:
+  parsedBundleItems,
     }
 
     setSaving(true)
@@ -574,6 +638,157 @@ try {
 
   }
 />
+
+<label
+  className="
+    admin-modal-checkbox
+  "
+>
+
+  <span>
+    Bundle Product
+  </span>
+
+  <input
+    type="checkbox"
+
+    checked={
+      form.bundle_type
+    }
+
+    onChange={(event) =>
+
+      handleChange(
+        "bundle_type",
+        event.target.checked
+      )
+
+    }
+  />
+
+</label>
+
+<textarea
+  className="
+    admin-modal-input
+    admin-modal-textarea
+  "
+
+  value={
+    form.bundle_items
+  }
+
+  placeholder='
+[
+  {
+    "product_id": 1,
+    "qty": 2
+  }
+]
+  '
+
+  onChange={(event) =>
+
+    handleChange(
+      "bundle_items",
+      event.target.value
+    )
+
+  }
+/>
+
+<div className="
+  admin-modal-rules
+">
+
+  <label
+    className="
+      admin-modal-checkbox
+    "
+  >
+
+    <span>
+      Hot Available
+    </span>
+
+    <input
+      type="checkbox"
+
+      checked={
+        form.is_hot_available
+      }
+
+      onChange={(event) =>
+
+        handleChange(
+          "is_hot_available",
+          event.target.checked
+        )
+
+      }
+    />
+
+  </label>
+
+  <label
+    className="
+      admin-modal-checkbox
+    "
+  >
+
+    <span>
+      Ice Available
+    </span>
+
+    <input
+      type="checkbox"
+
+      checked={
+        form.is_ice_available
+      }
+
+      onChange={(event) =>
+
+        handleChange(
+          "is_ice_available",
+          event.target.checked
+        )
+
+      }
+    />
+
+  </label>
+
+  <label
+    className="
+      admin-modal-checkbox
+    "
+  >
+
+    <span>
+      Large Available
+    </span>
+
+    <input
+      type="checkbox"
+
+      checked={
+        form.is_large_available
+      }
+
+      onChange={(event) =>
+
+        handleChange(
+          "is_large_available",
+          event.target.checked
+        )
+
+      }
+    />
+
+  </label>
+
+</div>
 
           <label
             className="

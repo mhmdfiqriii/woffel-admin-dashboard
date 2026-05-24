@@ -1,4 +1,9 @@
-function normalizeProduct(product) {
+import buildProductOptions
+from "../../utils/buildProductOptions"
+
+function normalizeProduct(
+  product
+) {
 
   return {
 
@@ -13,13 +18,31 @@ function normalizeProduct(product) {
     is_available:
       product.is_available ?? true,
 
+    is_hot_available:
+      product.is_hot_available ?? true,
+
+    is_ice_available:
+      product.is_ice_available ?? true,
+
+    is_large_available:
+      product.is_large_available ?? false,
+
+      bundle_type:
+  product.bundle_type ?? false,
+
+bundle_items:
+  Array.isArray(
+    product.bundle_items
+  )
+
+    ? product.bundle_items
+
+    : [],
+
     options:
-      typeof product.options ===
-      "object"
-
-        ? product.options
-
-        : {}
+      buildProductOptions(
+        product
+      )
 
   }
 

@@ -45,6 +45,35 @@ function sanitizeProduct(
 
     : {},
 
+    bundle_type:
+  Boolean(
+    product.bundle_type
+  ),
+
+bundle_items:
+  Array.isArray(
+    product.bundle_items
+  )
+
+    ? product.bundle_items
+
+    : [],
+
+    is_hot_available:
+  Boolean(
+    product.is_hot_available
+  ),
+
+is_ice_available:
+  Boolean(
+    product.is_ice_available
+  ),
+
+is_large_available:
+  Boolean(
+    product.is_large_available
+  ),
+
     is_available:
       Boolean(
         product.is_available
