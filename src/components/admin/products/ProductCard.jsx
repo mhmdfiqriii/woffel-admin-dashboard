@@ -8,7 +8,9 @@ function ProductCard({
 
   image = "",
 
-  available = true
+  available = true,
+
+  onToggle = () => {}
 
 }) {
 
@@ -67,8 +69,11 @@ function ProductCard({
       </div>
 
       <button
-        type="button"
-        className={`
+  type="button"
+
+  onClick={onToggle}
+
+  className={`
           admin-product-toggle
 
           ${

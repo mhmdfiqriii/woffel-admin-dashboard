@@ -33,6 +33,9 @@ from "../constants/brands"
 import SkeletonProductCard
 from "../components/admin/products/SkeletonProductCard"
 
+import toggleAvailability
+from "../services/products/toggleAvailability"
+
 function BrandProductsPage() {
 
   const {
@@ -55,11 +58,69 @@ function BrandProductsPage() {
   // =====================
 
   const {
-    products,
-    loading
-  } = useProducts({
-    brand
-  })
+  products,
+  loading,
+  setProducts
+} = useProducts({
+  brand
+})
+
+async function handleToggleAvailability(
+  productId,
+  currentStatus
+) {
+
+  // OPTIMISTIC UI
+  setProducts(prev =>
+
+    prev.map(product =>
+
+      product.id === productId
+
+        ? {
+            ...product,
+            is_available:
+              !currentStatus
+          }
+
+        : product
+    )
+
+  )
+
+  const result =
+    await toggleAvailability({
+
+      id: productId,
+
+      available:
+        !currentStatus
+
+    })
+
+  // ROLLBACK
+  if (!result.success) {
+
+    setProducts(prev =>
+
+      prev.map(product =>
+
+        product.id === productId
+
+          ? {
+              ...product,
+              is_available:
+                currentStatus
+            }
+
+          : product
+      )
+
+    )
+
+  }
+
+}
 
   const [
   selectedCategory,
@@ -209,15 +270,22 @@ function BrandProductsPage() {
           {filteredProducts.map(product => (
 
             <ProductCard
-              key={product.id}
-              name={product.name}
-              category={product.category}
-              price={product.price}
-              image={product.image_url}
-              available={
-                product.is_available
-              }
-            />
+  key={product.id}
+  name={product.name}
+  category={product.category}
+  price={product.price}
+  image={product.image_url}
+  available={
+    product.is_available
+  }
+
+  onToggle={() =>
+    handleToggleAvailability(
+      product.id,
+      product.is_available
+    )
+  }
+/>
 
           ))}
 

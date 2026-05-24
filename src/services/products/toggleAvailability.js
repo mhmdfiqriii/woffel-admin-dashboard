@@ -15,7 +15,8 @@ async function toggleAvailability({
     .from("products")
 
     .update({
-      available
+      is_available:
+        available
     })
 
     .eq("id", id)
