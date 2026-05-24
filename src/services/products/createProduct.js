@@ -37,6 +37,14 @@ function sanitizeProduct(
         product.sort_order
       ),
 
+    options:
+  typeof product.options ===
+  "object"
+
+    ? product.options
+
+    : {},
+
     is_available:
       Boolean(
         product.is_available

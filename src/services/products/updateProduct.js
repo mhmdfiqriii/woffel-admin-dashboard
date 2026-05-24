@@ -47,6 +47,14 @@ function sanitizeUpdates(
             updates.sort_order
           ),
 
+    options:
+  typeof updates.options ===
+  "object"
+
+    ? updates.options
+
+    : {},
+
     is_available:
       Boolean(
         updates.is_available

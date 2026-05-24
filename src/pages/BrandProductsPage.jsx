@@ -42,6 +42,12 @@ from "../components/admin/products/ProductEditModal"
 import deleteProduct
 from "../services/products/deleteProduct"
 
+import useAdminToast
+from "../hooks/useAdminToast"
+
+import AdminToast
+from "../components/admin/shared/AdminToast"
+
 function BrandProductsPage() {
 
   const {
@@ -68,6 +74,11 @@ function BrandProductsPage() {
       item =>
         item.slug === brand
     )
+
+  const {
+    toast,
+    showToast
+  } = useAdminToast()
 
   // =====================
   // FETCH PRODUCTS
@@ -429,16 +440,24 @@ function BrandProductsPage() {
 
       <ProductEditModal
 
-        product={
-          selectedProduct
-        }
+  product={
+    selectedProduct
+  }
 
-        onClose={() =>
+  showToast={
+    showToast
+  }
 
-          setSelectedProduct(null)
+  onClose={() =>
 
-        }
-      />
+    setSelectedProduct(null)
+
+  }
+/>
+
+<AdminToast
+  toast={toast}
+/>
 
     </AdminLayout>
 

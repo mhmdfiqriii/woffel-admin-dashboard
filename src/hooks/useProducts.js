@@ -17,6 +17,10 @@ from "../utils/normalizeBrandSlug"
 import normalizeProduct
 from "../services/products/normalizeProduct"
 
+import {
+  sortProducts
+} from "../utils/adminUtils"
+
 
 function useProducts({
 
@@ -42,7 +46,9 @@ function useProducts({
       if (result.success) {
 
         let filtered =
-          result.data
+  result.data.map(
+    normalizeProduct
+  )
 
         // =====================
         // BRAND FILTER
@@ -61,7 +67,11 @@ function useProducts({
 
         }
 
-        setProducts(filtered)
+        setProducts(
+  sortProducts(
+    filtered
+  )
+)
 
       }
 
@@ -103,10 +113,10 @@ function useProducts({
     return prev
   }
 
-  return [
-    product,
-    ...prev
-  ]
+  return sortProducts([
+  product,
+  ...prev
+])
 
 })
 
@@ -144,7 +154,9 @@ function useProducts({
     ) !== brand
   ) return
 
-  setProducts(prev =>
+  setProducts(prev => {
+
+  const updated =
 
     prev.map(item =>
 
@@ -156,7 +168,11 @@ function useProducts({
 
     )
 
+  return sortProducts(
+    updated
   )
+
+})
 
 },
 
@@ -164,14 +180,14 @@ function useProducts({
 
           setProducts(prev =>
 
-            prev.filter(
-              product =>
+  prev.filter(item =>
 
-                product.id !==
-                payload.old.id
-            )
+    item.id !==
+    payload.old.id
 
-          )
+  )
+
+)
 
         }
 

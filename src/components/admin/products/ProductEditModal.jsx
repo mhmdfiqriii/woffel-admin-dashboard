@@ -14,37 +14,43 @@ function getInitialForm(
 
   return {
 
-    id:
-      product.id ?? null,
+  id:
+    product.id ?? null,
 
-    name:
-      product.name || "",
+  name:
+    product.name || "",
 
-    price:
-      product.price ?? "",
+  price:
+    product.price ?? "",
 
-    original_price:
-      product.original_price ?? "",
+  original_price:
+    product.original_price ?? "",
 
-    image_url:
-      product.image_url || "",
+  image_url:
+    product.image_url || "",
 
-    category:
-      product.category || "",
+  category:
+    product.category || "",
 
-    sort_order:
-      product.sort_order ?? "",
+  sort_order:
+    product.sort_order ?? "",
 
-    is_available:
-      product.is_available ?? true
+  is_available:
+    product.is_available ?? true,
 
-  }
-
+  options:
+    JSON.stringify(
+      product.options || {},
+      null,
+      2
+    )
+}
 }
 
 function ProductEditModal({
   product,
-  onClose
+  onClose,
+  showToast
 }) {
 
   const safeProduct =
@@ -52,6 +58,11 @@ function ProductEditModal({
 
   const isCreateMode =
     !safeProduct?.id
+
+  const [
+    saving,
+    setSaving
+  ] = useState(false)
 
   const [
     form,
@@ -111,10 +122,13 @@ function ProductEditModal({
 
   async function handleSave() {
 
+    if (saving) return
+
     if (!form.name.trim()) {
 
-      alert(
-        "Product name wajib diisi"
+      showToast(
+        "Product name wajib diisi",
+        "warning"
       )
 
       return
@@ -123,8 +137,9 @@ function ProductEditModal({
 
     if (!form.category.trim()) {
 
-      alert(
-        "Category wajib diisi"
+      showToast(
+        "Category wajib diisi",
+        "warning"
       )
 
       return
@@ -135,8 +150,9 @@ function ProductEditModal({
       form.price === ""
     ) {
 
-      alert(
-        "Price wajib diisi"
+      showToast(
+        "Price wajib diisi",
+        "warning"
       )
 
       return
@@ -147,8 +163,9 @@ function ProductEditModal({
       Number(form.price) < 0
     ) {
 
-      alert(
-        "Price tidak boleh minus"
+      showToast(
+        "Price tidak boleh minus",
+        "warning"
       )
 
       return
@@ -161,8 +178,9 @@ function ProductEditModal({
       ) < 0
     ) {
 
-      alert(
-        "Original price tidak boleh minus"
+      showToast(
+        "Original price tidak boleh minus",
+        "warning"
       )
 
       return
@@ -175,13 +193,53 @@ function ProductEditModal({
       ) < 0
     ) {
 
-      alert(
-        "Sort order tidak boleh minus"
+      showToast(
+        "Sort order tidak boleh minus",
+        "warning"
       )
 
       return
 
     }
+
+    let parsedOptions
+
+try {
+
+  parsedOptions =
+    form.options.trim()
+
+      ? JSON.parse(
+          form.options
+        )
+
+      : {}
+
+  if (
+    Array.isArray(
+      parsedOptions
+    )
+  ) {
+
+    showToast(
+      "Options harus object JSON",
+      "warning"
+    )
+
+    return
+
+  }
+
+} catch {
+
+  showToast(
+    "Format JSON options tidak valid",
+    "error"
+  )
+
+  return
+
+}
 
     const payload = {
 
@@ -195,9 +253,13 @@ function ProductEditModal({
 
       brand:
         safeProduct.brand ||
-        "Kopi Kenangan"
+        "Kopi Kenangan",
 
+      options:
+         parsedOptions,
     }
+
+    setSaving(true)
 
     const result =
 
@@ -217,14 +279,33 @@ function ProductEditModal({
 
           })
 
+    setSaving(false)
+
     if (result.success) {
+
+      showToast(
+
+        isCreateMode
+
+          ? "Product berhasil dibuat"
+
+          : "Product berhasil diupdate",
+
+        "success"
+
+      )
 
       onClose()
 
     } else {
 
-      alert(
-        "Gagal simpan product"
+      showToast(
+
+        result.message ||
+        "Gagal simpan product",
+
+        "error"
+
       )
 
     }
@@ -279,6 +360,8 @@ function ProductEditModal({
             "
 
             onClick={onClose}
+
+            disabled={saving}
           >
             ✕
           </button>
@@ -463,6 +546,35 @@ function ProductEditModal({
             }}
           />
 
+          <textarea
+  className="
+    admin-modal-input
+    admin-modal-textarea
+  "
+
+  value={
+    form.options
+  }
+
+  placeholder='
+{
+  "Temperature": [
+    "Ice",
+    "Hot"
+  ]
+}
+  '
+
+  onChange={(event) =>
+
+    handleChange(
+      "options",
+      event.target.value
+    )
+
+  }
+/>
+
           <label
             className="
               admin-modal-checkbox
@@ -507,6 +619,8 @@ function ProductEditModal({
             "
 
             onClick={onClose}
+
+            disabled={saving}
           >
             Cancel
           </button>
@@ -518,8 +632,16 @@ function ProductEditModal({
             "
 
             onClick={handleSave}
+
+            disabled={saving}
           >
-            Save
+
+            {
+              saving
+                ? "Saving..."
+                : "Save"
+            }
+
           </button>
 
         </div>

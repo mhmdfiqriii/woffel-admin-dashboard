@@ -11,7 +11,15 @@ function normalizeProduct(product) {
       product.original_price,
 
     is_available:
-      product.is_available ?? true
+      product.is_available ?? true,
+
+    options:
+      typeof product.options ===
+      "object"
+
+        ? product.options
+
+        : {}
 
   }
 

@@ -178,6 +178,46 @@ export const getTimeColor = (
 
 }
 
+export const sortProducts = (
+  products = []
+) => {
+
+  return [...products]
+
+    .sort((a, b) => {
+
+      const orderA =
+        Number(
+          a.sort_order
+        ) || 0
+
+      const orderB =
+        Number(
+          b.sort_order
+        ) || 0
+
+      // SORT ORDER
+      if (
+        orderA !== orderB
+      ) {
+
+        return (
+          orderA - orderB
+        )
+
+      }
+
+      // NEWEST
+      return new Date(
+        b.created_at
+      ) - new Date(
+        a.created_at
+      )
+
+    })
+
+}
+
 export const exportOrdersCSV = (
   orders = [],
   filteredOrders = []
@@ -190,6 +230,7 @@ export const exportOrdersCSV = (
     alert(
       "Tidak ada data order"
     )
+
 
     return
 
