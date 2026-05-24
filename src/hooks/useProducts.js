@@ -17,6 +17,7 @@ from "../utils/normalizeBrandSlug"
 import normalizeProduct
 from "../services/products/normalizeProduct"
 
+
 function useProducts({
 
   brand = null
@@ -77,56 +78,56 @@ function useProducts({
     const channel =
       subscribeProducts({
 
-        onInsert: payload => {
+        oonInsert: payload => {
 
-          const product =
-  normalizeProduct(
-    payload.new
-  )
+  const product =
+    normalizeProduct(
+      payload.new
+    )
 
-          if (
-  brand &&
-  normalizeBrandSlug(
-    product.brand
-  ) !== brand
-) return
+  if (
+    brand &&
+    normalizeBrandSlug(
+      product.brand
+    ) !== brand
+  ) return
 
-          setProducts(prev => [
-            product,
-            ...prev
-          ])
+  setProducts(prev => [
+    product,
+    ...prev
+  ])
 
-        },
+},
 
         onUpdate: payload => {
 
-          const product =
-  normalizeProduct(
-    payload.new
+  const product =
+    normalizeProduct(
+      payload.new
+    )
+
+  if (
+    brand &&
+    normalizeBrandSlug(
+      product.brand
+    ) !== brand
+  ) return
+
+  setProducts(prev =>
+
+    prev.map(item =>
+
+      item.id ===
+      product.id
+
+        ? product
+        : item
+
+    )
+
   )
 
-          if (
-  brand &&
-  normalizeBrandSlug(
-    product.brand
-  ) !== brand
-) return
-
-          setProducts(prev =>
-
-            prev.map(item =>
-
-              item.id ===
-              product.id
-
-                ? product
-                : item
-
-            )
-
-          )
-
-        },
+},
 
         onDelete: payload => {
 

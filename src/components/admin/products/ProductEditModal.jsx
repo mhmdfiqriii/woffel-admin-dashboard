@@ -5,35 +5,47 @@ import {
 import updateProduct
 from "../../../services/products/updateProduct"
 
+import createProduct
+from "../../../services/products/createProduct"
+
 function ProductEditModal({
   product,
   onClose
 }) {
 
-  if (!product) return null
+  const safeProduct =
+    product || {}
+
+  const isCreateMode =
+    !safeProduct?.id
 
   const [form, setForm] =
     useState({
 
       name:
-        product.name || "",
+        safeProduct.name || "",
 
       price:
-        product.price || 0,
+        safeProduct.price || 0,
 
       original_price:
-        product.originalPrice || 0,
+        safeProduct.original_price || 0,
+
+      image_url:
+        safeProduct.image_url || "",
 
       category:
-        product.category || "",
+        safeProduct.category || "",
 
       sort_order:
-        product.sort_order || 0,
+        safeProduct.sort_order || 0,
 
       is_available:
-        product.is_available || false
+        safeProduct.is_available || false
 
     })
+
+  if (!product) return null
 
   function handleChange(
     key,
@@ -49,14 +61,32 @@ function ProductEditModal({
 
   async function handleSave() {
 
+    const payload = {
+
+      ...form,
+
+      brand:
+        product.brand ||
+
+        "Kopi Kenangan"
+
+    }
+
     const result =
-      await updateProduct({
 
-        id: product.id,
+      isCreateMode
 
-        updates: form
+        ? await createProduct(
+            payload
+          )
 
-      })
+        : await updateProduct({
+
+            id: product.id,
+
+            updates: payload
+
+          })
 
     if (result.success) {
 
@@ -95,7 +125,15 @@ function ProductEditModal({
           <h2 className="
             admin-modal-title
           ">
-            Edit Product
+
+            {
+              isCreateMode
+
+                ? "Create Product"
+
+                : "Edit Product"
+            }
+
           </h2>
 
           <button
@@ -156,6 +194,7 @@ function ProductEditModal({
 
               handleChange(
                 "price",
+
                 Number(
                   event.target.value
                 )
@@ -187,6 +226,31 @@ function ProductEditModal({
                 Number(
                   event.target.value
                 )
+              )
+
+            }
+          />
+
+          <input
+            type="text"
+
+            className="
+              admin-modal-input
+            "
+
+            value={
+              form.image_url
+            }
+
+            placeholder="
+              Image URL
+            "
+
+            onChange={(event) =>
+
+              handleChange(
+                "image_url",
+                event.target.value
               )
 
             }
@@ -240,8 +304,6 @@ function ProductEditModal({
 
             }
           />
-
-          {/* TOGGLE */}
 
           <label className="
             admin-modal-checkbox

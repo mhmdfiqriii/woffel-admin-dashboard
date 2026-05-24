@@ -3,7 +3,7 @@ import {
 } from "../../lib/supabase"
 
 async function createProduct(
-  productData
+  product
 ) {
 
   const {
@@ -13,7 +13,7 @@ async function createProduct(
 
     .from("products")
 
-    .insert(productData)
+    .insert(product)
 
     .select()
 

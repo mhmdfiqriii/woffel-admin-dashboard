@@ -50,6 +50,16 @@ function BrandProductsPage() {
     setSearch
   ] = useState("")
 
+  const [
+    selectedCategory,
+    setSelectedCategory
+  ] = useState("All")
+
+  const [
+    selectedProduct,
+    setSelectedProduct
+  ] = useState(null)
+
   const brandData =
     brands.find(
       item =>
@@ -61,48 +71,21 @@ function BrandProductsPage() {
   // =====================
 
   const {
-  products,
-  loading,
-  setProducts
-} = useProducts({
-  brand
-})
+    products,
+    loading,
+    setProducts
+  } = useProducts({
+    brand
+  })
 
-async function handleToggleAvailability(
-  productId,
-  currentStatus
-) {
+  // =====================
+  // TOGGLE AVAILABILITY
+  // =====================
 
-  // OPTIMISTIC UI
-  setProducts(prev =>
-
-    prev.map(product =>
-
-      product.id === productId
-
-        ? {
-            ...product,
-            is_available:
-              !currentStatus
-          }
-
-        : product
-    )
-
-  )
-
-  const result =
-    await toggleAvailability({
-
-      id: productId,
-
-      available:
-        !currentStatus
-
-    })
-
-  // ROLLBACK
-  if (!result.success) {
+  async function handleToggleAvailability(
+    productId,
+    currentStatus
+  ) {
 
     setProducts(prev =>
 
@@ -113,7 +96,7 @@ async function handleToggleAvailability(
           ? {
               ...product,
               is_available:
-                currentStatus
+                !currentStatus
             }
 
           : product
@@ -121,50 +104,70 @@ async function handleToggleAvailability(
 
     )
 
+    const result =
+      await toggleAvailability({
+
+        id: productId,
+
+        available:
+          !currentStatus
+
+      })
+
+    // rollback
+    if (!result.success) {
+
+      setProducts(prev =>
+
+        prev.map(product =>
+
+          product.id === productId
+
+            ? {
+                ...product,
+                is_available:
+                  currentStatus
+              }
+
+            : product
+        )
+
+      )
+
+    }
+
   }
 
-}
-
-  const [
-  selectedCategory,
-  setSelectedCategory
-  ] = useState("All")
-
   // =====================
-  // SEARCH FILTER
+  // FILTER
   // =====================
 
   const filteredProducts =
-  products.filter(product => {
+    products.filter(product => {
 
-    const matchSearch =
-      product.name
-        ?.toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
+      const matchSearch =
+        product.name
+          ?.toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
 
-    const matchCategory =
+      const matchCategory =
 
-      selectedCategory ===
-      "All"
+        selectedCategory ===
+        "All"
 
-        ? true
+          ? true
 
-        : product.category ===
-          selectedCategory
+          : product.category ===
+            selectedCategory
 
-    return (
-      matchSearch &&
-      matchCategory
-    )
+      return (
+        matchSearch &&
+        matchCategory
+      )
 
-  })
-
-  const [
-  selectedProduct,
-  setSelectedProduct
-] = useState(null)
+    })
 
   return (
 
@@ -175,6 +178,7 @@ async function handleToggleAvailability(
           brandData?.label ||
           "Unknown Brand"
         }
+
         subtitle="
           Kelola produk brand
         "
@@ -186,90 +190,90 @@ async function handleToggleAvailability(
       />
 
       <ProductsCategories
-  products={products}
+        products={products}
 
-  selectedCategory={
-    selectedCategory
-  }
+        selectedCategory={
+          selectedCategory
+        }
 
-  onChange={
-    setSelectedCategory
-  }
-/>
+        onChange={
+          setSelectedCategory
+        }
+      />
 
       {loading ? (
 
         <div className="
-  admin-product-list
-">
+          admin-product-list
+        ">
 
-  {Array.from({
-    length: 6
-  }).map((_, index) => (
+          {Array.from({
+            length: 6
+          }).map((_, index) => (
 
-    <SkeletonProductCard
-      key={index}
-    />
+            <SkeletonProductCard
+              key={index}
+            />
 
-  ))}
+          ))}
 
-</div>
+        </div>
 
       ) : filteredProducts.length === 0 ? (
 
-  <EmptyProducts
+        <EmptyProducts
 
-    icon={
-      search
-        ? "🔍"
-        : selectedCategory !==
-          "All"
+          icon={
+            search
+              ? "🔍"
+              : selectedCategory !==
+                "All"
 
-          ? "📂"
+                ? "📂"
 
-          : "🍔"
-    }
+                : "🍔"
+          }
 
-    title={
+          title={
 
-      search
+            search
 
-        ? "Produk Tidak Ditemukan"
+              ? "Produk Tidak Ditemukan"
 
-        : selectedCategory !==
-          "All"
+              : selectedCategory !==
+                "All"
 
-          ? "Category Kosong"
+                ? "Category Kosong"
 
-          : "Belum Ada Produk"
+                : "Belum Ada Produk"
 
-    }
+          }
 
-    subtitle={
+          subtitle={
 
-      search
+            search
 
-        ? `
-          Tidak ada hasil
-          untuk pencarian "${search}"
-        `
+              ? `
+                Tidak ada hasil
+                untuk pencarian "${search}"
+              `
 
-        : selectedCategory !==
-          "All"
+              : selectedCategory !==
+                "All"
 
-          ? `
-            Tidak ada produk
-            pada category ini.
-          `
+                ? `
+                  Tidak ada produk
+                  pada category ini.
+                `
 
-          : `
-            Brand ini belum
-            punya produk.
-          `
-    }
-  />
+                : `
+                  Brand ini belum
+                  punya produk.
+                `
+          }
+        />
 
-) : (
+      ) : (
 
         <div className="
           admin-product-list
@@ -278,28 +282,41 @@ async function handleToggleAvailability(
           {filteredProducts.map(product => (
 
             <ProductCard
-  key={product.id}
-  name={product.name}
-  category={product.category}
-  price={product.price}
-  image={product.image_url}
-  available={
-    product.is_available
-  }
+              key={product.id}
 
-  onToggle={() =>
-    handleToggleAvailability(
-      product.id,
-      product.is_available
-    )
-  }
+              name={product.name}
 
-  onClick={() =>
-    setSelectedProduct(
-      product
-    )
-  }
-/>
+              category={
+                product.category
+              }
+
+              price={product.price}
+
+              image={
+                product.image_url
+              }
+
+              available={
+                product.is_available
+              }
+
+              onToggle={() =>
+
+                handleToggleAvailability(
+                  product.id,
+                  product.is_available
+                )
+
+              }
+
+              onClick={() =>
+
+                setSelectedProduct(
+                  product
+                )
+
+              }
+            />
 
           ))}
 
@@ -307,45 +324,57 @@ async function handleToggleAvailability(
 
       )}
 
-     <button
-  className="
-    admin-fab
-  "
+      {/* FAB */}
 
-  onClick={() =>
+      <button
+        className="
+          admin-fab
+        "
 
-    setSelectedProduct({
+        onClick={() =>
 
-      id: null,
+          setSelectedProduct({
 
-      name: "",
+            id: null,
 
-      price: 0,
+            brand:
+              brandData?.label ||
 
-      originalPrice: 0,
+              "Kopi Kenangan",
 
-      category: "",
+            name: "",
 
-      sort_order: 0,
+            category: "",
 
-      is_available: true
+            price: 0,
 
-    })
+            original_price: 0,
 
-  }
->
-  +
-</button>
+            image_url: "",
+
+            sort_order: 0,
+
+            is_available: true
+
+          })
+
+        }
+      >
+        +
+      </button>
+
+      {/* MODAL */}
 
       <ProductEditModal
 
-  product={selectedProduct}
+        product={
+          selectedProduct
+        }
 
-  onClose={() =>
-    setSelectedProduct(null)
-  }
-
-/>
+        onClose={() =>
+          setSelectedProduct(null)
+        }
+      />
 
     </AdminLayout>
 
