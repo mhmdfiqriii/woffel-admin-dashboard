@@ -3131,142 +3131,141 @@ body{
 }
 
 .admin-modal {
-
-  width: 100%;
-
+  width: calc(100% - 32px);
   max-width: 420px;
 
-  background: #111;
+  background: #0f0f0f;
 
-  border-radius: 24px;
+  border: 1px solid
+    rgba(255,255,255,0.06);
 
-  padding: 20px;
+  border-radius: 32px;
 
-}
+  padding: 28px 22px;
 
+  box-sizing: border-box;
 
-.admin-modal {
-
-  width: 100%;
-
-  max-width: 420px;
-
-  background: #111;
-
-  border: 1px solid #222;
-
-  border-radius: 28px;
-
-  padding: 24px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 14px;
+  position: relative;
 
   box-shadow:
-    0 20px 60px
-    rgba(0,0,0,0.5);
-
+    0 0 40px rgba(0,0,0,0.5);
 }
 
 .admin-modal-title {
+  font-size: 42px;
+  font-weight: 900;
 
-  font-size: 32px;
+  line-height: 1;
 
-  font-weight: 800;
+  margin-bottom: 28px;
+
+  color: white;
+}
+
+.admin-modal-close {
+  position: absolute;
+
+  top: 22px;
+  right: 22px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background:
+    rgba(255,255,255,0.08);
 
   color: white;
 
-  margin-bottom: 10px;
+  font-size: 18px;
 
+  cursor: pointer;
+}
+
+.admin-modal-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
 }
 
 .admin-modal-input {
-
   width: 100%;
 
-  height: 52px;
+  height: 58px;
 
-  border: 1px solid #2a2a2a;
+  border: 1px solid
+    rgba(255,255,255,0.05);
 
-  background: #1a1a1a;
+  background: #181818;
+
+  border-radius: 18px;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
 
   color: white;
-
-  border-radius: 14px;
-
-  padding: 0 16px;
 
   font-size: 16px;
 
   outline: none;
-
 }
 
 .admin-modal-input::placeholder {
+  color: #7b7b7b;
+}
 
-  color: #777;
-
+.admin-modal-input:focus {
+  border-color: #22c55e;
 }
 
 .admin-modal-checkbox {
-
   display: flex;
 
   align-items: center;
 
-  gap: 12px;
+  justify-content: space-between;
+
+  margin-top: 6px;
 
   color: white;
 
-  font-size: 15px;
-
-  margin-top: 4px;
-
+  font-size: 16px;
 }
 
 .admin-modal-actions {
-
   display: flex;
 
-  gap: 12px;
+  gap: 14px;
 
-  margin-top: 10px;
-
+  margin-top: 28px;
 }
 
 .admin-modal-button {
-
   flex: 1;
 
-  height: 48px;
+  height: 56px;
 
   border: none;
 
-  border-radius: 14px;
+  border-radius: 18px;
 
-  font-size: 15px;
-
+  font-size: 18px;
   font-weight: 700;
 
   cursor: pointer;
-
-}
-
-.admin-modal-button-save {
-
-  background: #22c55e;
-
-  color: black;
-
 }
 
 .admin-modal-button-cancel {
-
-  background: #222;
-
+  background: #1c1c1c;
   color: white;
+}
 
+.admin-modal-button-save {
+  background: #22c55e;
+  color: black;
 }
