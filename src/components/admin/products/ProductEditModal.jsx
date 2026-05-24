@@ -10,33 +10,42 @@ function ProductEditModal({
   onClose
 }) {
 
-  const safeProduct =
-    product || {}
+  if (!product) return null
 
   const [form, setForm] =
     useState({
 
       name:
-        safeProduct.name || "",
+        product.name || "",
 
       price:
-        safeProduct.price || 0,
+        product.price || 0,
 
       original_price:
-        safeProduct.originalPrice || 0,
+        product.originalPrice || 0,
 
       category:
-        safeProduct.category || "",
+        product.category || "",
 
       sort_order:
-        safeProduct.sort_order || 0,
+        product.sort_order || 0,
 
       is_available:
-        safeProduct.is_available || false
+        product.is_available || false
 
     })
 
-  if (!product) return null
+  function handleChange(
+    key,
+    value
+  ) {
+
+    setForm(prev => ({
+      ...prev,
+      [key]: value
+    }))
+
+  }
 
   async function handleSave() {
 
@@ -77,147 +86,221 @@ function ProductEditModal({
         }
       >
 
-        <h2>
-          Edit Product
-        </h2>
+        {/* HEADER */}
 
-        <input
-          type="text"
+        <div className="
+          admin-modal-header
+        ">
 
-          value={form.name}
+          <h2 className="
+            admin-modal-title
+          ">
+            Edit Product
+          </h2>
 
-          placeholder="Name"
+          <button
+            className="
+              admin-modal-close
+            "
 
-          onChange={(event) =>
+            onClick={onClose}
+          >
+            ✕
+          </button>
 
-            setForm(prev => ({
-              ...prev,
-              name:
-                event.target.value
-            }))
+        </div>
 
-          }
-        />
+        {/* FORM */}
 
-        <input
-          type="number"
-
-          value={form.price}
-
-          placeholder="Price"
-
-          onChange={(event) =>
-
-            setForm(prev => ({
-              ...prev,
-              price:
-                Number(
-                  event.target.value
-                )
-            }))
-
-          }
-        />
-
-        <input
-          type="number"
-
-          value={
-            form.original_price
-          }
-
-          placeholder="
-            Original Price
-          "
-
-          onChange={(event) =>
-
-            setForm(prev => ({
-              ...prev,
-              original_price:
-                Number(
-                  event.target.value
-                )
-            }))
-
-          }
-        />
-
-        <input
-          type="text"
-
-          value={form.category}
-
-          placeholder="Category"
-
-          onChange={(event) =>
-
-            setForm(prev => ({
-              ...prev,
-              category:
-                event.target.value
-            }))
-
-          }
-        />
-
-        <input
-          type="number"
-
-          value={form.sort_order}
-
-          placeholder="
-            Sort Order
-          "
-
-          onChange={(event) =>
-
-            setForm(prev => ({
-              ...prev,
-              sort_order:
-                Number(
-                  event.target.value
-                )
-            }))
-
-          }
-        />
-
-        <label>
-
-          Available
+        <div className="
+          admin-modal-form
+        ">
 
           <input
-            type="checkbox"
+            type="text"
 
-            checked={
-              form.is_available
-            }
+            className="
+              admin-modal-input
+            "
+
+            value={form.name}
+
+            placeholder="
+              Product Name
+            "
 
             onChange={(event) =>
 
-              setForm(prev => ({
-                ...prev,
-                is_available:
-                  event.target.checked
-              }))
+              handleChange(
+                "name",
+                event.target.value
+              )
 
             }
           />
 
-        </label>
+          <input
+            type="number"
 
-        <button
-          onClick={handleSave}
-        >
-          Save
-        </button>
+            className="
+              admin-modal-input
+            "
 
-        <button
-          onClick={onClose}
-        >
-          Cancel
-        </button>
+            value={form.price}
+
+            placeholder="
+              Price
+            "
+
+            onChange={(event) =>
+
+              handleChange(
+                "price",
+                Number(
+                  event.target.value
+                )
+              )
+
+            }
+          />
+
+          <input
+            type="number"
+
+            className="
+              admin-modal-input
+            "
+
+            value={
+              form.original_price
+            }
+
+            placeholder="
+              Original Price
+            "
+
+            onChange={(event) =>
+
+              handleChange(
+                "original_price",
+
+                Number(
+                  event.target.value
+                )
+              )
+
+            }
+          />
+
+          <input
+            type="text"
+
+            className="
+              admin-modal-input
+            "
+
+            value={form.category}
+
+            placeholder="
+              Category
+            "
+
+            onChange={(event) =>
+
+              handleChange(
+                "category",
+                event.target.value
+              )
+
+            }
+          />
+
+          <input
+            type="number"
+
+            className="
+              admin-modal-input
+            "
+
+            value={form.sort_order}
+
+            placeholder="
+              Sort Order
+            "
+
+            onChange={(event) =>
+
+              handleChange(
+                "sort_order",
+
+                Number(
+                  event.target.value
+                )
+              )
+
+            }
+          />
+
+          {/* TOGGLE */}
+
+          <label className="
+            admin-modal-checkbox
+          ">
+
+            <span>
+              Available
+            </span>
+
+            <input
+              type="checkbox"
+
+              checked={
+                form.is_available
+              }
+
+              onChange={(event) =>
+
+                handleChange(
+                  "is_available",
+                  event.target.checked
+                )
+
+              }
+            />
+
+          </label>
+
+        </div>
+
+        {/* ACTIONS */}
+
+        <div className="
+          admin-modal-actions
+        ">
+
+          <button
+            className="
+              admin-modal-button
+              admin-modal-button-cancel
+            "
+
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+
+          <button
+            className="
+              admin-modal-button
+              admin-modal-button-save
+            "
+
+            onClick={handleSave}
+          >
+            Save
+          </button>
+
+        </div>
 
       </div>
 

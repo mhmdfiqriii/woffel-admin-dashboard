@@ -3143,3 +3143,130 @@ body{
   padding: 20px;
 
 }
+
+
+.admin-modal {
+
+  width: 100%;
+
+  max-width: 420px;
+
+  background: #111;
+
+  border: 1px solid #222;
+
+  border-radius: 28px;
+
+  padding: 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  box-shadow:
+    0 20px 60px
+    rgba(0,0,0,0.5);
+
+}
+
+.admin-modal-title {
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+  color: white;
+
+  margin-bottom: 10px;
+
+}
+
+.admin-modal-input {
+
+  width: 100%;
+
+  height: 52px;
+
+  border: 1px solid #2a2a2a;
+
+  background: #1a1a1a;
+
+  color: white;
+
+  border-radius: 14px;
+
+  padding: 0 16px;
+
+  font-size: 16px;
+
+  outline: none;
+
+}
+
+.admin-modal-input::placeholder {
+
+  color: #777;
+
+}
+
+.admin-modal-checkbox {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: white;
+
+  font-size: 15px;
+
+  margin-top: 4px;
+
+}
+
+.admin-modal-actions {
+
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 10px;
+
+}
+
+.admin-modal-button {
+
+  flex: 1;
+
+  height: 48px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+}
+
+.admin-modal-button-save {
+
+  background: #22c55e;
+
+  color: black;
+
+}
+
+.admin-modal-button-cancel {
+
+  background: #222;
+
+  color: white;
+
+}
