@@ -8,6 +8,40 @@ from "../../../services/products/updateProduct"
 import createProduct
 from "../../../services/products/createProduct"
 
+function getInitialForm(
+  product = {}
+) {
+
+  return {
+
+    id:
+      product.id ?? null,
+
+    name:
+      product.name || "",
+
+    price:
+      product.price ?? "",
+
+    original_price:
+      product.original_price ?? "",
+
+    image_url:
+      product.image_url || "",
+
+    category:
+      product.category || "",
+
+    sort_order:
+      product.sort_order ?? "",
+
+    is_available:
+      product.is_available ?? true
+
+  }
+
+}
+
 function ProductEditModal({
   product,
   onClose
@@ -19,33 +53,38 @@ function ProductEditModal({
   const isCreateMode =
     !safeProduct?.id
 
-  const [form, setForm] =
-    useState({
+  const [
+    form,
+    setForm
+  ] = useState(
+    getInitialForm(
+      safeProduct
+    )
+  )
 
-      name:
-        safeProduct.name || "",
+  if (product === null)
+    return null
 
-      price:
-        safeProduct.price ?? "",
+  // =====================
+  // SYNC PRODUCT
+  // =====================
 
-      original_price:
-        safeProduct.original_price ?? "",
+  if (
+    form.id !==
+    safeProduct.id
+  ) {
 
-      image_url:
-        safeProduct.image_url || "",
+    setForm(
+      getInitialForm(
+        safeProduct
+      )
+    )
 
-      category:
-        safeProduct.category || "",
+  }
 
-      sort_order:
-        safeProduct.sort_order ?? "",
-
-      is_available:
-        safeProduct.is_available || false
-
-    })
-
-  if (!product) return null
+  // =====================
+  // HANDLE CHANGE
+  // =====================
 
   function handleChange(
     key,
@@ -53,93 +92,12 @@ function ProductEditModal({
   ) {
 
     setForm(prev => ({
+
       ...prev,
+
       [key]: value
+
     }))
-
-  }
-
-  async function handleSave() {
-
-  // =====================
-  // VALIDATION
-  // =====================
-
-  if (!form.name.trim()) {
-
-    alert(
-      "Product name wajib diisi"
-    )
-
-    return
-
-  }
-
-  if (!form.category.trim()) {
-
-    alert(
-      "Category wajib diisi"
-    )
-
-    return
-
-  }
-
-  if (
-    Number(form.price) < 0
-  ) {
-
-    alert(
-      "Price tidak boleh minus"
-    )
-
-    return
-
-  }
-
-  if (
-    Number(
-      form.original_price
-    ) < 0
-  ) {
-
-    alert(
-      "Original price tidak boleh minus"
-    )
-
-    return
-
-  }
-
-  if (
-    Number(form.sort_order) < 0
-  ) {
-
-    alert(
-      "Sort order tidak boleh minus"
-    )
-
-    return
-
-  }
-
-  // =====================
-  // PAYLOAD
-  // =====================
-
-  const payload = {
-
-    ...form,
-
-    name:
-      form.name.trim(),
-
-    category:
-      form.category.trim(),
-
-    brand:
-      product.brand ||
-      "Kopi Kenangan"
 
   }
 
@@ -147,35 +105,115 @@ function ProductEditModal({
   // SAVE
   // =====================
 
-  const result =
+  async function handleSave() {
 
-    isCreateMode
+    if (!form.name.trim()) {
 
-      ? await createProduct(
-          payload
-        )
+      alert(
+        "Product name wajib diisi"
+      )
 
-      : await updateProduct({
+      return
 
-          id: product.id,
+    }
 
-          updates: payload
+    if (!form.category.trim()) {
 
-        })
+      alert(
+        "Category wajib diisi"
+      )
 
-  if (result.success) {
+      return
 
-    onClose()
+    }
 
-  } else {
+    if (
+      Number(form.price) < 0
+    ) {
 
-    alert(
-      "Gagal simpan product"
-    )
+      alert(
+        "Price tidak boleh minus"
+      )
+
+      return
+
+    }
+
+    if (
+      Number(
+        form.original_price
+      ) < 0
+    ) {
+
+      alert(
+        "Original price tidak boleh minus"
+      )
+
+      return
+
+    }
+
+    if (
+      Number(
+        form.sort_order
+      ) < 0
+    ) {
+
+      alert(
+        "Sort order tidak boleh minus"
+      )
+
+      return
+
+    }
+
+    const payload = {
+
+      ...form,
+
+      name:
+        form.name.trim(),
+
+      category:
+        form.category.trim(),
+
+      brand:
+        safeProduct.brand ||
+        "Kopi Kenangan"
+
+    }
+
+    const result =
+
+      isCreateMode
+
+        ? await createProduct(
+            payload
+          )
+
+        : await updateProduct({
+
+            id:
+              safeProduct.id,
+
+            updates:
+              payload
+
+          })
+
+    if (result.success) {
+
+      onClose()
+
+    } else {
+
+      alert(
+        "Gagal simpan product"
+      )
+
+    }
 
   }
-
-}
 
   return (
 
@@ -199,13 +237,17 @@ function ProductEditModal({
 
         {/* HEADER */}
 
-        <div className="
-          admin-modal-header
-        ">
+        <div
+          className="
+            admin-modal-header
+          "
+        >
 
-          <h2 className="
-            admin-modal-title
-          ">
+          <h2
+            className="
+              admin-modal-title
+            "
+          >
 
             {
               isCreateMode
@@ -231,9 +273,11 @@ function ProductEditModal({
 
         {/* FORM */}
 
-        <div className="
-          admin-modal-form
-        ">
+        <div
+          className="
+            admin-modal-form
+          "
+        >
 
           <input
             type="text"
@@ -260,35 +304,46 @@ function ProductEditModal({
 
           <input
             type="number"
+
             min="0"
+
             className="
               admin-modal-input
             "
+
             value={form.price}
 
             placeholder="
               Price
             "
 
-            onChange={(event) =>
+            onChange={(event) => {
+
+              const value =
+                event.target.value
 
               handleChange(
+
                 "price",
 
-                Number(
-                  event.target.value
-                )
+                value === ""
+                  ? ""
+                  : Number(value)
+
               )
 
-            }
+            }}
           />
 
           <input
             type="number"
+
             min="0"
+
             className="
               admin-modal-input
             "
+
             value={
               form.original_price
             }
@@ -296,17 +351,23 @@ function ProductEditModal({
             placeholder="
               Original Price
             "
-            onChange={(event) =>
+
+            onChange={(event) => {
+
+              const value =
+                event.target.value
 
               handleChange(
+
                 "original_price",
 
-                Number(
-                  event.target.value
-                )
+                value === ""
+                  ? ""
+                  : Number(value)
+
               )
 
-            }
+            }}
           />
 
           <input
@@ -341,7 +402,9 @@ function ProductEditModal({
               admin-modal-input
             "
 
-            value={form.category}
+            value={
+              form.category
+            }
 
             placeholder="
               Category
@@ -359,33 +422,44 @@ function ProductEditModal({
 
           <input
             type="number"
+
             min="0"
+
             className="
               admin-modal-input
             "
 
-            value={form.sort_order}
+            value={
+              form.sort_order
+            }
 
             placeholder="
               Sort Order
             "
 
-            onChange={(event) =>
+            onChange={(event) => {
+
+              const value =
+                event.target.value
 
               handleChange(
+
                 "sort_order",
 
-                Number(
-                  event.target.value
-                )
+                value === ""
+                  ? ""
+                  : Number(value)
+
               )
 
-            }
+            }}
           />
 
-          <label className="
-            admin-modal-checkbox
-          ">
+          <label
+            className="
+              admin-modal-checkbox
+            "
+          >
 
             <span>
               Available
@@ -414,9 +488,11 @@ function ProductEditModal({
 
         {/* ACTIONS */}
 
-        <div className="
-          admin-modal-actions
-        ">
+        <div
+          className="
+            admin-modal-actions
+          "
+        >
 
           <button
             className="

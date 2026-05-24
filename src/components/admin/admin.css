@@ -2189,7 +2189,7 @@ body {
 
 .admin-fab {
   position:fixed;
-
+  z-index:200;
   right:20px;
   bottom:100px;
 
@@ -3197,7 +3197,7 @@ body {
 
   word-spacing: 0;
 
-  text-align: left;
+  text-align: left !important;
 
 }
 
@@ -3270,6 +3270,7 @@ body {
 
 .admin-product-card {
   position: relative;
+  cursor:pointer;
 }
 
 .admin-product-delete {
@@ -3361,25 +3362,6 @@ body {
   font-weight: 600;
 }
 
-.admin-product-badge {
-  position: absolute;
-
-  left: 12px;
-  bottom: 12px;
-
-  background: #ff7a00;
-
-  color: white;
-
-  padding: 6px 10px;
-
-  border-radius: 999px;
-
-  font-size: 12px;
-
-  font-weight: 700;
-}
-
 .admin-product-category {
   display: inline-flex;
 
@@ -3412,4 +3394,16 @@ body {
   color: #777;
 
   text-decoration: line-through;
+}
+
+.admin-modal-input{
+  text-align:left !important;
+}
+
+.admin-product-card{
+  cursor:pointer;
+}
+
+.admin-product-card:active{
+  transform:scale(.98);
 }

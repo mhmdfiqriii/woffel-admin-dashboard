@@ -6,8 +6,6 @@ function ProductCard({
 
   price = 18000,
 
-  originalPrice = 18000,
-
   image = "",
 
   available = true,
@@ -23,13 +21,6 @@ function ProductCard({
   const formattedPrice =
     Number(price)
       .toLocaleString("id-ID")
-
-  const formattedOriginalPrice =
-    Number(originalPrice)
-      .toLocaleString("id-ID")
-
-  const isPromo =
-    originalPrice > price
 
   return (
 
@@ -103,19 +94,7 @@ function ProductCard({
             admin-product-image-tag
           "
         />
-
-        {/* PROMO BADGE */}
-
-        {isPromo && (
-
-          <div className="
-            admin-product-badge
-          ">
-            Promo
-          </div>
-
-        )}
-
+        
       </div>
 
       {/* BODY */}
@@ -157,18 +136,6 @@ function ProductCard({
             Rp {formattedPrice}
 
           </div>
-
-          {isPromo && (
-
-            <div className="
-              admin-product-original-price
-            ">
-
-              Rp {formattedOriginalPrice}
-
-            </div>
-
-          )}
 
         </div>
 
