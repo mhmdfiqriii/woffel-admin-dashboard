@@ -90,6 +90,8 @@ function BrandProductsPage() {
     currentStatus
   ) {
 
+    // optimistic update
+
     setProducts(prev =>
 
       prev.map(product =>
@@ -103,6 +105,7 @@ function BrandProductsPage() {
             }
 
           : product
+
       )
 
     )
@@ -118,6 +121,7 @@ function BrandProductsPage() {
       })
 
     // rollback
+
     if (!result.success) {
 
       setProducts(prev =>
@@ -133,9 +137,47 @@ function BrandProductsPage() {
               }
 
             : product
+
         )
 
       )
+
+    }
+
+  }
+
+  // =====================
+  // DELETE PRODUCT
+  // =====================
+
+  async function handleDeleteProduct(
+    productId
+  ) {
+
+    // optimistic delete
+
+    setProducts(prev =>
+
+      prev.filter(product =>
+
+        product.id !==
+        productId
+
+      )
+
+    )
+
+    const result =
+      await deleteProduct(
+        productId
+      )
+
+    // rollback kasar
+    // manusia suka pencet aneh
+
+    if (!result.success) {
+
+      window.location.reload()
 
     }
 
@@ -149,6 +191,7 @@ function BrandProductsPage() {
     products.filter(product => {
 
       const matchSearch =
+
         product.name
           ?.toLowerCase()
           .includes(
@@ -171,34 +214,6 @@ function BrandProductsPage() {
       )
 
     })
-
-    async function handleDeleteProduct(
-  productId
-) {
-
-  // optimistic
-  setProducts(prev =>
-
-    prev.filter(product =>
-
-      product.id !== productId
-
-    )
-
-  )
-
-  const result =
-    await deleteProduct(
-      productId
-    )
-
-  if (!result.success) {
-
-    window.location.reload()
-
-  }
-
-}
 
   return (
 
@@ -231,6 +246,8 @@ function BrandProductsPage() {
           setSelectedCategory
         }
       />
+
+      {/* LOADING */}
 
       {loading ? (
 
@@ -313,6 +330,7 @@ function BrandProductsPage() {
           {filteredProducts.map(product => (
 
             <ProductCard
+
               key={product.id}
 
               name={product.name}
@@ -321,7 +339,13 @@ function BrandProductsPage() {
                 product.category
               }
 
-              price={product.price}
+              price={
+                product.price
+              }
+
+              originalPrice={
+                product.original_price
+              }
 
               image={
                 product.image_url
@@ -333,11 +357,11 @@ function BrandProductsPage() {
 
               onDelete={() =>
 
-  handleDeleteProduct(
-    product.id
-  )
+                handleDeleteProduct(
+                  product.id
+                )
 
-}
+              }
 
               onToggle={() =>
 
@@ -411,7 +435,9 @@ function BrandProductsPage() {
         }
 
         onClose={() =>
+
           setSelectedProduct(null)
+
         }
       />
 
