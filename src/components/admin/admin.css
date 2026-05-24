@@ -3233,11 +3233,21 @@ body{
 
   font-size: 15px;
 
+  font-family: inherit;
+
+  letter-spacing: 0;
+
+  word-spacing: 0;
+
+  text-align: left;
+
 }
 
 .admin-modal-input::placeholder {
 
-  color: #7c7c7c;
+  letter-spacing: 0;
+
+  text-align: left;
 
 }
 
