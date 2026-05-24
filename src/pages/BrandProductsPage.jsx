@@ -39,6 +39,9 @@ from "../services/products/toggleAvailability"
 import ProductEditModal
 from "../components/admin/products/ProductEditModal"
 
+import deleteProduct
+from "../services/products/deleteProduct"
+
 function BrandProductsPage() {
 
   const {
@@ -168,6 +171,34 @@ function BrandProductsPage() {
       )
 
     })
+
+    async function handleDeleteProduct(
+  productId
+) {
+
+  // optimistic
+  setProducts(prev =>
+
+    prev.filter(product =>
+
+      product.id !== productId
+
+    )
+
+  )
+
+  const result =
+    await deleteProduct(
+      productId
+    )
+
+  if (!result.success) {
+
+    window.location.reload()
+
+  }
+
+}
 
   return (
 
@@ -299,6 +330,14 @@ function BrandProductsPage() {
               available={
                 product.is_available
               }
+
+              onDelete={() =>
+
+  handleDeleteProduct(
+    product.id
+  )
+
+}
 
               onToggle={() =>
 

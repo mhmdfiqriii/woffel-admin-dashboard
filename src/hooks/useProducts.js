@@ -78,7 +78,7 @@ function useProducts({
     const channel =
       subscribeProducts({
 
-        oonInsert: payload => {
+        onInsert: payload => {
 
   const product =
     normalizeProduct(
@@ -105,6 +105,24 @@ function useProducts({
     normalizeProduct(
       payload.new
     )
+
+  // SOFT DELETE
+  if (product.is_deleted) {
+
+    setProducts(prev =>
+
+      prev.filter(item =>
+
+        item.id !==
+        product.id
+
+      )
+
+    )
+
+    return
+
+  }
 
   if (
     brand &&

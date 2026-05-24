@@ -6,13 +6,17 @@ function ProductCard({
 
   price = 18000,
 
+  originalPrice = 18000,
+
   image = "",
 
   available = true,
 
   onToggle = () => {},
 
-  onClick = () => {}
+  onClick = () => {},
+
+  onDelete = () => {}
 
 }) {
 
@@ -20,13 +24,73 @@ function ProductCard({
     Number(price)
       .toLocaleString("id-ID")
 
+  const formattedOriginalPrice =
+    Number(originalPrice)
+      .toLocaleString("id-ID")
+
+  const isPromo =
+    originalPrice > price
+
   return (
 
-    <div className="
-      admin-product-card
-    "
-    onClick={onClick}
+    <div
+      className="
+        admin-product-card
+      "
+
+      onClick={onClick}
     >
+
+      {/* UNAVAILABLE */}
+
+      {!available && (
+
+        <div className="
+          admin-product-overlay
+        ">
+          Unavailable
+        </div>
+
+      )}
+
+      {/* DELETE */}
+
+      <button
+        type="button"
+
+        className="
+          admin-product-delete
+        "
+
+        onClick={(event) => {
+
+          event.stopPropagation()
+
+          const confirmDelete =
+            window.confirm(
+              `Hapus ${name}?`
+            )
+
+          if (confirmDelete) {
+
+            onDelete()
+
+          }
+
+        }}
+      >
+        🗑
+      </button>
+
+      {/* EDIT BADGE */}
+
+      <div className="
+        admin-product-edit
+      ">
+        Edit
+      </div>
+
+      {/* IMAGE */}
 
       <div className="
         admin-product-image
@@ -40,11 +104,27 @@ function ProductCard({
           "
         />
 
+        {/* PROMO BADGE */}
+
+        {isPromo && (
+
+          <div className="
+            admin-product-badge
+          ">
+            Promo
+          </div>
+
+        )}
+
       </div>
+
+      {/* BODY */}
 
       <div className="
         admin-product-body
       ">
+
+        {/* CATEGORY */}
 
         <div className="
           admin-product-category
@@ -54,6 +134,8 @@ function ProductCard({
 
         </div>
 
+        {/* NAME */}
+
         <div className="
           admin-product-name
         ">
@@ -62,28 +144,50 @@ function ProductCard({
 
         </div>
 
+        {/* PRICE */}
+
         <div className="
-          admin-product-price
+          admin-product-prices
         ">
 
-          Rp. {formattedPrice}
+          <div className="
+            admin-product-price
+          ">
+
+            Rp {formattedPrice}
+
+          </div>
+
+          {isPromo && (
+
+            <div className="
+              admin-product-original-price
+            ">
+
+              Rp {formattedOriginalPrice}
+
+            </div>
+
+          )}
 
         </div>
 
       </div>
 
+      {/* TOGGLE */}
+
       <button
-  type="button"
+        type="button"
 
-  onClick={(event) => {
+        onClick={(event) => {
 
-  event.stopPropagation()
+          event.stopPropagation()
 
-  onToggle()
+          onToggle()
 
-}}
+        }}
 
-  className={`
+        className={`
           admin-product-toggle
 
           ${

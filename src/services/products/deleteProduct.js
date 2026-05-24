@@ -6,14 +6,17 @@ async function deleteProduct(
   id
 ) {
 
-  const { error } =
-    await supabase
+  const {
+    error
+  } = await supabase
 
-      .from("products")
+    .from("products")
 
-      .delete()
+    .update({
+      is_deleted: true
+    })
 
-      .eq("id", id)
+    .eq("id", id)
 
   if (error) {
 
