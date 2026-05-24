@@ -3109,364 +3109,96 @@ body{
 
 }
 
-.admin-modal-overlay {
-
-  position: fixed;
-
-  inset: 0;
-
-  background:
-    rgba(0, 0, 0, 0.72);
-
-  backdrop-filter:
-    blur(8px);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  z-index: 9999;
-
-  padding: 20px;
-
-}
-
 .admin-modal {
-
   position: relative;
-
   width: 100%;
-
   max-width: 380px;
-
   background: #0f0f10;
-
-  border:
-    1px solid rgba(255,255,255,0.06);
-
+  border: 1px solid rgba(255,255,255,.06);
   border-radius: 30px;
-
   padding: 22px;
-
   box-sizing: border-box;
-
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.45);
-
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
 }
 
 .admin-modal-title {
-
   color: white;
-
   font-size: 32px;
-
   font-weight: 900;
-
   line-height: 1;
-
   margin: 0 0 24px;
-
   white-space: nowrap;
-
 }
 
 .admin-modal-close {
-
   position: absolute;
-
   top: 18px;
-
   right: 18px;
-
   width: 42px;
-
   height: 42px;
-
   border: none;
-
   border-radius: 50%;
-
-  background:
-    rgba(255,255,255,0.08);
-
+  background: rgba(255,255,255,.08);
   color: white;
-
   font-size: 20px;
-
   cursor: pointer;
-
 }
 
 .admin-modal-form {
-
   display: flex;
-
   flex-direction: column;
-
   gap: 12px;
-
 }
 
 .admin-modal-input {
-
   width: 100%;
-
   height: 52px;
-
   background: #18181a;
-
-  border:
-    1px solid rgba(255,255,255,0.05);
-
+  border: 1px solid rgba(255,255,255,.05);
   border-radius: 16px;
-
   padding: 0 16px;
-
   box-sizing: border-box;
-
   outline: none;
-
   color: white;
-
   font-size: 15px;
-
   font-family: inherit;
-
-  letter-spacing: 0;
-
-  word-spacing: 0;
-
-  text-align: left;
-
-}
-
-.admin-modal-input::placeholder {
-
-  letter-spacing: 0;
-
-  text-align: left;
-
 }
 
 .admin-modal-input:focus {
-
   border-color: #22c55e;
-
 }
 
 .admin-modal-checkbox {
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   margin-top: 6px;
-
   color: white;
-
   font-size: 15px;
-
 }
 
 .admin-modal-actions {
-
   display: flex;
-
   gap: 12px;
-
   margin-top: 22px;
-
 }
 
 .admin-modal-button {
-
   flex: 1;
-
   height: 52px;
-
   border: none;
-
   border-radius: 16px;
-
   font-size: 16px;
-
   font-weight: 700;
-
   cursor: pointer;
-
 }
 
 .admin-modal-button-cancel {
-
   background: #1d1d1f;
-
   color: white;
-
 }
 
 .admin-modal-button-save {
-
   background: #22c55e;
-
   color: black;
-
-}
-
-.admin-product-card {
-  position: relative;
-}
-
-.admin-product-delete {
-
-  position: absolute;
-
-  top: 10px;
-  right: 10px;
-
-  width: 34px;
-  height: 34px;
-
-  border: none;
-
-  border-radius: 12px;
-
-  background: rgba(
-    0,
-    0,
-    0,
-    0.6
-  );
-
-  color: white;
-
-  cursor: pointer;
-
-  z-index: 5;
-}
-
-.admin-product-card {
-
-  position: relative;
-
-  overflow: hidden;
-
-  border-radius: 24px;
-
-  background: #111;
-
-}
-
-.admin-product-overlay {
-
-  position: absolute;
-
-  inset: 0;
-
-  background:
-    rgba(0,0,0,0.65);
-
-  z-index: 20;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size: 18px;
-
-  font-weight: 700;
-
-  color: white;
-
-  backdrop-filter: blur(2px);
-}
-
-.admin-product-edit {
-
-  position: absolute;
-
-  top: 12px;
-  left: 12px;
-
-  z-index: 10;
-
-  background: rgba(
-    0,
-    0,
-    0,
-    0.6
-  );
-
-  color: white;
-
-  padding: 6px 12px;
-
-  border-radius: 999px;
-
-  font-size: 12px;
-
-  font-weight: 600;
-}
-
-.admin-product-badge {
-
-  position: absolute;
-
-  left: 12px;
-  bottom: 12px;
-
-  background: #ff7a00;
-
-  color: white;
-
-  padding: 6px 10px;
-
-  border-radius: 999px;
-
-  font-size: 12px;
-
-  font-weight: 700;
-}
-
-.admin-product-category {
-
-  display: inline-flex;
-
-  width: fit-content;
-
-  padding: 5px 10px;
-
-  border-radius: 999px;
-
-  background: #1e1e1e;
-
-  color: #aaa;
-
-  font-size: 12px;
-
-  margin-bottom: 10px;
-}
-
-.admin-product-prices {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 4px;
-}
-
-.admin-product-original-price {
-
-  font-size: 13px;
-
-  color: #777;
-
-  text-decoration: line-through;
 }

@@ -26,10 +26,10 @@ function ProductEditModal({
         safeProduct.name || "",
 
       price:
-        safeProduct.price || 0,
+        safeProduct.price ?? "",
 
       original_price:
-        safeProduct.original_price || 0,
+        safeProduct.original_price ?? "",
 
       image_url:
         safeProduct.image_url || "",
@@ -38,7 +38,7 @@ function ProductEditModal({
         safeProduct.category || "",
 
       sort_order:
-        safeProduct.sort_order || 0,
+        safeProduct.sort_order ?? "",
 
       is_available:
         safeProduct.is_available || false
@@ -61,40 +61,121 @@ function ProductEditModal({
 
   async function handleSave() {
 
-    const payload = {
+  // =====================
+  // VALIDATION
+  // =====================
 
-      ...form,
+  if (!form.name.trim()) {
 
-      brand:
-        product.brand ||
+    alert(
+      "Product name wajib diisi"
+    )
 
-        "Kopi Kenangan"
-
-    }
-
-    const result =
-
-      isCreateMode
-
-        ? await createProduct(
-            payload
-          )
-
-        : await updateProduct({
-
-            id: product.id,
-
-            updates: payload
-
-          })
-
-    if (result.success) {
-
-      onClose()
-
-    }
+    return
 
   }
+
+  if (!form.category.trim()) {
+
+    alert(
+      "Category wajib diisi"
+    )
+
+    return
+
+  }
+
+  if (
+    Number(form.price) < 0
+  ) {
+
+    alert(
+      "Price tidak boleh minus"
+    )
+
+    return
+
+  }
+
+  if (
+    Number(
+      form.original_price
+    ) < 0
+  ) {
+
+    alert(
+      "Original price tidak boleh minus"
+    )
+
+    return
+
+  }
+
+  if (
+    Number(form.sort_order) < 0
+  ) {
+
+    alert(
+      "Sort order tidak boleh minus"
+    )
+
+    return
+
+  }
+
+  // =====================
+  // PAYLOAD
+  // =====================
+
+  const payload = {
+
+    ...form,
+
+    name:
+      form.name.trim(),
+
+    category:
+      form.category.trim(),
+
+    brand:
+      product.brand ||
+      "Kopi Kenangan"
+
+  }
+
+  // =====================
+  // SAVE
+  // =====================
+
+  const result =
+
+    isCreateMode
+
+      ? await createProduct(
+          payload
+        )
+
+      : await updateProduct({
+
+          id: product.id,
+
+          updates: payload
+
+        })
+
+  if (result.success) {
+
+    onClose()
+
+  } else {
+
+    alert(
+      "Gagal simpan product"
+    )
+
+  }
+
+}
 
   return (
 
@@ -179,11 +260,10 @@ function ProductEditModal({
 
           <input
             type="number"
-
+            min="0"
             className="
               admin-modal-input
             "
-
             value={form.price}
 
             placeholder="
@@ -205,11 +285,10 @@ function ProductEditModal({
 
           <input
             type="number"
-
+            min="0"
             className="
               admin-modal-input
             "
-
             value={
               form.original_price
             }
@@ -217,7 +296,6 @@ function ProductEditModal({
             placeholder="
               Original Price
             "
-
             onChange={(event) =>
 
               handleChange(
@@ -281,7 +359,7 @@ function ProductEditModal({
 
           <input
             type="number"
-
+            min="0"
             className="
               admin-modal-input
             "

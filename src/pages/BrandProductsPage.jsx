@@ -372,13 +372,15 @@ function BrandProductsPage() {
 
               }
 
-              onClick={() =>
+              onClick={() => {
 
-                setSelectedProduct(
-                  product
-                )
+  console.log(product)
 
-              }
+  setSelectedProduct(
+    product
+  )
+
+}}
             />
 
           ))}
