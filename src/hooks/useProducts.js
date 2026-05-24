@@ -14,6 +14,9 @@ import {
 import normalizeBrandSlug
 from "../utils/normalizeBrandSlug"
 
+import normalizeProduct
+from "../services/products/normalizeProduct"
+
 function useProducts({
 
   brand = null
@@ -77,7 +80,9 @@ function useProducts({
         onInsert: payload => {
 
           const product =
-            payload.new
+  normalizeProduct(
+    payload.new
+  )
 
           if (
   brand &&
@@ -96,7 +101,9 @@ function useProducts({
         onUpdate: payload => {
 
           const product =
-            payload.new
+  normalizeProduct(
+    payload.new
+  )
 
           if (
   brand &&
