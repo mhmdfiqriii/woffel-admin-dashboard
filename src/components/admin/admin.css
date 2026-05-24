@@ -3132,140 +3132,62 @@ body{
 
 .admin-modal {
   width: calc(100% - 32px);
-  max-width: 420px;
+  max-width: 380px;
 
-  background: #0f0f0f;
+  padding: 20px;
 
-  border: 1px solid
-    rgba(255,255,255,0.06);
-
-  border-radius: 32px;
-
-  padding: 28px 22px;
-
-  box-sizing: border-box;
-
-  position: relative;
-
-  box-shadow:
-    0 0 40px rgba(0,0,0,0.5);
+  border-radius: 28px;
 }
 
 .admin-modal-title {
-  font-size: 42px;
-  font-weight: 900;
+  font-size: 28px;
+  line-height: 1.05;
 
-  line-height: 1;
-
-  margin-bottom: 28px;
-
-  color: white;
+  margin-bottom: 18px;
 }
 
 .admin-modal-close {
-  position: absolute;
+  width: 38px;
+  height: 38px;
 
-  top: 22px;
-  right: 22px;
-
-  width: 42px;
-  height: 42px;
-
-  border-radius: 50%;
-
-  border: none;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  color: white;
-
-  font-size: 18px;
-
-  cursor: pointer;
+  top: 18px;
+  right: 18px;
 }
 
 .admin-modal-form {
-  display: flex;
-  flex-direction: column;
-
-  gap: 14px;
+  gap: 10px;
 }
 
 .admin-modal-input {
-  width: 100%;
+  height: 50px;
 
-  height: 58px;
+  border-radius: 16px;
 
-  border: 1px solid
-    rgba(255,255,255,0.05);
+  font-size: 15px;
 
-  background: #181818;
-
-  border-radius: 18px;
-
-  padding: 0 18px;
-
-  box-sizing: border-box;
-
-  color: white;
-
-  font-size: 16px;
-
-  outline: none;
-}
-
-.admin-modal-input::placeholder {
-  color: #7b7b7b;
-}
-
-.admin-modal-input:focus {
-  border-color: #22c55e;
+  padding: 0 16px;
 }
 
 .admin-modal-checkbox {
-  display: flex;
+  margin-top: 2px;
 
-  align-items: center;
+  font-size: 15px;
+}
 
-  justify-content: space-between;
+.admin-modal-actions {
+  gap: 10px;
 
-  margin-top: 6px;
+  margin-top: 20px;
+}
 
-  color: white;
+.admin-modal-button {
+  height: 50px;
+
+  border-radius: 16px;
 
   font-size: 16px;
 }
 
-.admin-modal-actions {
-  display: flex;
-
-  gap: 14px;
-
-  margin-top: 28px;
-}
-
-.admin-modal-button {
-  flex: 1;
-
-  height: 56px;
-
-  border: none;
-
-  border-radius: 18px;
-
-  font-size: 18px;
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.admin-modal-button-cancel {
-  background: #1c1c1c;
-  color: white;
-}
-
-.admin-modal-button-save {
-  background: #22c55e;
-  color: black;
+.admin-modal-title {
+  white-space: nowrap;
 }
