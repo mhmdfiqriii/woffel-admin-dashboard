@@ -12,9 +12,10 @@ async function fetchProducts() {
     .from("products")
 
     .select("*")
+    .eq("is_deleted", false)
 
-    .order("created_at", {
-      ascending: false
+    .order("sort_order", {
+      ascending: true
     })
 
   if (error) {

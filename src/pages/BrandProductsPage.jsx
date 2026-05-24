@@ -373,9 +373,6 @@ function BrandProductsPage() {
               }
 
               onClick={() => {
-
-  console.log(product)
-
   setSelectedProduct(
     product
   )

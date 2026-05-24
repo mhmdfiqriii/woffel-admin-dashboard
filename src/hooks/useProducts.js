@@ -92,10 +92,23 @@ function useProducts({
     ) !== brand
   ) return
 
-  setProducts(prev => [
+  setProducts(prev => {
+
+  const exists =
+    prev.some(item =>
+      item.id === product.id
+    )
+
+  if (exists) {
+    return prev
+  }
+
+  return [
     product,
     ...prev
-  ])
+  ]
+
+})
 
 },
 

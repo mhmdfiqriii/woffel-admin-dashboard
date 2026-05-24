@@ -11,7 +11,7 @@ function subscribeProducts({
 
   return supabase
 
-    .channel("products-realtime")
+    .channel(`products-realtime-${Date.now()}`)
 
     .on(
       "postgres_changes",

@@ -56,14 +56,17 @@ function ProductEditModal({
   const [
     form,
     setForm
-  ] = useState(
+  ] = useState(() =>
+
     getInitialForm(
       safeProduct
     )
+
   )
 
-  if (product === null)
+  if (product === null) {
     return null
+  }
 
   // =====================
   // SYNC PRODUCT
@@ -74,11 +77,12 @@ function ProductEditModal({
     safeProduct.id
   ) {
 
-    setForm(
+    const nextForm =
       getInitialForm(
         safeProduct
       )
-    )
+
+    setForm(nextForm)
 
   }
 
@@ -121,6 +125,18 @@ function ProductEditModal({
 
       alert(
         "Category wajib diisi"
+      )
+
+      return
+
+    }
+
+    if (
+      form.price === ""
+    ) {
+
+      alert(
+        "Price wajib diisi"
       )
 
       return
@@ -235,8 +251,6 @@ function ProductEditModal({
         }
       >
 
-        {/* HEADER */}
-
         <div
           className="
             admin-modal-header
@@ -271,8 +285,6 @@ function ProductEditModal({
 
         </div>
 
-        {/* FORM */}
-
         <div
           className="
             admin-modal-form
@@ -288,9 +300,7 @@ function ProductEditModal({
 
             value={form.name}
 
-            placeholder="
-              Product Name
-            "
+            placeholder="Product Name"
 
             onChange={(event) =>
 
@@ -313,9 +323,7 @@ function ProductEditModal({
 
             value={form.price}
 
-            placeholder="
-              Price
-            "
+            placeholder="Price"
 
             onChange={(event) => {
 
@@ -485,8 +493,6 @@ function ProductEditModal({
           </label>
 
         </div>
-
-        {/* ACTIONS */}
 
         <div
           className="
