@@ -36,6 +36,9 @@ from "../components/admin/products/SkeletonProductCard"
 import toggleAvailability
 from "../services/products/toggleAvailability"
 
+import ProductEditModal
+from "../components/admin/products/ProductEditModal"
+
 function BrandProductsPage() {
 
   const {
@@ -157,6 +160,11 @@ async function handleToggleAvailability(
     )
 
   })
+
+  const [
+  selectedProduct,
+  setSelectedProduct
+] = useState(null)
 
   return (
 
@@ -285,6 +293,12 @@ async function handleToggleAvailability(
       product.is_available
     )
   }
+
+  onClick={() =>
+    setSelectedProduct(
+      product
+    )
+  }
 />
 
           ))}
@@ -293,11 +307,45 @@ async function handleToggleAvailability(
 
       )}
 
-      <button className="
-        admin-fab
-      ">
-        +
-      </button>
+     <button
+  className="
+    admin-fab
+  "
+
+  onClick={() =>
+
+    setSelectedProduct({
+
+      id: null,
+
+      name: "",
+
+      price: 0,
+
+      originalPrice: 0,
+
+      category: "",
+
+      sort_order: 0,
+
+      is_available: true
+
+    })
+
+  }
+>
+  +
+</button>
+
+      <ProductEditModal
+
+  product={selectedProduct}
+
+  onClose={() =>
+    setSelectedProduct(null)
+  }
+
+/>
 
     </AdminLayout>
 
