@@ -407,12 +407,8 @@
 /* FILTER */
 
 .admin-filter {
-  position:relative;
-  top:auto;
-
-  z-index:auto;
-
-  isolation:auto;
+  position: relative;
+  z-index: 2;
 
   padding:14px;
 
@@ -428,6 +424,8 @@
 
   box-shadow:
     0 8px 24px rgba(0,0,0,.24);
+
+  margin-bottom:18px;
 }
 
 .admin-filter-search-wrap {
