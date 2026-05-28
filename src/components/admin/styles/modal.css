@@ -29,6 +29,11 @@
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
   animation:adminModalUp .28s ease;
+  margin-bottom:
+    calc(
+      84px +
+      env(safe-area-inset-bottom)
+    );
 }
 
 .admin-modal::-webkit-scrollbar {
@@ -45,6 +50,12 @@
 
   border-top:
     1px solid rgba(255,255,255,.06);
+
+  padding-bottom:
+    calc(
+      10px +
+      env(safe-area-inset-bottom)
+    );
 }
 
 .admin-modal {
