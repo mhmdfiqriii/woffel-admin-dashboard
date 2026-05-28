@@ -188,145 +188,141 @@ const {
       toast={toast}
     />
 
-        <div ref={topRef}></div>
+    <div ref={topRef}></div>
 
-        <div className="admin-section-spacing">
-
-  <DashboardHeader
-    displayName={
-      displayName
-    }
-    realtimeStatus={
-      realtimeStatus
-    }
-    unreadCount={
-      unreadCount
-    }
-  />
-
-  <FilterBar
-    search={search}
-    setSearch={
-      setSearch
-    }
-    filter={filter}
-    setFilter={
-      setFilter
-    }
-    orders={orders}
-    formatStatus={
-      formatStatus
-    }
-    debouncedSearch={
-      debouncedSearch
-    }
-    unreadCount={
-      unreadCount
-    }
-  />
-
-  <div className="
-    admin-orders-section
-  ">
+    <DashboardHeader
+      displayName={
+        displayName
+      }
+      realtimeStatus={
+        realtimeStatus
+      }
+      unreadCount={
+        unreadCount
+      }
+    />
 
     <div className="
-      admin-orders-head
+      admin-orders-section
     ">
 
-      <h2 className="
-        admin-orders-title
+      <div className="
+        admin-orders-head
       ">
-        Live Orders
-      </h2>
 
-      <span className="
-        admin-orders-count
-      ">
-        {filteredOrders.length}
-      </span>
+        <h2 className="
+          admin-orders-title
+        ">
+          Live Orders
+        </h2>
+
+        <span className="
+          admin-orders-count
+        ">
+          {filteredOrders.length}
+        </span>
+
+      </div>
+
+      <FilterBar
+        search={search}
+        setSearch={
+          setSearch
+        }
+        filter={filter}
+        setFilter={
+          setFilter
+        }
+        orders={orders}
+        formatStatus={
+          formatStatus
+        }
+        debouncedSearch={
+          debouncedSearch
+        }
+        unreadCount={
+          unreadCount
+        }
+      />
+
+      {loading && (
+        <>
+          <SkeletonOrder />
+          <SkeletonOrder />
+          <SkeletonOrder />
+        </>
+      )}
+
+      {!loading &&
+        filteredOrders.length === 0 && (
+          <EmptyOrders />
+      )}
+
+      {!loading &&
+        filteredOrders.map(
+          order => (
+
+            <OrderCard
+              key={order.id}
+              order={order}
+              currentTime={
+                currentTime
+              }
+              highlightId={
+                highlightId
+              }
+              setSelectedOrder={
+                setSelectedOrder
+              }
+              updateStatus={
+                updateStatus
+              }
+              getStatusColor={
+                getStatusColor
+              }
+              formatStatus={
+                formatStatus
+              }
+              formatRupiah={
+                formatRupiah
+              }
+              getTimeAgo={
+                getTimeAgo
+              }
+              getTimeColor={
+                getTimeColor
+              }
+            />
+
+          )
+        )}
 
     </div>
 
-    {loading && (
-      <>
-        <SkeletonOrder />
-        <SkeletonOrder />
-        <SkeletonOrder />
-      </>
-    )}
+    <OrderModal
+      selectedOrder={
+        selectedOrder
+      }
+      setSelectedOrder={
+        setSelectedOrder
+      }
+      updateStatus={
+        updateStatus
+      }
+      getStatusColor={
+        getStatusColor
+      }
+      formatStatus={
+        formatStatus
+      }
+      formatRupiah={
+        formatRupiah
+      }
+    />
 
-    {!loading &&
-      filteredOrders.length === 0 && (
-        <EmptyOrders />
-    )}
+  </AdminLayout>
 
-    {!loading &&
-      filteredOrders.map(
-        order => (
-
-          <OrderCard
-            key={order.id}
-            order={order}
-            currentTime={
-              currentTime
-            }
-            highlightId={
-              highlightId
-            }
-            setSelectedOrder={
-              setSelectedOrder
-            }
-            updateStatus={
-              updateStatus
-            }
-            getStatusColor={
-              getStatusColor
-            }
-            formatStatus={
-              formatStatus
-            }
-            formatRupiah={
-              formatRupiah
-            }
-            getTimeAgo={
-              getTimeAgo
-            }
-            getTimeColor={
-              getTimeColor
-            }
-          />
-
-        )
-      )}
-
-  </div>
-
-  <OrderModal
-    selectedOrder={
-      selectedOrder
-    }
-    setSelectedOrder={
-      setSelectedOrder
-    }
-    updateStatus={
-      updateStatus
-    }
-    getStatusColor={
-      getStatusColor
-    }
-    formatStatus={
-      formatStatus
-    }
-    formatRupiah={
-      formatRupiah
-    }
-  />
-
-</div>
-
-      </AdminLayout>
-
-  )
+)
 
 }
 
