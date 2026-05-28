@@ -2,10 +2,6 @@
   min-height:100dvh;
 
   background:#050505;
-
-  display:flex;
-
-  justify-content:center;
 }
 
 .admin-layout-content {
@@ -24,8 +20,6 @@
     );
 
   box-sizing:border-box;
-
-  overflow:hidden;
 }
 
 /* MOBILE */

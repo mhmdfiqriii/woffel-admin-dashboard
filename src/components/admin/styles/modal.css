@@ -41,6 +41,7 @@
   gap:14px;
 
   margin-top:32px;
+  margin-bottom: 84px;
   padding-top:20px;
 
   border-top:
@@ -58,7 +59,7 @@
     18px
     18px
     calc(
-      120px +
+      26px +
       env(safe-area-inset-bottom)
     );
 }
