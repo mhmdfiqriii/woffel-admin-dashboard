@@ -38,17 +38,13 @@
 .admin-modal-footer {
   display:flex;
   flex-direction:column;
-  gap:12px;
-  margin-top:28px;
-  position:sticky;
-  bottom:0;
-  padding-top:18px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(11,11,11,0),
-      rgba(11,11,11,.96) 32%
-    );
+  gap:14px;
+
+  margin-top:32px;
+  padding-top:20px;
+
+  border-top:
+    1px solid rgba(255,255,255,.06);
 }
 
 .admin-modal {
@@ -286,30 +282,6 @@
 
 }
 
-.admin-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background:rgba(0, 0, 0, 0.72);
-  backdrop-filter:blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 20px;
-}
-
-.admin-modal {
-  position: relative;
-  width: 100%;
-  max-width: 380px;
-  background: #0f0f10;
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius: 30px;
-  padding: 22px;
-  box-sizing: border-box;
-  box-shadow:0 20px 60px rgba(0,0,0,0.45);
-}
-
 .admin-modal-title {
   color: white;
   font-size: 32px;
@@ -402,4 +374,33 @@
 
 .admin-modal-input{
   text-align:left !important;
+}
+
+.admin-modal-footer-actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.admin-btn-modal {
+  min-height:54px;
+
+  border-radius:18px;
+
+  font-size:15px;
+  font-weight:800;
+
+  backdrop-filter:blur(12px);
+}
+
+.admin-btn-close {
+  min-height:54px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  border:
+    1px solid rgba(255,255,255,.08);
 }

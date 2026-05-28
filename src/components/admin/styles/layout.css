@@ -53,8 +53,8 @@
   }
 
   .admin-filter {
-    top:calc(108px +env(safe-area-inset-top));
-  }
+  top:auto;
+}
 
   .admin-btn-quick {
     width:44px;
@@ -323,10 +323,6 @@
   gap:8px;
 }
 
-.admin-header {
-  top:12px;
-}
-
 .admin-realtime-status {
   display:flex;
   align-items:center;
@@ -392,9 +388,8 @@
 /* FILTER */
 
 .admin-filter {
-  position: sticky;
-
-  top: 12px;
+  position:relative;
+  top:auto;
 
   z-index: 40;
 
@@ -494,7 +489,7 @@
 .admin-filter-btn-active {
   background:white;
   color:black;
-  box-shadow:0 8px 24pxrgba(255,255,255,.12);
+  box-shadow:0 8px 24px rgba(255,255,255,.12);
 }
 
 .admin-filter-count {
@@ -840,4 +835,14 @@
 .admin-filter-btn,
 .admin-order {
   touch-action:manipulation;
+}
+
+.admin-filter,
+.admin-header,
+.admin-order,
+.admin-modal,
+.admin-modal-card,
+.admin-modal-item,
+.admin-modal-total-card {
+  box-sizing:border-box;
 }
