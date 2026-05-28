@@ -8,6 +8,9 @@ from "../../../services/products/updateProduct"
 import createProduct
 from "../../../services/products/createProduct"
 
+import uploadProductImage
+from "../../../services/products/uploadProductImage"
+
 function getInitialForm(
   product = {}
 ) {
@@ -33,7 +36,7 @@ function getInitialForm(
       product.category || "",
 
     sort_order:
-      product.sort_order ?? "",
+      product.sort_order ?? 999,
 
     is_available:
       product.is_available ?? true,
@@ -83,6 +86,11 @@ function ProductEditModal({
   const [
     saving,
     setSaving
+  ] = useState(false)
+
+  const [
+    uploading,
+    setUploading
   ] = useState(false)
 
   const [
@@ -138,12 +146,62 @@ function ProductEditModal({
   }
 
   // =====================
+  // HANDLE IMAGE UPLOAD
+  // =====================
+
+  async function handleImageUpload(
+    event
+  ) {
+
+    const file =
+      event.target.files?.[0]
+
+    if (!file)
+      return
+
+    setUploading(true)
+
+    const result =
+      await uploadProductImage(
+        file
+      )
+
+    setUploading(false)
+
+    if (!result.success) {
+
+      showToast(
+        result.message ||
+        "Upload gagal",
+        "error"
+      )
+
+      return
+
+    }
+
+    handleChange(
+      "image_url",
+      result.url
+    )
+
+    showToast(
+      "Image berhasil diupload",
+      "success"
+    )
+
+  }
+
+  // =====================
   // SAVE
   // =====================
 
   async function handleSave() {
 
-    if (saving) return
+    if (
+      saving ||
+      uploading
+    ) return
 
     // =====================
     // BASIC VALIDATION
@@ -456,7 +514,10 @@ function ProductEditModal({
 
             onClick={onClose}
 
-            disabled={saving}
+            disabled={
+              saving ||
+              uploading
+            }
           >
             ✕
           </button>
@@ -562,30 +623,69 @@ function ProductEditModal({
             }}
           />
 
-          <input
-            type="text"
+          {/* IMAGE */}
 
+          <div
             className="
-              admin-modal-input
+              admin-upload-wrapper
             "
+          >
 
-            value={
-              form.image_url
-            }
+            <input
+              type="file"
 
-            placeholder="
-              Image URL
-            "
+              accept="
+                image/png,
+                image/jpeg,
+                image/webp
+              "
 
-            onChange={(event) =>
+              onChange={
+                handleImageUpload
+              }
 
-              handleChange(
-                "image_url",
-                event.target.value
+              disabled={
+                uploading
+              }
+            />
+
+            {
+              form.image_url && (
+
+                <img
+                  src={
+                    form.image_url
+                  }
+
+                  alt="preview"
+
+                  className="
+                    admin-product-preview
+                  "
+                />
+
               )
-
             }
-          />
+
+            <input
+              type="text"
+
+              className="
+                admin-modal-input
+              "
+
+              value={
+                form.image_url
+              }
+
+              placeholder="
+                Image URL otomatis
+              "
+
+              readOnly
+            />
+
+          </div>
 
           <input
             type="text"
@@ -882,7 +982,10 @@ function ProductEditModal({
 
             onClick={onClose}
 
-            disabled={saving}
+            disabled={
+              saving ||
+              uploading
+            }
           >
             Cancel
           </button>
@@ -895,13 +998,18 @@ function ProductEditModal({
 
             onClick={handleSave}
 
-            disabled={saving}
+            disabled={
+              saving ||
+              uploading
+            }
           >
 
             {
               saving
                 ? "Saving..."
-                : "Save"
+                : uploading
+                  ? "Uploading..."
+                  : "Save"
             }
 
           </button>

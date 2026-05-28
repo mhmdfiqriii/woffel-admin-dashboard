@@ -6,11 +6,71 @@ async function uploadProductImage(
   file
 ) {
 
+  // =====================
+  // VALIDATION
+  // =====================
+
+  if (!file) {
+
+    return {
+      success: false,
+      url: null,
+      message: "File tidak ditemukan"
+    }
+
+  }
+
+  const allowedTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/webp"
+  ]
+
+  if (
+    !allowedTypes.includes(
+      file.type
+    )
+  ) {
+
+    return {
+      success: false,
+      url: null,
+      message: "Format file tidak valid"
+    }
+
+  }
+
+  // 2MB
+  if (
+    file.size >
+    2 * 1024 * 1024
+  ) {
+
+    return {
+      success: false,
+      url: null,
+      message: "File terlalu besar"
+    }
+
+  }
+
+  // =====================
+  // FILE NAME
+  // =====================
+
+  const extension =
+    file.name.split(".").pop()
+
   const fileName =
-    `${Date.now()}-${file.name}`
+    `${Date.now()}.${extension}`
 
   const filePath =
     `products/${fileName}`
+
+  // =====================
+  // UPLOAD
+  // =====================
 
   const {
     error
@@ -20,19 +80,30 @@ async function uploadProductImage(
 
     .upload(
       filePath,
-      file
+      file,
+      {
+        upsert: false
+      }
     )
 
   if (error) {
 
-    console.log(error)
+    console.error(
+      "UPLOAD ERROR:",
+      error
+    )
 
     return {
       success: false,
-      url: null
+      url: null,
+      message: "Upload gagal"
     }
 
   }
+
+  // =====================
+  // GET PUBLIC URL
+  // =====================
 
   const {
     data
@@ -40,40 +111,15 @@ async function uploadProductImage(
 
     .from("assets")
 
-    .getPublicUrl(filePath)
+    .getPublicUrl(
+      filePath
+    )
 
   return {
     success: true,
-    url: data.publicUrl
+    url: data.publicUrl,
+    message: "Upload berhasil"
   }
-
-  const allowedTypes = [
-  "image/png",
-  "image/jpeg",
-  "image/webp"
-]
-
-if (
-  !allowedTypes.includes(file.type)
-) {
-
-  return {
-    success: false,
-    message: "Format file tidak valid"
-  }
-
-}
-
-if (
-  file.size > 2 * 1024 * 1024
-) {
-
-  return {
-    success: false,
-    message: "File terlalu besar"
-  }
-
-}
 
 }
 

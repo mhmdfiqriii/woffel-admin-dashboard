@@ -21,20 +21,27 @@ import {
   sortProducts
 } from "../utils/adminUtils"
 
-
 function useProducts({
 
   brand = null
 
 } = {}) {
 
-  const [products, setProducts] =
-    useState([])
+  const [
+    products,
+    setProducts
+  ] = useState([])
 
-  const [loading, setLoading] =
-    useState(true)
+  const [
+    loading,
+    setLoading
+  ] = useState(true)
 
   useEffect(() => {
+
+    // =====================
+    // LOAD PRODUCTS
+    // =====================
 
     async function loadProducts() {
 
@@ -46,9 +53,9 @@ function useProducts({
       if (result.success) {
 
         let filtered =
-  result.data.map(
-    normalizeProduct
-  )
+          result.data.map(
+            normalizeProduct
+          )
 
         // =====================
         // BRAND FILTER
@@ -57,21 +64,27 @@ function useProducts({
         if (brand) {
 
           filtered =
-  result.data.filter(
-    product =>
+            filtered.filter(
+              product =>
 
-      normalizeBrandSlug(
-        product.brand
-      ) === brand
-  )
+                normalizeBrandSlug(
+                  product.brand
+                ) === brand
+            )
 
         }
 
+        // =====================
+        // SORT
+        // =====================
+
         setProducts(
-  sortProducts(
-    filtered
-  )
-)
+
+          sortProducts(
+            filtered
+          )
+
+        )
 
       }
 
@@ -88,110 +101,170 @@ function useProducts({
     const channel =
       subscribeProducts({
 
+        // =====================
+        // INSERT
+        // =====================
+
         onInsert: payload => {
 
-  const product =
-    normalizeProduct(
-      payload.new
-    )
+          const product =
+            normalizeProduct(
+              payload.new
+            )
 
-  if (
-    brand &&
-    normalizeBrandSlug(
-      product.brand
-    ) !== brand
-  ) return
+          // SOFT DELETE
+          if (
+            product.is_deleted
+          ) {
+            return
+          }
 
-  setProducts(prev => {
+          // BRAND FILTER
+          if (
+            brand &&
+            normalizeBrandSlug(
+              product.brand
+            ) !== brand
+          ) {
+            return
+          }
 
-  const exists =
-    prev.some(item =>
-      item.id === product.id
-    )
+          setProducts(prev => {
 
-  if (exists) {
-    return prev
-  }
+            const exists =
+              prev.some(
+                item =>
 
-  return sortProducts([
-  product,
-  ...prev
-])
+                  item.id ===
+                  product.id
+              )
 
-})
+            if (exists) {
 
-},
+              return prev
+
+            }
+
+            return sortProducts([
+
+              ...prev,
+              product
+
+            ])
+
+          })
+
+        },
+
+        // =====================
+        // UPDATE
+        // =====================
 
         onUpdate: payload => {
 
-  const product =
-    normalizeProduct(
-      payload.new
-    )
+          const product =
+            normalizeProduct(
+              payload.new
+            )
 
-  // SOFT DELETE
-  if (product.is_deleted) {
+          // SOFT DELETE
+          if (
+            product.is_deleted
+          ) {
 
-    setProducts(prev =>
+            setProducts(prev =>
 
-      prev.filter(item =>
+              prev.filter(
+                item =>
 
-        item.id !==
-        product.id
+                  item.id !==
+                  product.id
+              )
 
-      )
+            )
 
-    )
+            return
 
-    return
+          }
 
-  }
+          // BRAND FILTER
+          if (
+            brand &&
+            normalizeBrandSlug(
+              product.brand
+            ) !== brand
+          ) {
 
-  if (
-    brand &&
-    normalizeBrandSlug(
-      product.brand
-    ) !== brand
-  ) return
+            return
 
-  setProducts(prev => {
+          }
 
-  const updated =
+          setProducts(prev => {
 
-    prev.map(item =>
+            const exists =
+              prev.some(
+                item =>
 
-      item.id ===
-      product.id
+                  item.id ===
+                  product.id
+              )
 
-        ? product
-        : item
+            // UPDATE EXISTING
+            if (exists) {
 
-    )
+              const updated =
+                prev.map(
+                  item =>
 
-  return sortProducts(
-    updated
-  )
+                    item.id ===
+                    product.id
 
-})
+                      ? product
+                      : item
+                )
 
-},
+              return sortProducts(
+                updated
+              )
+
+            }
+
+            // PRODUCT BARU
+            return sortProducts([
+
+              ...prev,
+              product
+
+            ])
+
+          })
+
+        },
+
+        // =====================
+        // DELETE
+        // =====================
 
         onDelete: payload => {
 
           setProducts(prev =>
 
-  prev.filter(item =>
+            prev.filter(
+              item =>
 
-    item.id !==
-    payload.old.id
+                item.id !==
+                payload.old.id
+            )
 
-  )
-
-)
+          )
 
         }
 
       })
+
+    // =====================
+    // CLEANUP
+    // =====================
 
     return () => {
 
@@ -204,9 +277,11 @@ function useProducts({
   }, [brand])
 
   return {
+
     products,
     loading,
     setProducts
+
   }
 
 }
