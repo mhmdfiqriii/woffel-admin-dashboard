@@ -229,9 +229,3 @@
   color:
     rgba(255,255,255,.72);
 }
-
-.admin-orders-header {
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
