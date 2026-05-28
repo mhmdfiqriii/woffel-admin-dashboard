@@ -410,9 +410,9 @@
   position:relative;
   top:auto;
 
-  z-index:80;
+  z-index:auto;
 
-  isolation:isolate;
+  isolation:auto;
 
   padding:14px;
 

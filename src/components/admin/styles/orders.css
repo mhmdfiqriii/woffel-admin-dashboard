@@ -187,9 +187,6 @@
   display:flex;
   flex-direction:column;
   gap:14px;
-
-  position:relative;
-  z-index:1;
 }
 
 .admin-orders-head {

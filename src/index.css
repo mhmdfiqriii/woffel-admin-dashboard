@@ -135,6 +135,8 @@ body{
 
   top:42%;
   left:50%;
+
+  transform:translateX(-50%);
 }
 
 /* WRAPPER */
