@@ -6,7 +6,9 @@ function OrderModal({
   formatRupiah
 }) {
 
-  if (!selectedOrder) return null
+  if (!selectedOrder) {
+    return null
+  }
 
   let items = []
 
@@ -17,8 +19,12 @@ function OrderModal({
         selectedOrder.variant
       )
 
-    if (Array.isArray(parsed)) {
+    if (
+      Array.isArray(parsed)
+    ) {
+
       items = parsed
+
     }
 
   } catch {
@@ -72,6 +78,8 @@ function OrderModal({
           admin-modal-handle
         "></div>
 
+        {/* HEADER */}
+
         <div className="
           admin-modal-header
         ">
@@ -109,51 +117,53 @@ function OrderModal({
 
         </div>
 
+        {/* META */}
+
         <div className="
           admin-modal-meta
         ">
 
           <div className="
-  admin-modal-meta-card
-">
+            admin-modal-meta-card
+          ">
 
-  <div className="
-    admin-modal-meta-label
-  ">
-    Waktu Order
-  </div>
+            <div className="
+              admin-modal-meta-label
+            ">
+              Waktu Order
+            </div>
 
-  <div className="
-    admin-modal-meta-value
-  ">
+            <div className="
+              admin-modal-meta-value
+            ">
 
-    {
-      new Date(
-        selectedOrder.created_at
-      ).toLocaleString(
-        "id-ID",
-        {
-          timeZone:
-            "Asia/Jakarta",
+              {
+                new Date(
+                  selectedOrder.created_at
+                ).toLocaleString(
+                  "id-ID",
+                  {
+                    timeZone:
+                      "Asia/Jakarta",
 
-          day:
-            "numeric",
+                    day:
+                      "numeric",
 
-          month:
-            "short",
+                    month:
+                      "short",
 
-          hour:
-            "2-digit",
+                    hour:
+                      "2-digit",
 
-          minute:
-            "2-digit"
-        }
-      )
-    }
+                    minute:
+                      "2-digit"
+                  }
+                )
+              }
 
-  </div>
+            </div>
 
-</div>
+          </div>
 
           <div className="
             admin-modal-meta-card
@@ -179,6 +189,8 @@ function OrderModal({
 
         </div>
 
+        {/* CUSTOMER */}
+
         <div className="
           admin-modal-section
         ">
@@ -197,8 +209,10 @@ function OrderModal({
               admin-modal-customer
             ">
 
-              {selectedOrder.customer_name ||
-                "Customer Tidak Ada"}
+              {
+                selectedOrder.customer_name ||
+                "Customer Tidak Ada"
+              }
 
             </div>
 
@@ -210,11 +224,14 @@ function OrderModal({
 
                 Update oleh
                 {" "}
+
                 <span className="
                   admin-modal-sub-highlight
                 ">
 
-                  {selectedOrder.updated_by}
+                  {
+                    selectedOrder.updated_by
+                  }
 
                 </span>
 
@@ -225,6 +242,8 @@ function OrderModal({
           </div>
 
         </div>
+
+        {/* ITEMS */}
 
         <div className="
           admin-modal-section
@@ -247,66 +266,67 @@ function OrderModal({
                 items.map(
                   (item, i) => (
 
-                  <div
+                    <div
 
-                    key={i}
+                      key={i}
 
-                    className="
-                      admin-modal-item
-                    "
+                      className="
+                        admin-modal-item
+                      "
 
-                  >
-
-                    <div className="
-                      admin-modal-item-top
-                    ">
+                    >
 
                       <div className="
-                        admin-modal-item-left
+                        admin-modal-item-top
                       ">
 
                         <div className="
-                          admin-modal-item-index
+                          admin-modal-item-left
                         ">
-                          {i + 1}
+
+                          <div className="
+                            admin-modal-item-index
+                          ">
+                            {i + 1}
+                          </div>
+
+                          <div className="
+                            admin-modal-item-name
+                          ">
+
+                            {item.name}
+
+                          </div>
+
                         </div>
 
                         <div className="
-                          admin-modal-item-name
+                          admin-modal-item-qty
                         ">
 
-                          {item.name}
+                          x
+                          {item.qty || 1}
 
                         </div>
 
                       </div>
 
-                      <div className="
-                        admin-modal-item-qty
-                      ">
+                      {item.options && (
 
-                        x
-                        {item.qty || 1}
+                        <div className="
+                          admin-modal-item-option
+                        ">
 
-                      </div>
+                          {item.options}
+
+                        </div>
+
+                      )}
 
                     </div>
 
-                    {item.options && (
-
-                      <div className="
-                        admin-modal-item-option
-                      ">
-
-                        {item.options}
-
-                      </div>
-
-                    )}
-
-                  </div>
-
-                ))
+                  )
+                )
 
               ) : (
 
@@ -329,6 +349,8 @@ function OrderModal({
           </div>
 
         </div>
+
+        {/* PAYMENT */}
 
         <div className="
           admin-modal-section
@@ -367,9 +389,27 @@ function OrderModal({
 
         </div>
 
+        {/* FOOTER */}
+
         <div className="
           admin-modal-footer
         ">
+
+          <button
+
+            className="
+              admin-btn-close
+            "
+
+            onClick={() =>
+              setSelectedOrder(null)
+            }
+
+          >
+
+            Tutup
+
+          </button>
 
           <div className="
             admin-modal-footer-actions
@@ -450,22 +490,6 @@ function OrderModal({
             </button>
 
           </div>
-
-          <button
-
-            className="
-              admin-btn-close
-            "
-
-            onClick={() =>
-              setSelectedOrder(null)
-            }
-
-          >
-
-            Tutup
-
-          </button>
 
         </div>
 
