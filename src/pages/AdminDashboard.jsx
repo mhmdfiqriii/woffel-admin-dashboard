@@ -203,7 +203,7 @@ const {
     />
 
     <div className="
-      admin-orders-section
+      admin-orders-header
     ">
 
       <div className="

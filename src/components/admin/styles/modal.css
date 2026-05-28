@@ -41,7 +41,6 @@
   gap:14px;
 
   margin-top:32px;
-  margin-bottom: 84px;
   padding-top:20px;
 
   border-top:
@@ -55,13 +54,13 @@
 }
 
 .admin-modal {
-  padding:
-    18px
-    18px
-    calc(
-      26px +
-      env(safe-area-inset-bottom)
-    );
+  max-height:calc(
+    100dvh -
+    env(safe-area-inset-top) -
+    72px
+  );
+
+  margin-bottom:72px;
 }
 
 /* MODAL FIX */
