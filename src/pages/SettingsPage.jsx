@@ -244,7 +244,7 @@ function SettingsPage() {
               <div className="
                 admin-settings-info-subtitle
               ">
-                Version 1.0.0
+                Version 1.0
               </div>
 
             </div>

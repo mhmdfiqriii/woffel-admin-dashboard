@@ -8,10 +8,13 @@
 
 .admin-layout-content {
   width:100%;
-
   max-width:540px;
 
   margin:0 auto;
+
+  display:flex;
+  flex-direction:column;
+  gap:22px;
 
   padding:
     20px
@@ -58,10 +61,6 @@
     width:100%;
   }
 
-  .admin-filter {
-  top:auto;
-}
-
   .admin-btn-quick {
     width:44px;
     height:44px;
@@ -80,11 +79,9 @@
 }
 
 .admin-page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 22px;
-
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 .admin-page-title {
@@ -178,10 +175,7 @@
 
 .admin-header {
   position:relative;
-  top:0;
-  z-index:60;
-
-  margin-bottom:22px;
+  z-index:1;
 
   padding:20px;
 
@@ -407,8 +401,8 @@
 /* FILTER */
 
 .admin-filter {
-  position: relative;
-  z-index: 2;
+  position:relative;
+  z-index:1;
 
   padding:14px;
 
@@ -537,7 +531,6 @@
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:14px;
-  margin-bottom:22px;
 }
 
 .admin-card {
@@ -862,9 +855,4 @@
 .admin-modal-item,
 .admin-modal-total-card {
   box-sizing:border-box;
-}
-
-.admin-orders-header {
-  position:relative;
-  margin-bottom:18px;
 }

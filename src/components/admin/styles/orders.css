@@ -6,8 +6,6 @@
   z-index: 1;
   padding: 20px;
 
-  margin-bottom: 16px;
-
   border-radius: 26px;
 
   background:
@@ -186,18 +184,15 @@
 .admin-orders-section {
   display:flex;
   flex-direction:column;
-  gap:14px;
-
-  padding-top:2px;
+  gap:16px;
 }
 
 .admin-orders-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-  margin:
-    10px 2px 8px;
+  padding:0 2px;
 }
 
 .admin-orders-title {
@@ -236,5 +231,7 @@
 }
 
 .admin-orders-header {
-  margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
