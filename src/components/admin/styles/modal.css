@@ -13,6 +13,12 @@
   overflow:hidden;
   overscroll-behavior:contain;
   animation:adminBlurFade .18s ease;
+
+  padding-bottom:
+  calc(
+    72px +
+    env(safe-area-inset-bottom)
+  );
 }
 
 .admin-modal {
@@ -55,13 +61,10 @@
 
 .admin-modal {
   max-height:calc(
-    100dvh -
-    env(safe-area-inset-top) -
-    72px
-  );
-
-  margin-bottom:72px;
-}
+  100dvh -
+  env(safe-area-inset-top) -
+  12px
+);
 
 /* MODAL FIX */
 

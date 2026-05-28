@@ -17,11 +17,13 @@
     20px
     16px
     calc(
-      120px +
+      88px +
       env(safe-area-inset-bottom)
     );
 
   box-sizing:border-box;
+
+  overflow:hidden;
 }
 
 /* MOBILE */
@@ -400,8 +402,6 @@
   top:auto;
 
   z-index: 40;
-
-  margin-bottom: 20px;
 
   padding: 14px;
 
@@ -853,4 +853,11 @@
 .admin-modal-item,
 .admin-modal-total-card {
   box-sizing:border-box;
+}
+
+.admin-orders-header {
+  position:relative;
+  z-index:5;
+
+  margin-bottom:18px;
 }
