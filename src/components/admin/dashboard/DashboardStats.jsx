@@ -8,7 +8,7 @@ function DashboardStats({
 
   return (
 
-    <div className="admin-stats">
+    <div className="admin-stats admin-section-spacing">
 
       <div className="admin-card">
 

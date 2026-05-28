@@ -49,7 +49,7 @@ function FilterBar({
             inputMode="search"
 
             placeholder="
-              Cari ID / customer...
+              Cari order / customer...
             "
 
             value={search}

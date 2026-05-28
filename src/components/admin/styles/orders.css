@@ -3,13 +3,12 @@
 .admin-order {
   position:relative;
   overflow:hidden;
-  padding:18px;
-  margin-bottom:14px;
-  border-radius:24px;
-  background:rgba(255,255,255,.035);
-  border:1px solid rgba(255,255,255,.06);
-  box-shadow:0 10px 26px rgba(0,0,0,.22);
-  transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease;
+
+  padding:20px;
+
+  margin-bottom:16px;
+
+  border-radius:26px;
 }
 
 .admin-order:hover {
@@ -78,7 +77,7 @@
 }
 
 .admin-order-main {
-  margin-bottom:20px;
+  margin-bottom:22px;
 }
 
 .admin-order-id {
@@ -98,9 +97,12 @@
 
 .admin-order-bottom {
   display:flex;
+
   align-items:flex-end;
+
   justify-content:space-between;
-  gap:14px;
+
+  gap:18px;
 }
 
 .admin-order-info {
@@ -124,19 +126,6 @@
 .admin-order-actions {
   display:flex;
   gap:10px;
-}
-
-.admin-order {
-  padding:16px;
-  border-radius:22px;
-}
-
-.admin-order-id {
-  font-size:20px;
-}
-
-.admin-order-price {
-  font-size:20px;
 }
 
 .admin-order {
@@ -180,4 +169,14 @@
   font-size:12px;
   font-weight:800;
   color:rgba(255,255,255,.72);
+}
+
+.admin-order-content {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.admin-order:hover .admin-order-glow {
+  opacity:.24;
 }
