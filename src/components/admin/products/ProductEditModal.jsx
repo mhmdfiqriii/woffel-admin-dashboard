@@ -14,56 +14,58 @@ function getInitialForm(
 
   return {
 
-  id:
-    product.id ?? null,
+    id:
+      product.id ?? null,
 
-  name:
-    product.name || "",
+    name:
+      product.name || "",
 
-  price:
-    product.price ?? "",
+    price:
+      product.price ?? "",
 
-  original_price:
-    product.original_price ?? "",
+    original_price:
+      product.original_price ?? "",
 
-  image_url:
-    product.image_url || "",
+    image_url:
+      product.image_url || "",
 
-  category:
-    product.category || "",
+    category:
+      product.category || "",
 
-  sort_order:
-    product.sort_order ?? "",
+    sort_order:
+      product.sort_order ?? "",
 
-  is_available:
-    product.is_available ?? true,
+    is_available:
+      product.is_available ?? true,
 
-  is_hot_available:
-  product.is_hot_available ?? true,
+    is_hot_available:
+      product.is_hot_available ?? true,
 
-is_ice_available:
-  product.is_ice_available ?? true,
+    is_ice_available:
+      product.is_ice_available ?? true,
 
-is_large_available:
-  product.is_large_available ?? false,
+    is_large_available:
+      product.is_large_available ?? false,
 
-bundle_type:
-  product.bundle_type ?? false,
+    bundle_type:
+      product.bundle_type ?? false,
 
-bundle_items:
-  JSON.stringify(
-    product.bundle_items || [],
-    null,
-    2
-  ),
+    bundle_items:
+      JSON.stringify(
+        product.bundle_items || [],
+        null,
+        2
+      ),
 
-  options:
-    JSON.stringify(
-      product.options || {},
-      null,
-      2
-    )
-}
+    options:
+      JSON.stringify(
+        product.options || {},
+        null,
+        2
+      )
+
+  }
+
 }
 
 function ProductEditModal({
@@ -143,6 +145,10 @@ function ProductEditModal({
 
     if (saving) return
 
+    // =====================
+    // BASIC VALIDATION
+    // =====================
+
     if (!form.name.trim()) {
 
       showToast(
@@ -221,83 +227,97 @@ function ProductEditModal({
 
     }
 
+    // =====================
+    // OPTIONS PARSE
+    // =====================
+
     let parsedOptions
+
+    try {
+
+      parsedOptions =
+
+        form.options.trim()
+
+          ? JSON.parse(
+              form.options
+            )
+
+          : {}
+
+      if (
+        Array.isArray(
+          parsedOptions
+        )
+      ) {
+
+        showToast(
+          "Options harus object JSON",
+          "warning"
+        )
+
+        return
+
+      }
+
+    } catch {
+
+      showToast(
+        "Format JSON options tidak valid",
+        "error"
+      )
+
+      return
+
+    }
+
+    // =====================
+    // BUNDLE PARSE
+    // =====================
+
     let parsedBundleItems
 
-try {
+    try {
 
-  parsedOptions =
-    form.options.trim()
+      parsedBundleItems =
 
-      ? JSON.parse(
-          form.options
+        form.bundle_items.trim()
+
+          ? JSON.parse(
+              form.bundle_items
+            )
+
+          : []
+
+      if (
+        !Array.isArray(
+          parsedBundleItems
+        )
+      ) {
+
+        showToast(
+          "Bundle items harus array JSON",
+          "warning"
         )
 
-      : {}
+        return
 
-  if (
-    Array.isArray(
-      parsedOptions
-    )
-  ) {
+      }
 
-    showToast(
-      "Options harus object JSON",
-      "warning"
-    )
+    } catch {
 
-    return
+      showToast(
+        "Format JSON bundle tidak valid",
+        "error"
+      )
 
-  }
+      return
 
-} catch {
+    }
 
-  showToast(
-    "Format JSON options tidak valid",
-    "error"
-  )
-
-  return
-
-}
-
-try {
-
-  parsedBundleItems =
-
-    form.bundle_items.trim()
-
-      ? JSON.parse(
-          form.bundle_items
-        )
-
-      : []
-
-  if (
-    !Array.isArray(
-      parsedBundleItems
-    )
-  ) {
-
-    showToast(
-      "Bundle items harus array JSON",
-      "warning"
-    )
-
-    return
-
-  }
-
-} catch {
-
-  showToast(
-    "Format JSON bundle tidak valid",
-    "error"
-  )
-
-  return
-
-}
+    // =====================
+    // PAYLOAD
+    // =====================
 
     const payload = {
 
@@ -314,14 +334,19 @@ try {
         "Kopi Kenangan",
 
       options:
-         parsedOptions,
+        parsedOptions,
 
-         bundle_type:
-  form.bundle_type,
+      bundle_type:
+        form.bundle_type,
 
-bundle_items:
-  parsedBundleItems,
+      bundle_items:
+        parsedBundleItems
+
     }
+
+    // =====================
+    // SAVE
+    // =====================
 
     setSaving(true)
 
@@ -344,6 +369,10 @@ bundle_items:
           })
 
     setSaving(false)
+
+    // =====================
+    // RESULT
+    // =====================
 
     if (result.success) {
 
@@ -396,6 +425,8 @@ bundle_items:
         }
       >
 
+        {/* HEADER */}
+
         <div
           className="
             admin-modal-header
@@ -432,6 +463,8 @@ bundle_items:
 
         </div>
 
+        {/* FORM */}
+
         <div
           className="
             admin-modal-form
@@ -447,7 +480,9 @@ bundle_items:
 
             value={form.name}
 
-            placeholder="Product Name"
+            placeholder="
+              Product Name
+            "
 
             onChange={(event) =>
 
@@ -470,7 +505,9 @@ bundle_items:
 
             value={form.price}
 
-            placeholder="Price"
+            placeholder="
+              Price
+            "
 
             onChange={(event) => {
 
@@ -610,185 +647,193 @@ bundle_items:
             }}
           />
 
+          {/* OPTIONS */}
+
           <textarea
-  className="
-    admin-modal-input
-    admin-modal-textarea
-  "
+            className="
+              admin-modal-input
+              admin-modal-textarea
+            "
 
-  value={
-    form.options
-  }
+            value={
+              form.options
+            }
 
-  placeholder='
+            placeholder='
 {
   "Temperature": [
     "Ice",
     "Hot"
   ]
 }
-  '
+            '
 
-  onChange={(event) =>
+            onChange={(event) =>
 
-    handleChange(
-      "options",
-      event.target.value
-    )
+              handleChange(
+                "options",
+                event.target.value
+              )
 
-  }
-/>
+            }
+          />
 
-<label
-  className="
-    admin-modal-checkbox
-  "
->
+          {/* BUNDLE */}
 
-  <span>
-    Bundle Product
-  </span>
+          <label
+            className="
+              admin-modal-checkbox
+            "
+          >
 
-  <input
-    type="checkbox"
+            <span>
+              Bundle Product
+            </span>
 
-    checked={
-      form.bundle_type
-    }
+            <input
+              type="checkbox"
 
-    onChange={(event) =>
+              checked={
+                form.bundle_type
+              }
 
-      handleChange(
-        "bundle_type",
-        event.target.checked
-      )
+              onChange={(event) =>
 
-    }
-  />
+                handleChange(
+                  "bundle_type",
+                  event.target.checked
+                )
 
-</label>
+              }
+            />
 
-<textarea
-  className="
-    admin-modal-input
-    admin-modal-textarea
-  "
+          </label>
 
-  value={
-    form.bundle_items
-  }
+          <textarea
+            className="
+              admin-modal-input
+              admin-modal-textarea
+            "
 
-  placeholder='
+            value={
+              form.bundle_items
+            }
+
+            placeholder='
 [
   {
     "product_id": 1,
     "qty": 2
   }
 ]
-  '
+            '
 
-  onChange={(event) =>
+            onChange={(event) =>
 
-    handleChange(
-      "bundle_items",
-      event.target.value
-    )
+              handleChange(
+                "bundle_items",
+                event.target.value
+              )
 
-  }
-/>
+            }
+          />
 
-<div className="
-  admin-modal-rules
-">
+          {/* RULES */}
 
-  <label
-    className="
-      admin-modal-checkbox
-    "
-  >
+          <div className="
+            admin-modal-rules
+          ">
 
-    <span>
-      Hot Available
-    </span>
+            <label
+              className="
+                admin-modal-checkbox
+              "
+            >
 
-    <input
-      type="checkbox"
+              <span>
+                Hot Available
+              </span>
 
-      checked={
-        form.is_hot_available
-      }
+              <input
+                type="checkbox"
 
-      onChange={(event) =>
+                checked={
+                  form.is_hot_available
+                }
 
-        handleChange(
-          "is_hot_available",
-          event.target.checked
-        )
+                onChange={(event) =>
 
-      }
-    />
+                  handleChange(
+                    "is_hot_available",
+                    event.target.checked
+                  )
 
-  </label>
+                }
+              />
 
-  <label
-    className="
-      admin-modal-checkbox
-    "
-  >
+            </label>
 
-    <span>
-      Ice Available
-    </span>
+            <label
+              className="
+                admin-modal-checkbox
+              "
+            >
 
-    <input
-      type="checkbox"
+              <span>
+                Ice Available
+              </span>
 
-      checked={
-        form.is_ice_available
-      }
+              <input
+                type="checkbox"
 
-      onChange={(event) =>
+                checked={
+                  form.is_ice_available
+                }
 
-        handleChange(
-          "is_ice_available",
-          event.target.checked
-        )
+                onChange={(event) =>
 
-      }
-    />
+                  handleChange(
+                    "is_ice_available",
+                    event.target.checked
+                  )
 
-  </label>
+                }
+              />
 
-  <label
-    className="
-      admin-modal-checkbox
-    "
-  >
+            </label>
 
-    <span>
-      Large Available
-    </span>
+            <label
+              className="
+                admin-modal-checkbox
+              "
+            >
 
-    <input
-      type="checkbox"
+              <span>
+                Large Available
+              </span>
 
-      checked={
-        form.is_large_available
-      }
+              <input
+                type="checkbox"
 
-      onChange={(event) =>
+                checked={
+                  form.is_large_available
+                }
 
-        handleChange(
-          "is_large_available",
-          event.target.checked
-        )
+                onChange={(event) =>
 
-      }
-    />
+                  handleChange(
+                    "is_large_available",
+                    event.target.checked
+                  )
 
-  </label>
+                }
+              />
 
-</div>
+            </label>
+
+          </div>
+
+          {/* AVAILABLE */}
 
           <label
             className="
@@ -820,6 +865,8 @@ bundle_items:
           </label>
 
         </div>
+
+        {/* ACTIONS */}
 
         <div
           className="
