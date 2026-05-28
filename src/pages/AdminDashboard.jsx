@@ -2,6 +2,7 @@ import {
   useState,
   useRef
 } from "react"
+
 import {
   useNavigate
 } from "react-router-dom"
@@ -20,11 +21,17 @@ from "../components/admin/orders/OrderCard"
 import OrderModal
 from "../components/admin/orders/OrderModal"
 
-import AdminToast
-from "../components/admin/shared/AdminToast"
+import EmptyOrders
+from "../components/admin/orders/EmptyOrders"
 
 import SkeletonOrder
 from "../components/admin/orders/SkeletonOrder"
+
+import AdminToast
+from "../components/admin/shared/AdminToast"
+
+import AdminLayout
+from "../components/admin/shared/AdminLayout"
 
 import useOrders
 from "../hooks/useOrders"
@@ -62,12 +69,6 @@ from "../hooks/useAdminUser"
 import useOrderActions
 from "../hooks/useOrderActions"
 
-import EmptyOrders
-from "../components/admin/orders/EmptyOrders"
-
-import AdminLayout
-from "../components/admin/shared/AdminLayout"
-
 import {
   DEFAULT_FILTER
 } from "../constants/adminConfig"
@@ -83,29 +84,12 @@ import {
 function AdminDashboard() {
 
   const [filter, setFilter] =
-    useState(DEFAULT_FILTER)
+    useState(
+      DEFAULT_FILTER
+    )
 
   const [search, setSearch] =
     useState("")
-
-const debouncedSearch =
-  useDebounce(search)
-
-    const {
-  orders,
-  setOrders,
-  loading,
-  filteredOrders,
-  updateOrderStatus
-} = useOrders(
-  filter,
-  debouncedSearch
-)
-
-const {
-  highlightId,
-  setHighlightId
-} = useHighlightOrder()
 
   const [
     selectedOrder,
@@ -117,112 +101,112 @@ const {
     setRealtimeStatus
   ] = useState("connecting")
 
- const currentTime =
-  useCurrentTime()
+  const debouncedSearch =
+    useDebounce(search)
 
-  const topRef = useRef(null)
+  const {
+    orders,
+    setOrders,
+    loading,
+    filteredOrders,
+    updateOrderStatus
+  } = useOrders(
+    filter,
+    debouncedSearch
+  )
+
+  const {
+    highlightId,
+    setHighlightId
+  } = useHighlightOrder()
+
+  const currentTime =
+    useCurrentTime()
+
+  const topRef =
+    useRef(null)
 
   const navigate =
     useNavigate()
 
   const {
-  playNewOrder,
-  playProses,
-  playDone
-} = useAdminSound()
+    playNewOrder,
+    playProses,
+    playDone
+  } = useAdminSound()
 
-const {
-  toast,
-  showToast
-} = useAdminToast()
-
-const {
-  unreadCount,
-  notify
-} = useUnreadOrders({
-  playNewOrder,
-  showToast
-})
-
-const {
-  adminUser,
-  displayName
-} = useAdminUser()
-    
   const {
-  setStoreStatus
-} = useStoreStatus(
-  showToast
-)
+    toast,
+    showToast
+  } = useAdminToast()
 
-    useRealtimeOrders({
-  notify,
-  setOrders,
-  setHighlightId,
-  setRealtimeStatus,
-  setStoreStatus,
-  showToast,
-  topRef
-})
+  const {
+    unreadCount,
+    notify
+  } = useUnreadOrders({
+    playNewOrder,
+    showToast
+  })
 
-const {
-  updateStatus
-} = useOrderActions({
-  updateOrderStatus,
-  adminUser,
-  playProses,
-  playDone,
-  showToast,
-  setSelectedOrder
-})
+  const {
+    adminUser,
+    displayName
+  } = useAdminUser()
+
+  const {
+    setStoreStatus
+  } = useStoreStatus(
+    showToast
+  )
+
+  useRealtimeOrders({
+    notify,
+    setOrders,
+    setHighlightId,
+    setRealtimeStatus,
+    setStoreStatus,
+    showToast,
+    topRef
+  })
+
+  const {
+    updateStatus
+  } = useOrderActions({
+    updateOrderStatus,
+    adminUser,
+    playProses,
+    playDone,
+    showToast,
+    setSelectedOrder
+  })
 
   useAuthAdmin(
-  navigate
-)
+    navigate
+  )
 
   return (
 
-  <AdminLayout>
+    <AdminLayout>
 
-    <AdminToast
-      toast={toast}
-    />
+      <AdminToast
+        toast={toast}
+      />
 
-    <div ref={topRef}></div>
+      <div ref={topRef}></div>
 
-    <DashboardHeader
-      displayName={
-        displayName
-      }
-      realtimeStatus={
-        realtimeStatus
-      }
-      unreadCount={
-        unreadCount
-      }
-    />
+      <DashboardHeader
+        displayName={
+          displayName
+        }
+        realtimeStatus={
+          realtimeStatus
+        }
+        unreadCount={
+          unreadCount
+        }
+      />
 
-    <div className="
-      admin-orders-header
-    ">
-
-      <div className="
-        admin-orders-head
-      ">
-
-        <h2 className="
-          admin-orders-title
-        ">
-          Live Orders
-        </h2>
-
-        <span className="
-          admin-orders-count
-        ">
-          {filteredOrders.length}
-        </span>
-
-      </div>
+      {/* FILTER */}
 
       <FilterBar
         search={search}
@@ -245,84 +229,129 @@ const {
         }
       />
 
-      {loading && (
-        <>
-          <SkeletonOrder />
-          <SkeletonOrder />
-          <SkeletonOrder />
-        </>
-      )}
+      {/* ORDERS HEADER */}
 
-      {!loading &&
-        filteredOrders.length === 0 && (
-          <EmptyOrders />
-      )}
+      <div className="
+        admin-orders-head
+      ">
 
-      {!loading &&
-        filteredOrders.map(
-          order => (
+        <h2 className="
+          admin-orders-title
+        ">
+          Live Orders
+        </h2>
 
-            <OrderCard
-              key={order.id}
-              order={order}
-              currentTime={
-                currentTime
-              }
-              highlightId={
-                highlightId
-              }
-              setSelectedOrder={
-                setSelectedOrder
-              }
-              updateStatus={
-                updateStatus
-              }
-              getStatusColor={
-                getStatusColor
-              }
-              formatStatus={
-                formatStatus
-              }
-              formatRupiah={
-                formatRupiah
-              }
-              getTimeAgo={
-                getTimeAgo
-              }
-              getTimeColor={
-                getTimeColor
-              }
-            />
+        <span className="
+          admin-orders-count
+        ">
+          {filteredOrders.length}
+        </span>
 
-          )
+      </div>
+
+      {/* ORDERS */}
+
+      <div className="
+        admin-orders-section
+      ">
+
+        {loading && (
+          <>
+            <SkeletonOrder />
+            <SkeletonOrder />
+            <SkeletonOrder />
+          </>
         )}
 
-    </div>
+        {!loading &&
+          filteredOrders.length === 0 && (
 
-    <OrderModal
-      selectedOrder={
-        selectedOrder
-      }
-      setSelectedOrder={
-        setSelectedOrder
-      }
-      updateStatus={
-        updateStatus
-      }
-      getStatusColor={
-        getStatusColor
-      }
-      formatStatus={
-        formatStatus
-      }
-      formatRupiah={
-        formatRupiah
-      }
-    />
+            <EmptyOrders />
 
-  </AdminLayout>
+        )}
 
-)
+        {!loading &&
+          filteredOrders.map(
+            order => (
+
+              <OrderCard
+                key={order.id}
+
+                order={order}
+
+                currentTime={
+                  currentTime
+                }
+
+                highlightId={
+                  highlightId
+                }
+
+                setSelectedOrder={
+                  setSelectedOrder
+                }
+
+                updateStatus={
+                  updateStatus
+                }
+
+                getStatusColor={
+                  getStatusColor
+                }
+
+                formatStatus={
+                  formatStatus
+                }
+
+                formatRupiah={
+                  formatRupiah
+                }
+
+                getTimeAgo={
+                  getTimeAgo
+                }
+
+                getTimeColor={
+                  getTimeColor
+                }
+              />
+
+            )
+          )}
+
+      </div>
+
+      {/* MODAL */}
+
+      <OrderModal
+        selectedOrder={
+          selectedOrder
+        }
+
+        setSelectedOrder={
+          setSelectedOrder
+        }
+
+        updateStatus={
+          updateStatus
+        }
+
+        getStatusColor={
+          getStatusColor
+        }
+
+        formatStatus={
+          formatStatus
+        }
+
+        formatRupiah={
+          formatRupiah
+        }
+      />
+
+    </AdminLayout>
+
+  )
 
 }
 
