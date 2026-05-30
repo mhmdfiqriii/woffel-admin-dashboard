@@ -3,7 +3,7 @@
 .admin-settings-profile {
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:16px;
 }
 
 .admin-settings-avatar {
@@ -121,13 +121,19 @@
 }
 
 .admin-settings-section-title {
-  margin:10px 0 12px;
+  margin:8px 0 2px;
+
   padding-left:4px;
-  font-size:12px;
+
+  font-size:11px;
+
   font-weight:700;
-  letter-spacing:1.2px;
+
+  letter-spacing:1.4px;
+
   text-transform:uppercase;
-  color:rgba(255,255,255,.38);
+
+  color:rgba(255,255,255,.34);
 }
 
 /* REVIEWS */
@@ -222,4 +228,87 @@
   color:white;
   font-size:14px;
   font-weight:700;
+}
+
+/* SETTINGS SKELETON */
+
+.admin-settings-skeleton{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.admin-settings-skeleton-profile,
+.admin-settings-skeleton-line{
+  position:relative;
+  overflow:hidden;
+
+  border-radius:24px;
+
+  background:
+    rgba(255,255,255,.04);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+}
+
+.admin-settings-skeleton-profile{
+  height:94px;
+}
+
+.admin-settings-skeleton-line{
+  height:58px;
+}
+
+.admin-settings-skeleton-profile::after,
+.admin-settings-skeleton-line::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  transform:
+    translateX(-100%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.06),
+      transparent
+    );
+
+  animation:
+    adminSkeleton 1.2s infinite;
+}
+
+.admin-settings-list {
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.admin-settings-card,
+.admin-store-box {
+  padding:20px;
+  border-radius:24px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.admin-settings-menu {
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    transform .18s ease;
+}
+
+.admin-settings-menu:hover {
+  transform:translateY(-1px);
+
+  background:
+    rgba(255,255,255,.055);
+
+  border-color:
+    rgba(255,255,255,.08);
 }

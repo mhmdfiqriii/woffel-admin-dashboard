@@ -34,13 +34,14 @@ function SettingsPage() {
 
   const {
     displayName,
-    role
+    role,
+    loading
   } = useAdminUser()
 
   const {
-  soundOn,
-  setSoundOn
-} = useAdminSound()
+    soundOn,
+    setSoundOn
+  } = useAdminSound()
 
   const handleLogout =
     async () => {
@@ -63,217 +64,252 @@ function SettingsPage() {
         "
       />
 
-      <div className="
-        admin-settings-list
-      ">
+      {loading ? (
 
         <div className="
-          admin-settings-card
+          admin-settings-skeleton
         ">
 
           <div className="
-            admin-settings-profile
+            admin-settings-skeleton-profile
+          "></div>
+
+          <div className="
+            admin-settings-skeleton-line
+          "></div>
+
+          <div className="
+            admin-settings-skeleton-line
+          "></div>
+
+          <div className="
+            admin-settings-skeleton-line
+          "></div>
+
+        </div>
+
+      ) : (
+
+        <div className="
+          admin-settings-list
+        ">
+
+          <div className="
+            admin-settings-card
           ">
 
             <div className="
-              admin-settings-avatar
+              admin-settings-profile
             ">
-              {displayName?.charAt(0)}
-            </div>
-
-            <div>
 
               <div className="
-                admin-settings-name
+                admin-settings-avatar
               ">
-                {displayName}
+                {displayName?.charAt(0)}
               </div>
 
-              <div className="
-                admin-settings-role
-              ">
-                {role || "Admin"}
+              <div>
+
+                <div className="
+                  admin-settings-name
+                ">
+                  {displayName}
+                </div>
+
+                <div className="
+                  admin-settings-role
+                ">
+                  {role || "Admin"}
+                </div>
+
               </div>
 
             </div>
 
           </div>
+
+          <div className="
+            admin-settings-section-title
+          ">
+            Preferences
+          </div>
+
+          <button className="
+            admin-settings-menu
+          ">
+
+            <div className="
+              admin-settings-menu-left
+            ">
+
+              <Bell size={18} />
+
+              <span>
+                Notifications
+              </span>
+
+            </div>
+
+            <ChevronRight size={18} />
+
+          </button>
+
+          <div className="
+            admin-settings-menu
+          ">
+
+            <div className="
+              admin-settings-menu-left
+            ">
+
+              <Volume2 size={18} />
+
+              <span>
+                Sound Effects
+              </span>
+
+            </div>
+
+            <button
+
+              type="button"
+
+              onClick={() =>
+                setSoundOn(
+                  prev => !prev
+                )
+              }
+
+              className={`
+                admin-settings-toggle
+
+                ${
+                  soundOn
+                    ? "admin-settings-toggle-active"
+                    : ""
+                }
+              `}
+            >
+
+              <div className="
+                admin-settings-toggle-thumb
+              "></div>
+
+            </button>
+
+          </div>
+
+          <div className="
+            admin-settings-section-title
+          ">
+            System
+          </div>
+
+          <button className="
+            admin-settings-menu
+          ">
+
+            <div className="
+              admin-settings-menu-left
+            ">
+
+              <Shield size={18} />
+
+              <span>
+                Admin Access
+              </span>
+
+            </div>
+
+            <ChevronRight size={18} />
+
+          </button>
+
+          <button
+
+            onClick={() =>
+              navigate(
+                "/admin/analytics"
+              )
+            }
+
+            className="
+              admin-settings-menu
+            "
+          >
+
+            <div className="
+              admin-settings-menu-left
+            ">
+
+              <Info size={18} />
+
+              <span>
+                Analytics
+              </span>
+
+            </div>
+
+            <ChevronRight size={18} />
+
+          </button>
+
+          <div className="
+            admin-settings-card
+          ">
+
+            <div className="
+              admin-settings-info
+            ">
+
+              <Info size={18} />
+
+              <div>
+
+                <div className="
+                  admin-settings-info-title
+                ">
+                  Woffel Admin Panel
+                </div>
+
+                <div className="
+                  admin-settings-info-subtitle
+                ">
+                  Version 1.0
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="
+            admin-settings-section-title
+          ">
+            Account
+          </div>
+
+          <button
+
+            onClick={
+              handleLogout
+            }
+
+            className="
+              admin-settings-logout
+            "
+          >
+
+            <LogOut size={18} />
+
+            Logout
+
+          </button>
 
         </div>
 
-        <div className="
-  admin-settings-section-title
-">
-  Preferences
-</div>
-
-        <button className="
-          admin-settings-menu
-        ">
-
-          <div className="
-            admin-settings-menu-left
-          ">
-
-            <Bell size={18} />
-
-            <span>
-              Notifications
-            </span>
-
-          </div>
-
-          <ChevronRight size={18} />
-
-        </button>
-
-       <div className="
-  admin-settings-menu
-">
-
-  <div className="
-    admin-settings-menu-left
-  ">
-
-    <Volume2 size={18} />
-
-    <span>
-      Sound Effects
-    </span>
-
-  </div>
-
-  <button
-
-    type="button"
-
-    onClick={() =>
-      setSoundOn(
-        prev => !prev
-      )
-    }
-
-    className={`
-      admin-settings-toggle
-
-      ${
-        soundOn
-          ? "admin-settings-toggle-active"
-          : ""
-      }
-    `}
-  >
-
-    <div className="
-      admin-settings-toggle-thumb
-    "></div>
-
-  </button>
-
-</div>
-
-<div className="
-  admin-settings-section-title
-">
-  System
-</div>
-
-        <button className="
-          admin-settings-menu
-        ">
-
-          <div className="
-            admin-settings-menu-left
-          ">
-
-            <Shield size={18} />
-
-            <span>
-              Admin Access
-            </span>
-
-          </div>
-
-          <ChevronRight size={18} />
-
-        </button>
-
-        <button
-  onClick={() =>
-    navigate("/admin/analytics")
-  }
-  className="
-    admin-settings-menu
-  "
->
-
-  <div className="
-    admin-settings-menu-left
-  ">
-
-    <Info size={18} />
-
-    <span>
-      Analytics
-    </span>
-
-  </div>
-
-  <ChevronRight size={18} />
-
-</button>
-
-        <div className="
-          admin-settings-card
-        ">
-
-          <div className="
-            admin-settings-info
-          ">
-
-            <Info size={18} />
-
-            <div>
-
-              <div className="
-                admin-settings-info-title
-              ">
-                Woffel Admin Panel
-              </div>
-
-              <div className="
-                admin-settings-info-subtitle
-              ">
-                Version 1.0
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="
-  admin-settings-section-title
-">
-  Account
-</div>
-
-        <button
-        
-          onClick={handleLogout}
-          className="
-            admin-settings-logout
-          "
-        >
-
-          <LogOut size={18} />
-
-          Logout
-
-        </button>
-
-      </div>
+      )}
 
     </AdminLayout>
 
