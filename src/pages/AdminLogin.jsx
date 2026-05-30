@@ -8,6 +8,9 @@ import {
 import { useNavigate } from "react-router-dom"
 import { supabase } from "../lib/supabase"
 
+import WebGLShader
+from "../components/effects/WebGLShader"
+
 function AdminLogin() {
 
   const navigate = useNavigate()
@@ -58,6 +61,8 @@ function AdminLogin() {
   return (
 
     <main className="auth-page">
+
+      <WebGLShader />
 
       {/* AMBIENT */}
       <div className="ambient ambient-1"></div>
