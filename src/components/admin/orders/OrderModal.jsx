@@ -391,113 +391,113 @@ function OrderModal({
 
         {/* FOOTER */}
 
-        <div className="
-          admin-modal-footer
-        ">
+<div className="
+  admin-modal-footer
+">
 
-          <button
+  <div className="
+    admin-modal-footer-actions
+  ">
 
-            className="
-              admin-btn-close
-            "
+    <button
 
-            onClick={() =>
-              setSelectedOrder(null)
-            }
+      className={`
+        admin-btn-modal
 
-          >
+        ${
+          selectedOrder.status !==
+          "pending"
 
-            Tutup
+            ? `
+              admin-btn-disabled
+            `
 
-          </button>
+            : `
+              admin-btn-proses
+            `
+        }
+      `}
 
-          <div className="
-            admin-modal-footer-actions
-          ">
+      disabled={
+        selectedOrder.status !==
+        "pending"
+      }
 
-            <button
+      onClick={() =>
+        updateStatus(
+          selectedOrder.id,
+          "proses"
+        )
+      }
 
-              className={`
-                admin-btn-modal
+    >
 
-                ${
-                  selectedOrder.status !==
-                  "pending"
+      Proses
 
-                    ? `
-                      admin-btn-disabled
-                    `
+    </button>
 
-                    : `
-                      admin-btn-proses
-                    `
-                }
-              `}
+    <button
 
-              disabled={
-                selectedOrder.status !==
-                "pending"
-              }
+      className={`
+        admin-btn-modal
 
-              onClick={() =>
-                updateStatus(
-                  selectedOrder.id,
-                  "proses"
-                )
-              }
+        ${
+          selectedOrder.status ===
+          "selesai"
 
-            >
+            ? `
+              admin-btn-disabled
+            `
 
-              Proses
+            : `
+              admin-btn-selesai
+            `
+        }
+      `}
 
-            </button>
+      disabled={
+        selectedOrder.status ===
+        "selesai"
+      }
 
-            <button
+      onClick={() =>
+        updateStatus(
+          selectedOrder.id,
+          "selesai"
+        )
+      }
 
-              className={`
-                admin-btn-modal
+    >
 
-                ${
-                  selectedOrder.status ===
-                  "selesai"
+      Selesai
 
-                    ? `
-                      admin-btn-disabled
-                    `
+    </button>
 
-                    : `
-                      admin-btn-selesai
-                    `
-                }
-              `}
+  </div>
 
-              disabled={
-                selectedOrder.status ===
-                "selesai"
-              }
+  <button
 
-              onClick={() =>
-                updateStatus(
-                  selectedOrder.id,
-                  "selesai"
-                )
-              }
+    className="
+      admin-btn-close
+    "
 
-            >
+    onClick={() =>
+      setSelectedOrder(null)
+    }
 
-              Selesai
+  >
 
-            </button>
+    Tutup
 
-          </div>
+  </button>
 
-        </div>
+</div>
 
-      </div>
+</div>
 
-    </div>
+</div>
 
-  )
+)
 
 }
 
